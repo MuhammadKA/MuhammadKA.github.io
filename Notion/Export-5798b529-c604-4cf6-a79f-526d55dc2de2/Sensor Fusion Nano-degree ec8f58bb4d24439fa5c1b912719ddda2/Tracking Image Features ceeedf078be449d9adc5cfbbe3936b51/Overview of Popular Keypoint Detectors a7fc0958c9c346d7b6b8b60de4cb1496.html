@@ -1,0 +1,630 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Overview of Popular Keypoint Detectors</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="a7fc0958-c9c3-46d7-b6b8-b60de4cb1496" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">3️⃣</span></div><h1 class="page-title">Overview of Popular Keypoint Detectors</h1></header><div class="page-body"><h3 id="f95bc8b3-d733-420d-8152-8b80528bddfe" class="">Problems with keypoints and robustness of keypoint detectors</h3><ul id="3014594c-b543-4511-9d5c-9c7ac06491a3" class="bulleted-list"><li>Rotation change: keypoint detectors should be able to match keypoints on the target subject before and after its rotation. If the detector is rotation invariant, it will be able to do this. </li></ul><ul id="e5a9d389-e641-4ce9-a7cf-0cf2e2f750cb" class="bulleted-list"><li> Scale change: If the target is moving away from the camera, so it is getting smaller. </li></ul><ul id="aaaa1a05-d2be-4609-a838-4dc9a0684443" class="bulleted-list"><li>Scene illumination change: If the light is blocked, areas get darker which changes the intensity. </li></ul><ul id="b5857349-bf08-4ce0-8232-39e3c8c4a8b3" class="bulleted-list"><li>Perspective transformation: The change of the shape of the keypoint on the image plane</li></ul><p id="df082291-020f-46de-8b39-7b7e46fe37f6" class="">→ Perfect detector will be able to compensate for all of these changes. </p><h3 id="98b3e974-386d-43da-a777-20816a5743a1" class="">Invariance to Photometric and Geometric Changes</h3><p id="d98f5f0d-4093-4b85-ab7e-008274f6a478" class="">In the literature (and in the OpenCV library), there is a large number of feature detectors (including the Harris detector), we can choose from. Depending on the type of keypoint that shall be detected and based on the properties of the images, the robustness of the respective detector with regard to both photometric and geometric transformations needs to be considered.</p><p id="5d26024b-b7db-4222-96fd-2b8a52db74ad" class="">There are four basic transformation types we need to think about when selecting a suitable keypoint detector:</p><ol id="0aa5916a-6102-4937-9980-1875c937ff25" class="numbered-list" start="1"><li>Rotation</li></ol><ol id="c9d20e43-87c5-4e02-a720-9290250477df" class="numbered-list" start="2"><li>Scale change</li></ol><ol id="3acb563d-2b43-4637-a942-4452e3865c4e" class="numbered-list" start="3"><li>Intensity change</li></ol><ol id="a712b64c-9dd0-4fa3-8d66-e57e0b82f65a" class="numbered-list" start="4"><li>Affine transformation</li></ol><p id="62e727bc-5750-4e89-bbe8-65942b8a2602" class="">The following figure shows two images in frame i of a video sequence (a) who have been subjected to several transformations in frame i + n (b).</p><figure id="c987bf98-8967-49e1-9ba1-ab64e27d90aa" class="image"><a href="Overview%20of%20Popular%20Keypoint%20Detectors%20a7fc0958c9c346d7b6b8b60de4cb1496/Untitled.png"><img style="width:1706px" src="Overview%20of%20Popular%20Keypoint%20Detectors%20a7fc0958c9c346d7b6b8b60de4cb1496/Untitled.png"/></a></figure><p id="ef971bb0-fd4a-4935-88f3-e13125d2f04c" class="">
+</p><p id="015556a4-ee36-4032-a726-73b30cb9740d" class="">For the graffiti sequence, which is one of the standard image sets used in computer vision (also see <a href="http://www.robots.ox.ac.uk/~vgg/research/affine/)"><strong>http://www.robots.ox.ac.uk/~vgg/research/affine/)</strong></a>, we can observe all of the transformations listed above whereas for the highway sequence, when focussing on the preceding vehicle, there is only a scale change as well as an intensity change between frames i and i+n.</p><p id="07beaec1-40ce-41a0-83fb-67e239f74378" class="">In the following, the above criteria are used to briefly assess the Harris corner detector.</p><p id="ab3bdf70-a9cf-43a2-9e13-21e2db2e37d8" class=""><strong>Rotation R :</strong></p><figure id="a93c71ae-3624-4ac8-88ec-7c24c98e4a06" class="image"><a href="Overview%20of%20Popular%20Keypoint%20Detectors%20a7fc0958c9c346d7b6b8b60de4cb1496/Untitled%201.png"><img style="width:1874px" src="Overview%20of%20Popular%20Keypoint%20Detectors%20a7fc0958c9c346d7b6b8b60de4cb1496/Untitled%201.png"/></a></figure><p id="84f7ffc9-3509-4bc8-95b2-2ff1bedbca70" class=""><strong>Intensity change:</strong></p><figure id="04e444c5-baf1-40bd-b380-37c3f4e2478c" class="image"><a href="Overview%20of%20Popular%20Keypoint%20Detectors%20a7fc0958c9c346d7b6b8b60de4cb1496/Untitled%202.png"><img style="width:1981px" src="Overview%20of%20Popular%20Keypoint%20Detectors%20a7fc0958c9c346d7b6b8b60de4cb1496/Untitled%202.png"/></a></figure><p id="2d810775-158f-42f4-815b-fcce989df3d8" class=""><strong>Scale change:</strong></p><figure id="ff2b3d24-24c9-4e06-bb67-11d2d9b07fbb" class="image"><a href="Overview%20of%20Popular%20Keypoint%20Detectors%20a7fc0958c9c346d7b6b8b60de4cb1496/Untitled%203.png"><img style="width:1855px" src="Overview%20of%20Popular%20Keypoint%20Detectors%20a7fc0958c9c346d7b6b8b60de4cb1496/Untitled%203.png"/></a></figure><p id="542864ae-fbd6-41ff-a812-6ae28bca1e20" class="">Summarizing, the Harris detector is robust under rotation and additive intensity shifts, but sensitive to scale change, multiplicative intensity shifts (i.e. changes in contrast) and affine transformations. However, if it were possible to modify the Harris detector in a way such that it were able to account for changes of the object scale, e.g. when the preceding vehicle approaches, it might be (despite its age), a suitable detector for our purposes.</p><h3 id="dd3f58fc-4d80-4320-ba5e-475a5f394ca9" class="">Automatic Scale Selection</h3><p id="f243b314-215f-4ad8-b1ae-abcfbaf30e6e" class="">In order to detect keypoints at their ideal scale, we must know (or find) their respective dimensions in the image and adapt the size of the Gaussian window w(x,y)w(x,y) as introduced earlier in this section. If the keypoint scale is unknown or if keypoints with varying size exist in the image, detection must be performed successively at multiple scale levels.</p><figure id="8c597df0-54a6-4a2f-9558-22b7e670cfea" class="image"><a href="Overview%20of%20Popular%20Keypoint%20Detectors%20a7fc0958c9c346d7b6b8b60de4cb1496/Untitled%204.png"><img style="width:1926px" src="Overview%20of%20Popular%20Keypoint%20Detectors%20a7fc0958c9c346d7b6b8b60de4cb1496/Untitled%204.png"/></a></figure><p id="9108a497-78d9-4fd5-8244-82857081e061" class="">Based on the increment of the standard deviation between two neighboring levels, the same keypoint might be detected multiple times. This poses the problem of choosing the „correct“ scale which best represents the keypoint.</p><p id="a5cde6bb-f9df-4fc5-b661-fd37da170c6f" class="">In a landmark paper from 1998, Tony Lindeberg published a method for &quot;Feature detection with automatic scale selection&quot;. In this paper, he proposed a function F(x,y,scale)<em>F</em>(<em>x</em>,<em>y</em>,<em>s</em><em>c</em><em>a</em><em>l</em><em>e</em>), which could be used to select those keypoints that showed a stable maximum of F<em>F</em> over scale. The scale for which F<em>F</em> was maximized was termed the &quot;characteristic scale“ of the respective keypoint.</p><p id="a43287f1-03f2-426f-a6a9-bb1091bcdc0e" class="">The following image shows such a function F<em>F</em> which has been evaluated for several scale levels and exhibits a clear maximum that can be seen as the characteristic scale of the image content within the circular region.</p><figure id="5ec41e33-af6b-4ef2-81e9-f9d19ce3241e" class="image"><a href="Overview%20of%20Popular%20Keypoint%20Detectors%20a7fc0958c9c346d7b6b8b60de4cb1496/Untitled%205.png"><img style="width:588px" src="Overview%20of%20Popular%20Keypoint%20Detectors%20a7fc0958c9c346d7b6b8b60de4cb1496/Untitled%205.png"/></a><figcaption>Adapted from Feature Detection with Automatic Scale Selection.</figcaption></figure><p id="fb7da9d1-d9bf-412c-b5df-1c217cce1eac" class="">Details of how to properly design a suitable function FF are not in the focus of this course however. The major take-away is the knowledge that a good detector is able to automatically select the characteristic scale of a keypoint based on structural properties of its local neighborhood. Modern keypoint detectors usually possess this ability and are thus robust under changes of the image scale.</p><h3 id="ddeb393c-e8e5-40a4-8526-ac447c2906a7" class="">Overview of Popular Keypoint Detectors</h3><p id="87cd71ae-ace2-4c1e-8e32-0037a940e5c5" class="">Keypoint detectors are a very popular research area and thus a large number of powerful algorithms have been developed over the years. Applications of keypoint detection include such things as object recognition and tracking, image matching and panoramic stitching as well as robotic mapping and 3D modeling. In addition to invariance under the transformations mentioned above, detectors can be compared for their detection performance and their processing speed.</p><p id="0643a097-5fac-43f2-9fd9-032557080be2" class="">The Harris detector along with several other &quot;classics&quot; belongs to a group of traditional detectors, which aim at maximizing detection accuracy. In this group, computational complexity is not a primary concern. The following list shows a number of popular classic detectors :</p><ul id="4d7116f9-2727-4ce7-83a4-0bc72b80984b" class="bulleted-list"><li>1988 Harris Corner Detector (Harris, Stephens)</li></ul><ul id="f119e24c-642b-4928-a0d5-5b88b371a6de" class="bulleted-list"><li>1996 Good Features to Track (Shi, Tomasi)</li></ul><ul id="05d59f7c-5e72-4741-a72e-f23dbe008af9" class="bulleted-list"><li>1999 Scale Invariant Feature Transform (Lowe)</li></ul><ul id="5a6b0444-e904-47ee-96dd-dff66091d07b" class="bulleted-list"><li>2006 Speeded Up Robust Features (Bay, Tuytelaars, Van Gool)</li></ul><p id="1ae42339-14e5-474c-87ca-f68df73edc32" class="">In recent years, a number of faster detectors has been developed which aims at real-time applications on smartphones and other portable devices. The following list shows the most popular detectors belonging to this group:</p><ul id="e56e10f9-1301-4886-b1bd-b2e965515290" class="bulleted-list"><li><strong>2006 Features from Accelerated Segment Test (FAST)</strong> (Rosten, Drummond)</li></ul><ul id="dff36bc4-b89b-46fb-9550-a7b7a0e71d35" class="bulleted-list"><li>2010 Binary Robust Independent Elementary Features (BRIEF) (Calonder, et al.)</li></ul><ul id="3786383f-4f2d-4929-a4cd-87c61e6bbe3d" class="bulleted-list"><li>2011 Oriented FAST and Rotated BRIEF (ORB) (Rublee et al.)</li></ul><ul id="8671c1b1-f404-4a16-a566-753b68738672" class="bulleted-list"><li>2011 Binary Robust Invariant Scalable Keypoints (BRISK) (Leutenegger, Chli, Siegwart)</li></ul><ul id="e4dcb682-7e43-4857-a1af-8f293f539d33" class="bulleted-list"><li>2012 Fast Retina Keypoint (FREAK) (Alahi, Ortiz, Vandergheynst)</li></ul><ul id="0c894d3d-ea51-4f77-8e79-c42132414712" class="bulleted-list"><li>2012 KAZE (Alcantarilla, Bartoli, Davidson)</li></ul><p id="85d560a0-94ef-44ae-b3f6-278fdea0b424" class="">In this course, we will be using the Harris detector as well as the Shi-Tomasi detector (which is very similar to Harris) as representatives from the first group of &quot;classic“ detectors. From the second group, we will be leveraging the OpenCV to implement the entire list of detectors.</p><figure id="db6a6a49-8aa5-4625-b644-b76a8e2c4d30" class="image"><a href="Overview%20of%20Popular%20Keypoint%20Detectors%20a7fc0958c9c346d7b6b8b60de4cb1496/Untitled%206.png"><img style="width:1355px" src="Overview%20of%20Popular%20Keypoint%20Detectors%20a7fc0958c9c346d7b6b8b60de4cb1496/Untitled%206.png"/></a></figure><figure id="e493b522-3ced-49ae-bc3e-2f97ff9dc43e" class="image"><a href="Overview%20of%20Popular%20Keypoint%20Detectors%20a7fc0958c9c346d7b6b8b60de4cb1496/Untitled%207.png"><img style="width:1440px" src="Overview%20of%20Popular%20Keypoint%20Detectors%20a7fc0958c9c346d7b6b8b60de4cb1496/Untitled%207.png"/></a></figure><p id="c2b5558b-ae9a-409a-ae74-3ff5f8306a2a" class=""> </p><ul id="4426f220-2543-4d9b-838b-e3ea7089e1e9" class="bulleted-list"><li><strong>2006 Features from Accelerated Segment Test (FAST)</strong> 
+Finds keypoints using machine learning and works only on the intensity image, therefore it is much faster than the classical methods based on gradients </li></ul><figure id="9ec026f8-6dfa-47c9-95d3-d342d1410d19" class="image"><a href="Overview%20of%20Popular%20Keypoint%20Detectors%20a7fc0958c9c346d7b6b8b60de4cb1496/Untitled%208.png"><img style="width:1496px" src="Overview%20of%20Popular%20Keypoint%20Detectors%20a7fc0958c9c346d7b6b8b60de4cb1496/Untitled%208.png"/></a></figure><figure id="2ade32f0-e17b-430a-86db-8a8982a56f8b" class="image"><a href="Overview%20of%20Popular%20Keypoint%20Detectors%20a7fc0958c9c346d7b6b8b60de4cb1496/Untitled%209.png"><img style="width:502px" src="Overview%20of%20Popular%20Keypoint%20Detectors%20a7fc0958c9c346d7b6b8b60de4cb1496/Untitled%209.png"/></a></figure><p id="d54ffaaa-97cc-4adb-8de1-f4867518c940" class="">
+</p></div></article></body></html>

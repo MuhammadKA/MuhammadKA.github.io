@@ -1,0 +1,661 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Working with Real PCD</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="da05c6e8-ea6c-47ce-88ec-dbddc4f8fecf" class="page sans"><header><img class="page-cover-image" src="https://images.unsplash.com/photo-1526593714223-37c814d5aea9?ixlib=rb-1.2.1&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb&amp;ixid=eyJhcHBfaWQiOjYzOTIxfQ" style="object-position:center 39.480000000000004%"/><div class="page-header-icon page-header-icon-with-cover"><span class="icon">4️⃣</span></div><h1 class="page-title">Working with Real PCD</h1></header><div class="page-body"><ul id="ea72931b-0192-4514-8ef3-c9dc69c0ae6e" class="bulleted-list"><li>Apply skills to actual point cloud data from a self-driving car. </li></ul><ul id="2b582e36-c8bb-4dea-b67a-f0684de12433" class="bulleted-list"><li>Do additional filtering techniques.</li></ul><ul id="88fe8f2a-2489-4a04-961b-6986d2f5e76e" class="bulleted-list"><li>Create a pipeline to perform obstacle detection across multiple streaming pcd files.</li></ul><figure id="a81ba34a-a4a8-41e3-b672-d7280f39fe9e" class="image"><a href="Working%20with%20Real%20PCD%20da05c6e8ea6c47ce88ecdbddc4f8fecf/Untitled.png"><img style="width:950px" src="Working%20with%20Real%20PCD%20da05c6e8ea6c47ce88ecdbddc4f8fecf/Untitled.png"/></a></figure><ul id="ac61fcae-63f6-4f26-86e4-a65260c971c8" class="bulleted-list"><li>Looking around the pcd, you can see several cars parked along the sides of the road and a truck approaching to pass the ego car on the left side. The goal will be to fit bounding boxes around these cars and the passing truck, so then your system could later use that information in its path planner, trying to avoid any collisions with those obstacles.</li></ul><ul id="8d8ac6f8-836b-4ab3-a3fd-a40650584619" class="bulleted-list"><li><strong>Note</strong>: If the color is not specified in the <strong><code>renderPointCloud </code></strong>function argument, it will default to using the intensity color coding.</li></ul><ul id="249805f7-7ef2-41ab-9e3b-64d48d5a1b11" class="bulleted-list"><li>The first thing you might notice when looking at the previous loaded point cloud is it’s quite high resolution and spans a pretty far distance. You want your processor pipeline to be able to digest point cloud as quickly as possible, so you will want to filter the cloud down.</li></ul><h2 id="c586999b-20a8-40ec-8681-388e1775f525" class="">Challenges with Real World Lidar</h2><ul id="427c346e-471e-444d-a1db-1c6b34404f46" class="bulleted-list"><li><mark class="highlight-red"><strong>Environmental Conditions:</strong></mark>
+<strong>→</strong> Lidars do not do well in heavy rain, in whiteouts, brownouts (where there is a lot of dirt in the air, sand storms). Anything that reflects and scatters the laser beams of lidar in the air limits the its use. 
+→ Sometimes you create ghost objects (creating an object where there is no object) based on reflections (in case of highly reflecting surface).
+→ You can also get lidar returns from spray. When it starts raining hard, you can have all kinds of weird objects as a result of the water that was spraying up from the tires from other cars. </li></ul><h2 id="d496171f-39a5-4f62-bb45-32905a1693b5" class="">Down-sampling Lidar Data</h2><p id="02734a45-7909-43c7-878f-1689e0fe5002" class="">Sending out the entire point cloud over an internal vehicle network is a lot of data. As a result, we convert the point cloud into stixels (like what is done with stereo camera).
+<mark class="highlight-teal_background"><strong>Stixels </strong></mark><strong>are basically like a match.
+</strong>If you have the back of a vehicle, then stixels would be putting a bunch of match sticks to cover the vehicle. This gives you 2 things:
+<strong>1-</strong> <em>Number of match sticks (each one is lets say 4 inches wide) gives you the width of the vehicle.
+</em><strong>2-</strong><em> The height of the match stick gives you the height of the vehicle.
+But you don&#x27;t need anything in between, you just need the height and the width, and this reduces the data a lot and makes things easier to work with. </em></p><h3 id="8a060229-53fa-43d5-8634-1e2cf6643b72" class="">Filtering PCD</h3><p id="682e8828-eeb6-4f2a-b3e5-17c9331ff05d" class=""><mark class="highlight-yellow_background">The fewer points we&#x27;ve, the faster processing.
+</mark><strong>→ We care about objects in our proximity
+</strong>Lidar can pick up things as far as 120 meters our from the very edge of our scene and not all of that is going to be completely relevant. </p><p id="138fbed0-3887-4612-a720-ab116db7b99e" class="">→ <strong>What is important?</strong>
+The width of the road (maybe 30 meters our from the front of the car and 10 meters from behind, since behind is not as important as the front).</p><p id="bd1dd13e-f330-4680-9c1b-cccd5e9d1095" class=""><strong>→ Box region</strong>
+The box regions contain things that are in proximity and we want to label them as obstacles. We don&#x27;t want to have any collisions with them. </p><h3 id="5ca17658-0bad-4c2a-b5cb-9743fbad7ecb" class="">Voxel Grid Filtering </h3><p id="fbd178af-1ef7-48fc-8e6f-4e40cf5ae310" class="">A voxel is a 3D pixel (also called a volume pixel). It uses a lot less memory to describe it. </p><p id="d825335f-1fa0-4944-9a6c-6fd1deb7049f" class="">→ Voxel grid filtering will create a cubic grid and will filter the cloud by only leaving a single point per voxel cube, so the larger the cube length the lower the resolution of the point cloud.</p><p id="fe954a03-1be7-4fa2-bf29-8afdf3cf68c7" class="">→ The bigger our grid size (cell size), the fewer points we are going to end up with (every cell can only have one point).</p><h3 id="d186a379-dc53-4564-b494-a771f0ae4513" class="">Region of Interest</h3><p id="ed78e0df-62fe-43a3-ae10-a496be2abbef" class="">A boxed region is defined and any points outside that box are removed.</p><p id="7e640af8-27bc-4075-8a85-a624ef640654" class="">To apply these methods you will fill in the point process function FilterCloud. The arguments to this function will be your input cloud, voxel grid size, and min/max points representing your region of interest. The function will return the downsampled cloud with only points that were inside the region specified.</p><figure id="7664d124-e9cc-4fde-8fe6-1f508248e9ed" class="image"><a href="Working%20with%20Real%20PCD%20da05c6e8ea6c47ce88ecdbddc4f8fecf/Untitled%201.png"><img style="width:946px" src="Working%20with%20Real%20PCD%20da05c6e8ea6c47ce88ecdbddc4f8fecf/Untitled%201.png"/></a><figcaption>Region and voxel grid filtering.</figcaption></figure><h2 id="a5970f69-00e1-4a29-81b9-8c184aea5f96" class="">Steps For Obstacle Detection</h2><h3 id="ae6e8aab-a77e-4006-8429-703bea2420a7" class="">Step 1. Segment the filtered cloud into two parts, road and obstacles.</h3><p id="d0642109-0ccd-4942-a919-fb6452731bbe" class="">After you filter the point cloud the next step is to segment it. The image below shows the filtered point cloud segmented (road in green), (obstacles in red), with points only in the filtered region of interest. The image also displays a purple box showing the space where the car&#x27;s roof points were contained, and removed.</p><figure id="182d16bd-09e7-45e0-939e-b3a047d6ecb5" class="image"><a href="Working%20with%20Real%20PCD%20da05c6e8ea6c47ce88ecdbddc4f8fecf/Untitled%202.png"><img style="width:948px" src="Working%20with%20Real%20PCD%20da05c6e8ea6c47ce88ecdbddc4f8fecf/Untitled%202.png"/></a></figure><h3 id="33f53048-a050-43ec-b866-31c2fd9942e1" class="">Step 2. Cluster the obstacle cloud</h3><p id="e3bb4da9-4e13-4b03-91b2-b86ed6370dc6" class="">Next you cluster the obstacle cloud based on the proximity of neighboring points. The image below shows the clusters in cycled colors of red, yellow, and blue. In that image we see that the oncoming truck is actually broken up into two colors, front and back. This illustrates the challenges with clustering based on proximity, the gap between the front of the truck and the back of the truck is large enough so that they look separate. You might think to fix this by increasing the distance tolerance, but you can also see that the truck is getting really close to one of the side parked cars. Increasing the distance tolerance would run the risk of the truck and parked car being grouped together.</p><figure id="e9157695-7ecc-4b93-b18e-c11f1a42e926" class="image"><a href="Working%20with%20Real%20PCD%20da05c6e8ea6c47ce88ecdbddc4f8fecf/Untitled%203.png"><img style="width:948px" src="Working%20with%20Real%20PCD%20da05c6e8ea6c47ce88ecdbddc4f8fecf/Untitled%203.png"/></a></figure><h3 id="7c7eb8b6-cdf4-43d1-a862-80bf63509580" class="">Step 3. Find bounding boxes for the clusters</h3><p id="b2e525ac-fb04-43e2-8319-f1e6c9bcb3a6" class="">Finally you place bounding boxes around the individual clusters. Since all the detectable vehicles in this scene are along the same axis as our car, the simple already set up bounding box function in point processor should yield good results.</p><figure id="60a70016-9e39-4237-a1c3-b2dfad194cba" class="image"><a href="Working%20with%20Real%20PCD%20da05c6e8ea6c47ce88ecdbddc4f8fecf/Untitled%204.png"><img style="width:947px" src="Working%20with%20Real%20PCD%20da05c6e8ea6c47ce88ecdbddc4f8fecf/Untitled%204.png"/></a></figure><h2 id="909280ab-29c0-4f65-b972-913961efddf7" class="">Stream PCD</h2><p id="dcc563e9-b5d8-431b-bb0a-287e8d33f22d" class="">In the previous concept you were able to process obstacle detections on a single pcd file, now you are going to be using that same processing pipeline on multiple pcd files. 
+To do this you can slightly modify the previous used <code><strong>cityBlock </strong></code>function from <code><strong>environment.cpp</strong></code> to support some additional arguments. Now, you will be passing in the point processor to the <code><strong>cityBlock </strong></code>function, this is<strong> because you don&#x27;t want to have to recreate this object at every frame</strong>. Also the <strong>point cloud input will vary from frame to frame, so input point cloud will now become an input argument for </strong><code><strong>cityBlock</strong></code>. The <code><strong>cityBlock </strong></code>function header should now look like this, and you no longer create the point processor or load a point cloud from inside the function.</p><pre id="7f1cd7ec-41f4-4993-ad56-8a8ac6efa24c" class="code"><code>void cityBlock(pcl::visualization::PCLVisualizer::Ptr&amp; viewer, ProcessPointClouds<a href="pcl::PointXYZI">pcl::PointXYZI</a>pointProcessorI, const pcl::PointCloud<a href="pcl::PointXYZI">pcl::PointXYZI</a>::Ptr&amp; inputCloud)</code></pre><ul id="8a398291-a606-4b84-815f-3df2006d8974" class="bulleted-list"><li>Notice that in the function header you can optionally make inputCloud a constant reference by doing const and &amp; at the end of the variable definition. You don&#x27;t have to do this but you are not actually changing the inputCloud at all, just using it as an input for your point processor function. The benefit of using a constant reference is better memory efficiency, since you don&#x27;t have to write to that variable&#x27;s memory, just read from it, so it&#x27;s a slight performance increase. If you do make this a const reference though, make sure not to modify it, or else you will get a compile error.</li></ul><h2 id="5c97adca-120f-46a4-90b6-352ce4c405fe" class="">Code inside main</h2><p id="55e73e42-ee04-4fd8-9183-d6613dff2894" class="">So now instead of creating your point processor, and loading pcl files from inside cityBlock you will do this inside the main function in environment.cpp right after where the pcl viewer camera position is set up.</p><pre id="8f1fb96e-d9a1-4c59-8b99-0be4a018fd35" class="code"><code>ProcessPointClouds&lt;pcl::PointXYZI&gt;* pointProcessorI = new ProcessPointClouds&lt;pcl::PointXYZI&gt;();
+std::vector&lt;boost::filesystem::path&gt; stream = pointProcessorI-&gt;streamPcd(&quot;../src/sensors/data/pcd/data_1&quot;);
+auto streamIterator = stream.begin();
+pcl::PointCloud&lt;pcl::PointXYZI&gt;::Ptr inputCloudI;</code></pre><p id="ef38e9bb-b1d2-48e0-9c40-5f66decb1f8e" class="">In the code above, you are making use of a new method from point processor called, streamPcd. You tell streamPcd a folder directory that contains all the sequentially ordered pcd files you want to process, and it returns a chronologically ordered vector of all those file names, called stream. You can then go through the stream vector in a couple of ways, one option is to use an iterator. At the end of the above code block, a variable for the input point cloud is also set up.</p><h2 id="bfa6694a-07d0-4801-a24c-9219d3094865" class="">PCL Viewer Update Loop</h2><p id="46a161c4-9879-473c-9738-05bd20c78d7f" class="">The final thing to look at is the pcl viewer run cycle which is down at the bottom of <code><strong>envrionment.cpp</strong></code>. while the pcl viewer hasn&#x27;t stopped, you want to process a new frame, do obstacle detection on it, and then view the results. Let&#x27;s see how to set up this pcl viewer run cycle method below.</p><pre id="9d9b26d9-700e-4333-a654-fd8ef3c2fc41" class="code"><code>while (!viewer-&gt;wasStopped ())
+{
+
+  // Clear viewer
+  viewer-&gt;removeAllPointClouds();
+  viewer-&gt;removeAllShapes();
+
+  // Load pcd and run obstacle detection process
+  inputCloudI = pointProcessorI-&gt;loadPcd((*streamIterator).string());
+  cityBlock(viewer, pointProcessorI, inputCloudI);
+
+  streamIterator++;
+  if(streamIterator == stream.end())
+    streamIterator = stream.begin();
+
+  viewer-&gt;spinOnce ();
+}</code></pre><p id="b070fa85-03e7-4571-bfc2-16705749d459" class="">The first thing the above method does is clear any previous rendered point clouds or shapes. Next it loads up your point cloud using your point processor and stream iterator. Then it calls your <code><strong>cityBlock </strong></code>function, and updates the iterator. If the iterator hits the end of the vector it simply sets it back to the beginning and that&#x27;s it. The <code><strong>viewer-&gt;spinOnce()</strong></code> call controls the frame rate, by default it waits 1 time step, which would make it run as fast as possible. Depending on how timing efficient your obstacle detection functions were set up the faster the viewer&#x27;s frame rate will be. If you want to check out the input pcd data at the fastest rate then run the code above and only run a single <code><strong>renderPointCloud </strong></code>on the input cloud inside <strong><code>cityBlock</code></strong>. Let&#x27;s check out the results of the streaming pcd viewer below.</p><p id="d23d67c8-8cea-4346-8a74-6da12f87a9c3" class="">
+</p><p id="554df74e-2bc6-405f-962b-1ddd113c5429" class="">
+</p></div></article></body></html>

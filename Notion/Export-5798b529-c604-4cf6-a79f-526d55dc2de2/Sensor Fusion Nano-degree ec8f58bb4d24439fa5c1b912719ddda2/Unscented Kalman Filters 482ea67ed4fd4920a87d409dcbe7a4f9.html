@@ -1,0 +1,630 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Unscented Kalman Filters</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="482ea67e-d4fd-4920-a87d-409dcbe7a4f9" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">3️⃣</span></div><h1 class="page-title">Unscented Kalman Filters</h1></header><div class="page-body"><h1 id="5a67033e-8b8f-4477-b640-136e0f87b9a7" class="">The CTRV Model</h1><h3 id="cddc0ad7-f686-4653-9c7d-00fa6fcd40a0" class=""><strong>Motion Models and Kalman Filters</strong></h3><p id="3f06546a-fccf-4deb-b4ac-93ffd93ebfbf" class="">In the extended kalman filter lesson, we used a <em>constant velocity</em> model (CV). A constant velocity model is one of the most basic motion models used with object tracking.</p><p id="30d26c62-eab3-43e3-8123-424d5556f132" class="">But there are many other models including:</p><ul id="0d6cadcd-32b8-48c3-947b-b30a53c8facc" class="bulleted-list"><li>constant turn rate and velocity magnitude model (CTRV)</li></ul><ul id="a13f9f48-8541-4f56-a03f-8e98a177fc59" class="bulleted-list"><li>constant turn rate and acceleration (CTRA)</li></ul><ul id="52b6cdce-28cf-481b-8ea4-2a503f4c8e1a" class="bulleted-list"><li>constant steering angle and velocity (CSAV)</li></ul><ul id="bacd35de-0608-4602-95d7-72202c967634" class="bulleted-list"><li>constant curvature and acceleration (CCA)</li></ul><p id="8030c58b-53c6-4a7a-bf58-2173a33b69cc" class="">Each model makes different assumptions about an object&#x27;s motion. In this lesson, you will work with the CTRV model.</p><p id="7ea74a6e-5c19-43f5-8603-1e7ea8971cbf" class="">Keep in mind that you can use any of these motion models with either the extended Kalman filter or the unscented Kalman filter, but we wanted to expose you to more than one motion model.</p><figure id="73fa9dc1-9607-4ee7-a37a-93ce89ca4e2f" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled.png"><img style="width:696px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled.png"/></a></figure><figure id="def82fdc-1a02-4189-8123-db15098bb02b" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%201.png"><img style="width:947px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%201.png"/></a></figure><p id="2e9241dd-ea30-4bbc-b16b-49b658fba489" class=""><strong>Right! The process model would assume the car is moving tangentially to the circle, resulting in a predicted position outside of it.</strong></p><figure id="fd84845c-e19b-46e6-8eb5-76dcc0a9a5b1" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%202.png"><img style="width:1920px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%202.png"/></a></figure><figure id="5891f078-f8a0-42fa-9650-a09a4853d73b" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%203.png"><img style="width:1178px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%203.png"/></a></figure><figure id="5f1b9136-215c-495d-adf8-fd546a7cbd7f" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%204.png"><img style="width:933px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%204.png"/></a></figure><figure id="d264d591-6e26-4772-8a52-c0f2a199c45c" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%205.png"><img style="width:1057px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%205.png"/></a></figure><figure id="d23712d9-81c2-4a1b-bd3d-133e148bdc29" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%206.png"><img style="width:966px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%206.png"/></a></figure><figure id="44e940a3-2def-4997-9cca-f4bf9844d4d3" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%207.png"><img style="width:993px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%207.png"/></a></figure><p id="9d815d71-df6c-4b11-985f-3957350c0995" class=""><strong>Right! Though 1 and 3 have the same yaw rate, state vector 1 has a slower speed, meaning the car would make a complete circle in less distance. </strong></p><h3 id="4e8a3988-8bc3-42a4-8d48-bb3dfa35fe24" class="">CTRV Differential Equation</h3><figure id="245fd171-799d-474e-b784-49f98bf94b42" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%208.png"><img style="width:1920px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%208.png"/></a></figure><figure id="05db320c-9951-453b-97f1-648ce922b97e" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%209.png"><img style="width:1920px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%209.png"/></a></figure><figure id="6d9f433a-c3c0-431e-8a15-bacf08144558" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2010.png"><img style="width:1920px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2010.png"/></a></figure><figure id="1ba1dee2-ece2-473f-8f8f-15e82b85a846" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2011.png"><img style="width:1920px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2011.png"/></a></figure><h3 id="8e999d09-b4bb-4c7e-a6a9-ec56363e16fb" class="">CTRV Zero Yaw Rate</h3><figure id="7d13bd30-7a41-422f-8f27-60deec97fa92" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2012.png"><img style="width:933px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2012.png"/></a></figure><figure id="16a13aa2-41ee-4c8a-ba91-ccf3a1c8ebe0" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2013.png"><img style="width:895px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2013.png"/></a></figure><figure id="43bb71df-0530-4912-8e26-96eb40c81b75" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2014.png"><img style="width:963px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2014.png"/></a></figure><h3 id="f78ba3ae-53c5-4731-873f-9263d73c9432" class="">CTRV Process Noise Vector</h3><figure id="ee3fa518-0d31-4592-9274-2e5c686c794f" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2015.png"><img style="width:1920px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2015.png"/></a></figure><figure id="3dd185aa-7eee-445f-9ef2-a8a3501d7891" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2016.png"><img style="width:1920px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2016.png"/></a></figure><figure id="7fd95b6c-e4fb-4c72-a4b0-c98e6c1b3d7e" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2017.png"><img style="width:985px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2017.png"/></a></figure><figure id="4d7fd938-af4c-4085-9710-9cfed7093dc9" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2018.png"><img style="width:980px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2018.png"/></a></figure><figure id="9eba8d39-b8d0-46a7-b193-728ecf954404" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2019.png"><img style="width:502px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2019.png"/></a></figure><h2 id="df6009da-b530-485e-9042-9faac9e6cb35" class="">UKF Process Chain</h2><h3 id="2b85eaa2-ca7b-4fe7-87f5-5ea6cbb6b24e" class=""><strong>Unscented Kalman Filter Introduction</strong></h3><p id="2d84d9e5-4896-4155-b75d-e20fad0c1983" class="">Now that you have learned the CTRV motion model equations, we will discuss how the unscented Kalman filter works. As you go through the lectures, recall that the extended Kalman filter uses the Jacobian matrix to linearize non-linear functions.</p><p id="3a701d72-e653-4c48-92d8-2e9eaaaa0cfa" class="">The unscented Kalman filter, on the other hand, does not need to linearize non-linear functions; instead, the unscented Kalman filter takes representative points from a Gaussian distribution. These points will be plugged into the non-linear equations as you&#x27;ll see in the lectures.</p><h3 id="280d0db3-275d-46b4-84c9-6c17cabdd3b1" class="">What Problem Does the UKF Solve?</h3><figure id="633a204e-2d81-4a2b-a0d0-e829f278b494" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2020.png"><img style="width:1920px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2020.png"/></a></figure><ul id="b31596be-f99f-413b-84eb-e38d047e1286" class="bulleted-list"><li>These ellipses describe the distribution of our uncertainty, all points on this line have the same probability density. If the uncertainty is normally distributed, these points have the shape of an ellipse. It can be seen as the visualization of the covariance matrix P. </li></ul><p id="2d49c82d-ac87-4137-94b2-753dce4e8a2a" class=""><strong>→ If the process model is linear, the prediction problem looks like this:</strong></p><figure id="4f0fb5bf-bf59-4c9e-b6fd-d8e99fb25ad3" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2021.png"><img style="width:1920px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2021.png"/></a></figure><p id="61d41bd2-ad35-467a-80b8-2b3df6e555d5" class="">→ <em>Q is the covariance matrix of the process noise. We can use Kalman filter so solution is linear prediction problem. </em></p><ul id="a5aa23de-46c6-48f1-b136-fc2dad02dc6a" class="bulleted-list"><li>If the process model is non linear, then the prediction is defined by non-linear function f. Predicting with non-linear function provides a distribution which is generally not linearly distributed any more. This distribution can only be calculated numerically (yellow distribution). <em>We want to find the normal distribution that represents the real predicted distribution as close as possible. In other words, we look for the normal distribution which has the same mean and the same covariance matrix as the real predicted distribution (green distribution). This is what the unscented transformation does for us. </em></li></ul><figure id="cf1bda3f-8d55-49eb-925c-10950e1057aa" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2022.png"><img style="width:1920px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2022.png"/></a></figure><h3 id="7a63ede2-c6ad-44d2-9c43-eafdf7af0bc5" class="">UKF Basics Unscented Transformation</h3><p id="606496db-377e-40ff-ab5f-79df852f3463" class="">It can be difficult to transform the whole state distribution through non linear function, but it is very easy to transform the individual points of the state space through the non linear function. This is what Sigma points are for. The Sigma points are chosen around the mean state and in a certain relation to the standard deviation sigma of every state dimension (this is why these points are called sigma points). They serve as a representative of the whole distribution. </p><figure id="fc43e941-e2a0-41fc-8993-7259409e1d4e" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2023.png"><img style="width:1920px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2023.png"/></a><figcaption>Yellow: what you really have because of the non linear process model
+Orange: this is the best possible mean and covariance you could use if you want to keep pretending you have a normal distribution. 
+Green: what the sigma points give you</figcaption></figure><p id="a50771f3-7537-4717-9f6d-5754d57d272d" class="">Once you have chosen the sigma points, you just insert every single sigma point into the non linear function f → so they come somewhere in the predicted space. All you have to do now is calculate the mean and covariance of the group of sigma points. This will not provide the same mean and covariance of the predicted distribution but it gives useful approximation. </p><p id="00034ff3-18c8-4415-a460-7c387517ec63" class="">If the process model is linear, the Sigma points approach provides exactly the same solution as the standard Kalman filter (but they are more expensive in terms of calculation time).    </p><h3 id="b562af4e-eb44-4d54-b3a8-f52f528735c3" class="">We Can Split the Prediction Step into 3 Parts</h3><ol id="79d6a9c2-55e7-4e47-a53e-3888802eabce" class="numbered-list" start="1"><li>A good way to choose the sigma points</li></ol><ol id="79292eec-768b-4b0f-881d-e16559fe1377" class="numbered-list" start="2"><li>How to predict the sigma points → Just insert them into the process function</li></ol><ol id="eb8fe050-282f-4294-bc2d-ae33f2ec597d" class="numbered-list" start="3"><li>Calculate the prediction mean and covariance from the predicted sigma points  </li></ol><h3 id="0e4b4615-c7fe-4c17-9ed6-746c7c25ee0e" class="">Step 1: Generating Sigma Points</h3><figure id="511313fc-7da8-4007-87f1-1e858a4a7520" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2024.png"><img style="width:1920px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2024.png"/></a></figure><p id="03bf3279-a113-4ed2-a107-89c4dfba25ca" class="">At the beginning of the prediction step, we have the posterior state Xk|k, and the posterior covariance matrix Pk|k from the last iteration. These represent the distribution of our current state. For this distribution, we want to generate sigma points. </p><p id="fb40984d-416a-4bbb-bc13-3341f911b962" class="">The number of sigma points depends on the state dimension, since we are dealing with CTRV model, so the dimension of our state is 5. </p><p id="d23a4dd7-0ac3-4bbd-97a3-941fc39a6b95" class="">The first sigma point is the mean of the state, then we have 2 points per state dimension, which will be spread in different directions. </p><figure id="5493d31b-c66e-46e6-8c7b-e0c00a7662c7" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2025.png"><img style="width:1920px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2025.png"/></a></figure><p id="c9c40019-f0ab-4a42-b612-44dca5ddf2a6" class="">For simplicity, we will consider only 2 dimensions of our state vector <em>px and py.</em> </p><p id="d084a231-a8ed-4898-8fa0-e0ef53daae0b" class="">So, now we are looking for only 5 Sigma points. </p><figure id="71b1ea98-b224-4a4b-a29a-e652f64f76a7" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2026.png"><img style="width:1920px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2026.png"/></a></figure><figure id="20e61735-808d-401c-99d4-14dba2169994" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2027.png"><img style="width:1920px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2027.png"/></a></figure><figure id="2eaa5388-be38-4a63-8ea0-b011f6047a16" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2028.png"><img style="width:1920px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2028.png"/></a></figure><p id="4da6452d-43b6-48af-a419-0c72fda78f5a" class="">Lambda is a design parameter, which determines where in relation to the error ellipse you want to put your sigma points. Some people report good results with Lambda = 3 - nx. </p><figure id="d2f6edcb-5ce1-4d30-8bb5-7499f47d4d08" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2029.png"><img style="width:1920px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2029.png"/></a><figcaption>Here, we are just given the result of A matrix, but we will calculate it later. </figcaption></figure><p id="5a6eaf20-a6a4-43e3-94bd-a8465d5d2770" class="">The first column of the matrix tells us what the first Sigma point is. This is always easy, because the first sigma point is the mean state estimate. </p><p id="86811edd-4222-4a4c-a234-35f46c4032d4" class="">In the square root matrix, we have 2 vectors, and these two vectors are multiplied by a factor (Lambda + nx). If Lambda is larger, the sigma point moves further away from the mean state. If Lambda is smaller, the Sigma point moves closer to the mean state. This all happens in relation to this error ellipse. </p><figure id="5dd70256-214e-4b70-80f7-3434a12ffe5f" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2030.png"><img style="width:1920px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2030.png"/></a></figure><figure id="7fa27e89-6e65-46e8-8c72-f48f1cd20801" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2031.png"><img style="width:971px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2031.png"/></a></figure><figure id="38f7dfc0-b13b-4211-8188-0424de23b625"><a href="https://eigen.tuxfamily.org/dox/group__QuickRefPage.html" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Eigen: Quick reference guide</div><div class="bookmark-description">The Eigen library is divided in a Core module and several additional modules. Each module has a corresponding header file which has to be included in order to use the module. The Dense and header files are provided to conveniently gain access to several modules at once.</div></div><div class="bookmark-href">https://eigen.tuxfamily.org/dox/group__QuickRefPage.html</div></div><img src="https://eigen.tuxfamily.org/dox/Eigen_Silly_Professor_64x64.png" class="bookmark-image"/></a></figure><figure id="509ca273-22ad-4df0-8ce9-dca6451d906b"><a href="https://eigen.tuxfamily.org/dox/classEigen_1_1LLT.html" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Eigen: Eigen::LLT Class Template Reference</div><div class="bookmark-description">Standard Cholesky decomposition (LL^T) of a matrix and associated features. Template Parameters _MatrixType the type of the matrix of which we are computing the LL^T Cholesky decomposition _UpLo the triangular part that will be used for the decompositon: Lower (default) or Upper. The other triangular part won&#x27;t be read.</div></div><div class="bookmark-href">https://eigen.tuxfamily.org/dox/classEigen_1_1LLT.html</div></div><img src="https://eigen.tuxfamily.org/dox/Eigen_Silly_Professor_64x64.png" class="bookmark-image"/></a></figure><h2 id="56f9109c-3010-465d-936c-279a2de2b555" class="">UKF Augmentation</h2><p id="e37c6011-98a2-4588-b4ee-bdf8d52004b2" class="">The process function also considers the process noise vector which also has a non linear effect. </p><p id="565d43e2-02f9-4327-ba70-c962d3960a8e" class="">UKF provides an easy way to handle non linear process noise effect. </p><figure id="13094b7f-fc13-46cf-ac01-906318629602" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2032.png"><img style="width:1920px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2032.png"/></a></figure><figure id="ea4923ff-b4b3-4c15-a1b4-a7bf86438beb" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2033.png"><img style="width:1920px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2033.png"/></a></figure><p id="a8779b37-0ddb-4909-b008-cddd51acce6b" class="">Each row of the last vector tells the influence of the process noise on a specific state between k and k+1, so it has the same dimension as the state vector and it depends on delta t. </p><p id="79297862-32a6-4e08-ae52-9a182d412286" class="">In literature, authors may mention mu_k and mean the vector at the left (mostly this is the case when you read about standard linear kalman filter) or may mean the vector at the top. In the course we will stick with the last notation (which is much simpler, because this vector just lists the individual independent noise processes - This is mostly what authors mean when they write about unscented kalman filters). </p><figure id="ee65f561-7b4d-4c3a-9cd6-8b5c4d0d3924" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2034.png"><img style="width:1920px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2034.png"/></a></figure><p id="a18926c2-947f-4b0a-8e4b-69ce77630e02" class="">The covariances of the noise matrix Q are Zero, because the longitudinal acceleration noise and the yaw acceleration noise are considered independent. </p><figure id="b983aa34-68ad-4cd3-b7d8-75b345d2ae65" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2035.png"><img style="width:1920px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2035.png"/></a></figure><p id="14463682-0409-4e88-96a8-bdc21c4fa132" class=""><strong>How to represent the uncertainty of the covariance matrix Q with sigma points?</strong></p><p id="79ba5228-1a1e-4b32-a279-764d5928b704" class=""><em>→ The solution is called augmentation. We add the noise vector to the state vector. We need 15 sigma points now instead of 11. </em></p><figure id="c9a89a96-4d58-447c-b2c1-3b185f00bd5c" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2036.png"><img style="width:1920px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2036.png"/></a></figure><figure id="5440ae5f-db2a-4637-9963-22ec22b92143" class="image"><a href="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2037.png"><img style="width:1007px" src="Unscented%20Kalman%20Filters%20482ea67ed4fd4920a87d409dcbe7a4f9/Untitled%2037.png"/></a></figure><p id="4c240ab7-d035-4069-a89d-057a32cd0ae8" class="">
+</p></div></article></body></html>

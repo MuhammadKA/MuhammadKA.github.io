@@ -1,0 +1,629 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Clutter, CFAR, AoA</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="fb3e1540-d326-4ae4-9c0d-05d4221f2d87" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">3️⃣</span></div><h1 class="page-title">Clutter, CFAR, AoA</h1></header><div class="page-body"><p id="ff67b970-e650-4bb9-8eb5-b00af26c0b5c" class="">Radar not only receive the reflected signals from the objects of interest, but also from the environment and unwanted objects. The backscatter from these unwanted sources is called as clutter. Clutter is a term used for unwanted echos. </p><p id="5e84d19d-b54e-4610-9e52-aa10bac5957a" class="">These unwanted signals are generally produced by the reflections from the ground, sea, buildings, trees, rain, fog etc. The magnitude of the clutter signal depends upon:</p><ul id="a9112437-c60a-48db-8b61-88660ad6baf6" class="bulleted-list"><li>The nature of the surface - ground, water, snow (e.g deserts have low reflectivity, whereas the frozen snow has high reflectivity)</li></ul><ul id="0c285f1f-7c9e-4265-bb7c-47f99ba8cb94" class="bulleted-list"><li>Smoothness of the surface</li></ul><ul id="aab684a0-a126-4355-bc63-181a4d4c481a" class="bulleted-list"><li>Grazing angle - Angle the radar beam makes with the surface</li></ul><ul id="d8b9daca-c56d-4202-b676-62a50b2ef498" class="bulleted-list"><li>Radar Frequency</li></ul><figure id="59df8f31-c4d7-4f8b-88c7-f8130360e772" class="image"><a href="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled.png"><img style="width:895px" src="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled.png"/></a><figcaption>Return Signal from multiple targets along with some from the clutter.</figcaption></figure><h2 id="fa4e8197-0310-47aa-8e5d-42518a330625" class="">Clutter Thresholding</h2><p id="4c7f3440-ccf6-43f1-b2a4-37edf759f7e5" class="">It is important to filter out clutter for successful detection of targets. This is critical in a driving scenario to avoid the car from suddenly braking in the absence of valid targets. This sudden braking happens when the radar detects reflections that are generated from the clutter.</p><p id="9b3927bd-4051-44a0-b38c-3445f1fba26a" class="">One technique to remove clutter is to remove the signals having 0 doppler velocity. Since, the clutter in the driving scenario are often created by the stationary targets, the 0 doppler filtering can help get rid of them.</p><p id="abd01a2d-f79c-4773-89ef-8a56520e4689" class="">The downside of 0 doppler filtering is that the radar would not be able to detect the stationary targets in its path. This would lead to detection failures.</p><p id="9ae15282-53d0-4b75-8570-3cd96822f7c0" class="">Another technique is to use <em>fixed clutter thresholding</em>. With fixed thresholding, signal below the threshold value is rejected. With this method, if the detection threshold is set too high, there will be very few false alarms, but it will also mask the valid targets. If the threshold is set too low, then it would lead to too many false alarms. In other words, the <em>false alarm rate</em> would be too high.</p><p id="8113ca3e-2ff2-4bcd-b0eb-171173ef06bb" class="">The false alarm rate is the rate of erroneous radar detections by noise or other interfering signals. It is a measure of the presence of detected radar targets when there is no valid target present.</p><figure id="2cefa13f-c2a4-481f-a9e1-dd777f77c900" class="image"><a href="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%201.png"><img style="width:624px" src="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%201.png"/></a><figcaption>Fixed Threshold leading to False Alarms and missed detections of weak target</figcaption></figure><h2 id="7eb02576-9449-468f-9d1e-d17b744590ab" class="">Dynamic Thresholding</h2><p id="fcbbbdb1-bf4d-4266-8773-87b4e2fbfe7c" class="">Another approach to clutter thresholding is to use <em>dynamic thresholding</em>. Dynamic thresholding involves varying the threshold level to reduce the false alarm rate.</p><p id="9cb7d5d7-2561-499a-883b-d7b6685e091e" class="">In the rest of this lesson, you will learn about a dynamic thresholding technique called CFAR (Constant False Alarm Rate). With this technique, the noise at every or group of range/doppler bins is monitored and the signal is compared to the local noise level. This comparison is used create a threshold which holds the false alarm rate constant. Let&#x27;s have a look in the next concept!</p><h3 id="5aa742c9-dd44-48fb-b315-1165ec89a957" class="">More resources about clutter</h3><figure id="325a600c-c653-4119-ae63-bf14e5a3579a"><a href="https://www.radartutorial.eu/11.coherent/co04.en.html" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">The basic types of clutter - Radartutorial</div><div class="bookmark-description">Radar Clutter Radar returns are produced from nearly all surfaces when illuminated by radar. Therefore, in competition with the return from an aircraft, there are many sources of unwanted signals. Unwanted signals in a search radar are generally described as noise and clutter. (Noise was discussed earlier in detail concerning the Radar Basics.)</div></div><div class="bookmark-href"><img src="https://www.radartutorial.eu/style/css/images/favicon.ico" class="icon bookmark-icon"/>https://www.radartutorial.eu/11.coherent/co04.en.html</div></div><img src="https://www.radartutorial.eu/11.coherent/pic/seaclutter.print.jpg" class="bookmark-image"/></a></figure><figure id="fb3e4075-ae55-432f-a55d-e0f2ad65322a"><a href="https://journals.sagepub.com/doi/pdf/10.1177/1550147717729793" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title"></div></div><div class="bookmark-href"><img src="https://journals.sagepub.com/favicon.ico" class="icon bookmark-icon"/>https://journals.sagepub.com/doi/pdf/10.1177/1550147717729793</div></div></a></figure><h1 id="242e2330-8945-4666-84c9-1a8b228a0b83" class="">CFAR</h1><figure id="4f68226f-9e3a-4cd3-a335-8cf8f9efd1c5" class="image"><a href="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%202.png"><img style="width:480px" src="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%202.png"/></a><figcaption>CA-CFAR and OS-CFAR
+source :<a href="http://www.radartutorial.eu/">http://www.radartutorial.eu</a></figcaption></figure><p id="c9c247ca-7ff4-451f-a34c-c72306a35bed" class="">The false alarm issue can be resolved by implementing the constant false alarm rate. CFAR varies the detection threshold based on the vehicle surroundings. The CFAR technique estimates the level of interference in radar range and doppler cells “Training Cells” on either or both the side of the “Cell Under Test”. The estimate is then used to decide if the target is in the Cell Under Test (CUT).</p><p id="ee4c8788-038f-4e0f-a3bc-809f2b4fd8e4" class=""><strong>The process loops across all the range cells and decides the presence of target based on the noise estimate.The basis of the process is that when noise is present, the cells around the cell of interest will contain a good estimate of the noise, i.e. it assumes that the noise or interference is spatially or temporarily homogeneous. Theoretically it will produce a constant false alarm rate, which is independent of the noise or clutter level.</strong></p><p id="47b49f9f-0559-448e-9ea5-067d599a5583" class="">There are multiple categories of CFAR:</p><ul id="51b8baac-2185-418a-bc07-b9ee7bcfdab5" class="bulleted-list"><li>Cell Averaging CFAR (CA-CFAR)</li></ul><ul id="f9189a76-33dd-4c5e-8ab7-b59587a69b76" class="bulleted-list"><li>Ordered Statistics CFAR (OS CFAR)</li></ul><ul id="6ad9f1c4-192e-4b01-a61c-868eb581dcd1" class="bulleted-list"><li>Maximum Minimum Statistic (MAMIS CFAR)</li></ul><ul id="e1fee1de-0a35-4f7c-9a77-a81afa97a65a" class="bulleted-list"><li>And, multiple variants of CA-CFAR.</li></ul><p id="11151393-b3db-48ed-9909-5329b020f272" class="">Here, we will be covering the basic CA-CFAR</p><h1 id="9ff4bf55-0c66-4f1b-9b63-57096f0c063f" class="">CA-CFAR</h1><figure id="66c1407d-2b9e-4d7e-aad8-0e94be1447bf" class="image"><a href="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%203.png"><img style="width:384px" src="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%203.png"/></a></figure><p id="3aaf5e88-cfc8-47da-be45-2534384f908d" class="">CA-CFAR is the most commonly used CFAR detection technique. As seen in the previous lesson, the FFT blocks are generated on implementing range and doppler FFTs across the number of chirps. The CFAR process includes the sliding of a window across the cells in FFT blocks. Each window consists of the following cells.</p><p id="567929d1-9777-4102-ba8a-a8627e78fe8f" class=""><strong>Cell Under Test</strong> : The cell that is tested to detect the presence of the target by comparing the signal level against the noise estimate (threshold).</p><p id="924f46c0-b3a6-4706-b2e5-6ef79053e7fc" class=""><strong>Training Cells</strong> : The level of noise is measured over the Training Cells. The Training Cells can be divided into two regions, the cells lagging the CUT, called lagging Training Cells and the cells leading the CUT, called Leading Training Cells. The noise is estimated by averaging the noise under the training cells. In some cases either leading or lagging cell average is taken, while in the other the leading and lagging cell average is combined and the higher of two is considered for noise level estimate.</p><p id="52f9bc52-fd23-4a33-814d-bc000051b8a3" class=""><em>The number of training cells should be decided based on the environment. If a dense traffic scenario then the fewer training cells should be used, as closely spaced targets can impact the noise estimate.</em></p><p id="4d27c1a0-0ae7-459b-a812-fce4946e10be" class=""><strong>Guard Cells</strong> : The cells just next to CUT are assigned as Guard Cells. The purpose of the Guard Cells is to avoid the target signal from leaking into the training cells that could adversely affect the noise estimate. The number of guard cells should be decided based on the leakage of the target signal out of the cell under test. If target reflections are strong they often get into surrounding bins.</p><p id="9ac23ada-271a-4691-93d1-75244a8fb03b" class=""><strong>Threshold Factor (Offset)</strong> : Use an offset value to scale the noise threshold. If the signal strength is defined in logarithmic form then add this offset value to the average noise estimate, else multiply it.</p><figure id="7e4fda3a-2309-4838-910f-6a1a56f9209c" class="image"><a href="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%204.png"><img style="width:530px" src="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%204.png"/></a></figure><figure id="373150b8-7a67-48ec-8a4d-06d5f134958b" class="image"><a href="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%205.png"><img style="width:988px" src="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%205.png"/></a></figure><p id="f2c81ec5-afbe-43e8-a976-21961f790a7c" class=""><strong>More Resources</strong></p><figure id="75d4cbfa-adda-43c5-9aa4-9b799b4bd2d3"><a href="https://arxiv.org/pdf/1709.09786.pdf" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title"></div></div><div class="bookmark-href"><img src="https://arxiv.org/favicon.ico" class="icon bookmark-icon"/>https://arxiv.org/pdf/1709.09786.pdf</div></div></a></figure><figure id="747694af-9153-41f0-a1f7-6a3b48878755"><a href="https://www.radartutorial.eu/01.basics/False%20Alarm%20Rate.en.html" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">False Alarm - Radartutorial</div><div class="bookmark-description">False Alarm Rate A false alarm is &quot;an erroneous radar target detection decision caused by noise or other interfering signals exceeding the detection threshold&quot;. In general, it is an indication of the presence of radar target when there is no valid aim.</div></div><div class="bookmark-href"><img src="https://www.radartutorial.eu/style/css/images/favicon.ico" class="icon bookmark-icon"/>https://www.radartutorial.eu/01.basics/False%20Alarm%20Rate.en.html</div></div><img src="https://www.radartutorial.eu/01.basics/pic/oszi-cfar-01.big.jpg" class="bookmark-image"/></a></figure><h1 id="ecfe47bf-9bd6-48ac-b644-3bd2c2ee231f" class="">CFAR 2D</h1><p id="b885668a-941a-4893-bb8c-9acf6fcc80e2" class="">The 2D CFAR is similar to 1D CFAR, but is implemented in both dimensions of the range doppler block. The 2D CA-CFAR implementation involves the training cells occupying the cells surrounding the cell under test with a guard grid in between to prevent the impact of a target signal on the noise estimate.</p><figure id="55b129dc-2087-4c8b-af73-d7951aab0078" class="image"><a href="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%206.png"><img style="width:1870px" src="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%206.png"/></a></figure><h2 id="2f4fb139-5de0-4104-8617-1f2b787b3fdf" class="">2D CFAR Steps</h2><figure id="3ce03b87-8146-45a9-b096-b0f52d1a8b4d" class="image"><a href="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%207.png"><img style="width:976px" src="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%207.png"/></a></figure><figure id="0600895f-0838-4624-a80a-758a55575990"><a href="https://www.radartutorial.eu/01.basics/False%20Alarm%20Rate.en.html" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">False Alarm - Radartutorial</div><div class="bookmark-description">False Alarm Rate A false alarm is &quot;an erroneous radar target detection decision caused by noise or other interfering signals exceeding the detection threshold&quot;. In general, it is an indication of the presence of radar target when there is no valid aim.</div></div><div class="bookmark-href"><img src="https://www.radartutorial.eu/style/css/images/favicon.ico" class="icon bookmark-icon"/>https://www.radartutorial.eu/01.basics/False%20Alarm%20Rate.en.html</div></div><img src="https://www.radartutorial.eu/01.basics/pic/oszi-cfar-01.big.jpg" class="bookmark-image"/></a></figure><figure id="a1891f19-7185-4087-930b-7907593c6d03"><a href="https://arxiv.org/pdf/1709.09786.pdf" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title"></div></div><div class="bookmark-href"><img src="https://arxiv.org/favicon.ico" class="icon bookmark-icon"/>https://arxiv.org/pdf/1709.09786.pdf</div></div></a></figure><h1 id="337d84c3-e156-475a-8397-628c8c32632c" class="">Angle of Arrival Introduction</h1><figure id="d591aafe-fa2e-4630-99df-bde5f0016481" class="image"><a href="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%208.png"><img style="width:1203px" src="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%208.png"/></a><figcaption>Metawave’s Beam Steering Radar</figcaption></figure><p id="9dedd714-7f73-4571-92bc-5ceb670e2e26" class="">A phased array antenna is an antenna array that steers the beam electronically in the desired direction. The array steers the beam if each antenna element in an array is excited by the signal with certain phase values. This phenomenon is referred to as beam scanning.</p><figure id="1d0641da-5d71-47a7-a5ca-96fb0a828810" class="image"><a href="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%209.png"><img style="width:480px" src="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%209.png"/></a><figcaption>Beam Steering Design. Here the Φ represents the phase shifters. Phase shifters are the electronic components that changes the phase to make the beam steer in a desired direction.
+source : <a href="http://analog.com/">analog.com</a></figcaption></figure><p id="20b0b774-8ff5-485e-8ccc-258b39eebec7" class="">For antenna beam to steer in a desired direction, the phase shifters are programmed to have constant phase increments. If an antenna comprises of six radiating elements and the phase delta required to steer a beam in a given direction is 15 degrees, then the following would be the phase value on each element [0,15,30,45,60,75] degrees. The increment phase shift along with the spacing between antenna elements (d) determines the steering angle of an antenna using the following equation </p><figure id="9ddcc859-9501-42d1-a741-dcaa7a8cae25" class="image"><a href="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%2010.png"><img style="width:971px" src="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%2010.png"/></a></figure><p id="f29b7748-426c-4ef4-9251-9452c0d143f9" class="">As the radar scan the surroundings by steering the beam at the programmed angles, it can sense the angle of the return signal. This helps Radar create a spatial perception of the environment.</p><figure id="90521827-7e4b-4706-a125-702fa12c7a54" class="image"><a href="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%2011.png"><img style="width:376px" src="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%2011.png"/></a><figcaption>Radar Module for Automotive Applications from D3 Engineering</figcaption></figure><h3 id="8caa1734-d9c7-4725-8a2f-5551c76f891f" class="">Angle of Arrival</h3><figure id="510d29cd-0355-4579-a456-6d2895e7c22d" class="image"><a href="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%2012.png"><img style="width:528px" src="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%2012.png"/></a><figcaption>Road scenario for beam steering radar</figcaption></figure><p id="3af6b8dc-6433-4f9b-9be1-b86a4482dfa4" class="">As the radar scans the surroundings by steering the beam at the programmed angles, it measures the SNR of reflected signals from targets located at different angles spatially. This helps in creating an <strong>angle of arrival vs SNR grid</strong> for radar’s spatial perception.</p><figure id="654349eb-7554-4f15-9780-1aeae03d9a73" class="image"><a href="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%2013.png"><img style="width:1270px" src="Clutter,%20CFAR,%20AoA%20fb3e1540d3264ae49c0d05d4221f2d87/Untitled%2013.png"/></a></figure><figure id="0d9be90e-a0f0-400c-af70-bae93aaf793d"><a href="https://www.radartutorial.eu/06.antennas/Phased%20Array%20Antenna.en.html" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Phased Array Antenna - Radartutorial</div><div class="bookmark-description">Phased Array Antenna A phased array antenna is an array antenna whose single radiators can be fed with different phase shifts. As a result, the common antenna pattern can be steered electronically. The electronic steering is much more flexible and requires less maintenance than the mechanical steering of the antenna.</div></div><div class="bookmark-href"><img src="https://www.radartutorial.eu/style/css/images/favicon.ico" class="icon bookmark-icon"/>https://www.radartutorial.eu/06.antennas/Phased%20Array%20Antenna.en.html</div></div><img src="https://www.radartutorial.eu/06.antennas/pic/phased_array_(1).print.jpg" class="bookmark-image"/></a></figure></div></article></body></html>

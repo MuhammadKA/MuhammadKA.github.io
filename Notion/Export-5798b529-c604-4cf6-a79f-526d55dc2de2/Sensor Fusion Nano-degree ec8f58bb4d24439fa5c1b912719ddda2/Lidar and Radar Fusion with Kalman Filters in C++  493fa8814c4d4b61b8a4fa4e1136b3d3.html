@@ -1,0 +1,628 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Lidar and Radar Fusion with Kalman Filters in C++ (follow)</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="493fa881-4c4d-4b61-b8a4-fa4e1136b3d3" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">2️⃣</span></div><h1 class="page-title">Lidar and Radar Fusion with Kalman Filters in C++ (follow)</h1></header><div class="page-body"><h2 id="92621382-67c6-4e33-91a9-052cb37939ce" class="">State Prediction</h2><figure id="23f2552d-a26a-4e86-8b34-622b30c8f279" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled.png"/></a></figure><p id="45a8482f-852d-4030-9443-315ba44c7a52" class="">We are now in the prediction step. Since the pedestrian moves in both directions x and y, we need to define 2D position and 2D velocity, so we have 4D state vector. We also use the same linear motion model with constant velocity. </p><figure id="3f593e80-2471-46ea-811a-ecd7c723a527" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%201.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%201.png"/></a></figure><p id="155d9efa-a9aa-40db-97e4-41d7fb6de0a2" class=""><strong>This gives us the following state transition matrix:</strong></p><figure id="403101af-8177-42a2-89f9-afd6224a308b" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%202.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%202.png"/></a></figure><p id="f9d10b32-423a-4d18-b94b-4f6757dbaf8c" class="">Also, the delta t is not constant any more. In reality, the time elapse between two consecutive observations might vary.  </p><figure id="590e4214-e315-4125-add5-e63f7c23f6be" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%203.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%203.png"/></a></figure><p id="5a250c70-53a3-49b7-985b-6c1d4bf910e3" class="">Motion noise and process noise refer to the same case: uncertainty in the object&#x27;s position when predicting location. The model assumes velocity is constant between time intervals, but in reality we know that an object&#x27;s velocity can change due to acceleration. The model includes this uncertainty via the process noise.</p><p id="d3067379-d816-44c3-a165-8911d1931238" class="">Measurement noise refers to uncertainty in sensor measurements, which will be discussed in more detail later.</p><figure id="24d3325e-9343-4682-9ca4-38f8ae0c6602" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%204.png"><img style="width:952px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%204.png"/></a></figure><p id="cf75172b-1cba-44b6-875d-727abe004def" class="">Here&#x27;s another way of thinking about it: if you split the 5s time difference into several intermediate predictions with a difference of 0.1s, then compared to the first case, you will predict the same state many more times without receiving any feedback about the object&#x27;s new position. Thus, the uncertainty increases.</p><figure id="eb72ae5f-990c-42e4-a180-dc9e1787fcfb" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%205.png"><img style="width:937px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%205.png"/></a></figure><p id="08794cd0-ced1-4bf3-b3ee-f4357405b2ea" class="">The prediction equation treats the pedestrian&#x27;s velocity as constant. As such, a randomly accelerating pedestrian creates a process noise.</p><p id="b272bb2d-13dc-4ed3-b99a-1523aa63c047" class=""><mark class="highlight-blue"><strong>From the examples, we can clearly see that the process noise depends on both: the elapsed time and the uncertainty of acceleration. So, how can we model the process noise by considering both of these factors?</strong></mark></p><p id="06936419-3921-4206-b95d-bf16742b4f17" class=""><strong>We need the process covariance matrix to model the stochastic of the state transition function. </strong></p><figure id="5dbe19e9-94ad-410a-85c5-814e21c32259" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%206.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%206.png"/></a></figure><p id="ac12f5a1-2ab7-4756-be10-9fb883943569" class=""><em><strong>First we explain how acceleration is expressed by kinematics equations. Second, we use that to derive process covariance matrix Q. </strong></em></p><p id="4b3165c8-8d03-4f11-b2c6-92273000904e" class="">Say we have 2 consecutive observations of a pedestrian with initial and final velocities. From Kinematic formulas, we can derive the car position and speed as a function of previous state variables including change in velocity (acceleration). </p><figure id="284b237e-dc17-46f5-a623-0b7ff23a6dfb" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%207.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%207.png"/></a></figure><p id="3d6dfefd-7fc0-4c18-9a79-0414bbde3ee5" class="">In the deterministic part of our motion model, we assume that the velocity is constant. However, in reality, pedestrian speed might change → But since acceleration is unknown, we can add it to noise component (expressed analytically in the last term of equation). </p><figure id="4a19840f-ec22-4769-9929-4931e15779d0" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%208.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%208.png"/></a></figure><p id="5f74ef5f-de7e-471c-84aa-2e3144926f94" class="">delta t is computed at each Kalman filter step, and the acceleration is a random vector with zero mean and standard deviation sigma. </p><figure id="41c464d3-2176-4c8d-af29-031a465f7f93" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%209.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%209.png"/></a></figure><figure id="3b9faff8-f310-4159-ae8f-8fd615e6b80b" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2010.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2010.png"/></a></figure><p id="c41b8596-e59e-4453-9bac-ae42820e30fe" class=""><strong>G</strong>: does not contain random variables</p><p id="10ce1797-fabb-4323-8a18-03483e571771" class=""><strong>a</strong>: contains random acceleration components</p><p id="ddbf6236-8fd2-4a06-ba62-2b2fe870ce67" class=""><strong>v (mu)</strong>: noise vector</p><p id="2c3cecec-4db8-4ae0-a9c6-6e94975294c5" class="">Since <strong>G </strong>has no random variables, we can put it outside expectation calculation. This gives 3 statistical moments: </p><ol id="0b2d3b74-519d-441e-827a-f40f0f6ee728" class="numbered-list" start="1"><li>Expectation of ax * ax → Variance of ax → sigma ax squared</li></ol><ol id="3ccca7d2-c0a5-42ab-af7d-ceb5bfea7f8a" class="numbered-list" start="2"><li>Expectation of ay * ay → Variance of ay → sigma ay squared</li></ol><ol id="8c608ce4-1d22-4338-9f9c-b65ee8ce8923" class="numbered-list" start="3"><li>Expectation of ax * ay → covariance of ax, ay → sigma axy </li></ol><p id="7dcf9609-dfd2-4f98-8dde-15382fbb5bf9" class=""><strong><em>Note</em></strong><em>: ax and ay are assumed uncorrelated noise processes → Covariance = 0. </em></p><figure id="8d692c91-c3bb-48ef-8f3b-c627108684f7" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2011.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2011.png"/></a></figure><p id="94aeb883-89c3-4420-8b72-e6a623fe9040" class=""><strong>Combining everything together, we obtain:</strong></p><figure id="71466927-dd09-4710-9d53-0edba7ad7607" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2012.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2012.png"/></a></figure><figure id="721f9205-b399-44d4-89c7-f0982ff9fa56" class="link-to-page"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Udacity%20Explanation%20721f9205b39944d489c7f0982ff9fa56.html"><span class="icon">✏️</span>Udacity Explanation</a></figure><h2 id="8d1497d6-3145-47f8-96ec-a9e4a55daf4f" class="">Laser Measurements</h2><p id="dbabb50a-00ab-4829-888e-f70dc8760c9b" class="">We have defined the motion model. Lets say a lidar measurement has come. Lets design our measurement model for a laser sensor in 2D. We need to define z, H, R.</p><figure id="8917626b-6efb-444f-b16c-89d21f0d3d58" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2013.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2013.png"/></a></figure><figure id="34dfbc3f-3ae8-4631-8090-e648d19a736f" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2014.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2014.png"/></a></figure><p id="2c76a7d1-d715-40e8-8109-4f01196b960d" class="">For simplicity we assume that we analyzed the point cloud to compute the 2D location of the pedestrian. </p><figure id="c074d6f5-0045-40b2-8136-596b76d1a021" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2015.png"><img style="width:938px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2015.png"/></a></figure><p id="eeb31246-87a9-44c5-9702-24f360110ba8" class=""><strong>Measurement Noise Covariance Matrix R</strong></p><p id="03d06cd8-29e2-482b-abb1-e1ee11abce03" class="">Let&#x27;s take a look at the covariance matrix, R, which represents the uncertainty in our sensor measurements. The dimensions of the R matrix is square and each side of its matrix is the same length as the number of measurements parameters. So, in our case here it is 2x2 matrix.</p><p id="818a7902-82ce-4975-bd08-d89b95a3ca28" class="">For laser sensors, we have a 2D measurement vector. Each location component px, py are affected by a random noise. So our noise vector ω has the same dimension as z. And it is a distribution with zero mean and a 2 x 2 covariance matrix which comes from the product of the vertical vector ω and its transpose.</p><figure id="319d33e2-b3e4-47aa-a760-acc352bdf889" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2016.png"><img style="width:526px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2016.png"/></a></figure><p id="89c97810-293c-4b1b-8833-0a99ebf48a3b" class=""><strong>where R is the measurement noise covariance matrix; in other words, </strong><em><strong>the matrix R represents the uncertainty in the position measurements we receive from the laser sensor.</strong></em></p><figure id="ed3e65c5-4e4e-47ba-af7e-25abe93da093" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2017.png"><img style="width:971px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2017.png"/></a></figure><figure id="83516667-5678-4c46-9da6-47fc274b780d" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2018.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2018.png"/></a></figure><p id="ae59ba3d-3f22-4faf-9b06-082d8136fb7e" class="">Here the sensor noise is low = 0.2, but if we increase measurement and process noises, the estimation changes:  </p><figure id="704ffb5d-a551-432a-bbf7-31a7225f2149" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2019.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2019.png"/></a></figure><p id="b558eb1c-f6ba-4ba5-85c4-62932e8c4627" class=""><strong>Our linear motion model is not perfect especially when the pedestrian moves on a circular path, as in our model, we always predict that the pedestrian position will be somewhat along a straight line. </strong><em><strong>We can fix that by using a circular motion model instead of linear motion model.</strong></em><strong> </strong></p><figure id="9a156b30-e04c-463e-beed-c7fee09f4991" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2020.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2020.png"/></a></figure><h3 id="1a34eb03-0daa-4cbc-b44c-e9dcdb43a37f" class="">More Info on Timestamps</h3><figure id="295e4fc2-4995-4524-b05a-59430a173b74" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2021.png"><img style="width:875px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2021.png"/></a></figure><p id="077e24b3-a56c-4330-9142-6659ec5d731b" class="">Timestamps are often used for logging a sequence of events, so that we know exactly, for example, in our case when the measurements were generated.</p><p id="dfbe6814-ccca-4b28-9575-0393e1ff9348" class="">We can use the timestamp values to compute the elapsed time between two consecutive observations as:</p><pre id="4a09b5eb-4ec2-4cb7-ac58-6b921c4cd73a" class="code"><code>float delta_t = ( timestamp(k+1) - timestamp(k) ) / 1000000.0;</code></pre><p id="66229f7f-efe0-45f0-9793-3ec0f2f294a9" class="">Additionally we divide the result by 10^6 to transform it from microseconds to seconds.</p><pre id="2ff67d48-02b1-4634-9147-c27a831a744b" class="code"><code>float dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0;</code></pre><h2 id="a5b1700e-f26a-4100-8677-f5b0a6832ad1" class="">Radar Measurements</h2><figure id="351e43cc-f585-4cf6-b351-55cd0f925488" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2022.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2022.png"/></a></figure><figure id="9ad6aa46-4a0f-4145-8bff-77785ceacbd1" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2023.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2023.png"/></a></figure><figure id="788b9213-121c-4012-a6d5-44bbff248558" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2024.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2024.png"/></a></figure><figure id="698a399d-8fb1-4fcc-b9ef-d485660f571b" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2025.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2025.png"/></a></figure><ul id="c6f76ca3-9397-4cd6-bcb9-066a824d55c9" class="bulleted-list"><li><em>X direction is the direction of motion.</em></li></ul><figure id="53d372a4-8504-4243-a36f-b83a81b62ad4" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2026.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2026.png"/></a></figure><ul id="d995efa0-c5c2-45f9-b642-2febaf3949e9" class="bulleted-list"><li><em>Considering that the three measurement vector components are not cross correlated, the Radar measurement covariance matrix becomes 3x3 diagonal matrix. </em></li></ul><figure id="a09c3c6e-6a89-43f7-a185-c1559cb8cc38" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2027.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2027.png"/></a></figure><h3 id="3b6427c8-114c-4ceb-b073-f4c9ef0f8708" class="">H versus h(x)</h3><figure id="a6c08b62-2e58-4018-8e4f-21d5565f7c3c" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2028.png"><img style="width:986px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2028.png"/></a></figure><p id="06c590ec-670a-4350-a4d6-6135f1a5e884" class=""><strong>Definition of Radar Variables</strong></p><figure id="41fdd8d3-b047-48ba-96d5-cea8352df304" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2029.png"><img style="width:936px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2029.png"/></a></figure><p id="6e3b7848-94a4-4dd4-a0a2-870f94dab530" class=""><strong>Deriving the Radar Measurement Function</strong></p><figure id="322dd71c-33bc-409a-84ab-25c75341f7b3" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2030.png"><img style="width:963px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2030.png"/></a></figure><figure id="2457cd28-e4ef-461c-8a5d-eadd25beb72f" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2031.png"><img style="width:971px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2031.png"/></a></figure><figure id="41251ab3-e102-45f3-b42d-f97415d06633" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2032.png"><img style="width:1002px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2032.png"/></a></figure><p id="3150b4ce-2d75-4614-8c1c-4473d11f3590" class=""><strong>Question?</strong></p><figure id="d8d87115-dec7-4f7c-b982-525c73c3aa4f" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2033.png"><img style="width:978px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2033.png"/></a></figure><figure id="685027ba-a6d0-47e7-8f51-f4bcc4bf36d6" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2034.png"><img style="width:952px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2034.png"/></a></figure><figure id="4bdc8fe6-8cf2-4394-9e8f-22ae96a1bccb" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2035.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2035.png"/></a></figure><p id="386a4a75-8294-4d58-920b-c869faf0347c" class=""><strong>So the Kalman filter update equations is not applicable anymore. </strong></p><h2 id="4461db41-b301-4103-8688-451d9ca013ba" class="">Extended Kalman Filter</h2><figure id="59161336-d350-4492-a4f6-c9e5301ab4fd" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2036.png"><img style="width:1847px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2036.png"/></a><figcaption>Follow the arrows from top left to bottom to top right: (1) A Gaussian from 10,000 random values in a normal distribution with a mean of 0. (2) Using a nonlinear function, arctan, to transform each value. (3) The resulting distribution.</figcaption></figure><p id="64090378-82e7-4d42-a946-22e9b760b68e" class="">A possible solution is to linearize the h(x) function, and that is the key idea of EKF. </p><figure id="cf8fc848-7c4e-4584-9baa-d8cceb0b5d61" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2037.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2037.png"/></a></figure><figure id="b703b643-7fbe-4015-85ba-0432d589ebfa" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2038.png"><img style="width:1839px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2038.png"/></a><figcaption>This one looks much better! Notice how the blue graph, the output, remains a Gaussian after applying a first order Taylor expansion.</figcaption></figure><p id="73241d6f-02bd-4833-97f1-88065be282f8" class=""><strong>How to Perform a Taylor Expansion</strong></p><figure id="4c001e5c-b10e-4e63-bd2d-617c68e59e94" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2039.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2039.png"/></a></figure><figure id="5d6b4fa1-acf8-4b23-910e-2bfc837b2f95" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2040.png"><img style="width:951px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2040.png"/></a></figure><figure id="7879a0b2-c47a-4295-8927-e9b6129b701b" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2041.png"><img style="width:1088px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2041.png"/></a></figure><figure id="32e4e0e8-4295-4c8d-a81e-d62094b895d7" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2042.png"><img style="width:920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2042.png"/></a></figure><h2 id="898b6560-559a-4e39-a74b-d22ba1bd527e" class="">Multivariate Taylor Series</h2><figure id="e5c5f28b-51bd-48f6-ab3c-3052c2197640" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2043.png"><img style="width:1011px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2043.png"/></a></figure><figure id="71d7fc0d-3475-4715-b16a-09859819d07e" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2044.png"><img style="width:1007px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2044.png"/></a></figure><figure id="790ba04f-c384-4aba-9ea6-2eeca5a34723" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2045.png"><img style="width:973px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2045.png"/></a></figure><figure id="ba74fa4f-6fe1-4f8d-8756-f3dfb53f01c3"><a href="https://www.khanacademy.org/math/multivariable-calculus/applications-of-multivariable-derivatives/quadratic-approximations/a/the-hessian" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">The Hessian matrix | Multivariable calculus (article) | Khan Academy</div><div class="bookmark-description">The Hessian is a matrix that organizes all the second partial derivatives of a function.</div></div><div class="bookmark-href"><img src="https://www.khanacademy.org/favicon.ico?logo" class="icon bookmark-icon"/>https://www.khanacademy.org/math/multivariable-calculus/applications-of-multivariable-derivatives/quadratic-approximations/a/the-hessian</div></div><img src="https://cdn.kastatic.org/googleusercontent/fxS7UQCInSNTafnpfcMXz-W77SQqSSIem3Mc9a-Rp2M7fNA3xtOtOyExMAradYp3xDeW41anUqm7Dks892kF1ShT" class="bookmark-image"/></a></figure><h3 id="fcd8fa5b-c58a-402c-a363-0c77d4583453" class="">Jacobian Matrix</h3><figure id="53c3f698-3d91-4825-8f9c-382d48b508f3" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2046.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2046.png"/></a></figure><figure id="353029c0-64ba-4d50-9844-f0a0efdadacc" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2047.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2047.png"/></a></figure><figure id="f85d9fb2-ad61-423a-bca6-1c536728ffc8" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2048.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2048.png"/></a></figure><figure id="f3639138-0d44-4c35-a589-f863394522ad" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2049.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2049.png"/></a></figure><figure id="9bd617d3-afef-4931-9b84-51756b6618d9" class="link-to-page"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Jacobian%20Derivation%209bd617d3afef49319b8451756b6618d9.html"><span class="icon">⁉️</span>Jacobian Derivation</a></figure><h2 id="ddc2b284-360a-4e86-a6f4-1cb03e408ac4" class="">EKF Algorithm Generalization</h2><p id="15ed61ef-6f63-493f-8e7c-f639e2c67d89" class=""><strong>Extended Kalman Filter Equations</strong></p><figure id="ccb47b8e-52b8-4c5f-b3e9-08e9bab8659b" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2050.png"><img style="width:953px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2050.png"/></a></figure><figure id="11746f0c-e6de-40a1-b632-4a5f1ef6ed47" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2051.png"><img style="width:963px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2051.png"/></a></figure><figure id="e9be73ac-6805-4566-8940-a274606bb8e0" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2052.png"><img style="width:971px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2052.png"/></a></figure><figure id="759c7b15-bfa7-4112-8ef8-18d92ba283ae" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2053.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2053.png"/></a></figure><p id="e88ba551-81e1-4d73-a31a-86e21748b39c" class=""><strong>Clarification of u = 0</strong></p><figure id="f6ccde17-a947-4b36-a5bf-e46384da7c8b" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2054.png"><img style="width:975px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2054.png"/></a></figure><p id="8e206a5f-16ef-43a7-adb1-950caa2b2e2e" class=""><strong>More Details About Calculations with Radar Versus Lidar</strong></p><figure id="2ccf136f-a226-4738-9c26-07531cbaf833" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2055.png"><img style="width:1076px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2055.png"/></a></figure><figure id="144b14fd-b44d-4912-904b-81ca426f9c1c" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2056.png"><img style="width:982px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2056.png"/></a></figure><figure id="06d070d7-785e-4628-bc81-5a736cbf16e3" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2057.png"><img style="width:916px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2057.png"/></a></figure><p id="d30f61cf-1244-4658-a187-e0614294949d" class="">If f and h are linear functions, then the Extended Kalman Filter generates exactly the same result as the standard Kalman Filter. Actually, if f and h are linear then the Extended Kalman Filter F_j turns into f and H_j turns into h. All that&#x27;s left is the same standard Kalman Filter!</p><p id="ff6b0f8a-7433-42ce-9386-7aa337000ae0" class="">In our case we have a linear motion model, but a nonlinear measurement model when we use radar observations. So, we have to compute the Jacobian only for the measurement function.</p><h3 id="1501cd36-7576-42e8-9536-f6143c3faea6" class="">Sensor Fusion General Flow</h3><figure id="f6f66faf-43e3-40a9-8f02-10c46645de26" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2058.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2058.png"/></a></figure><h3 id="7232b1b8-e4cd-4555-a72a-bf99b036b831" class=""><strong>Evaluating KF Performance</strong></h3><figure id="ade68a57-2994-4924-8500-a54e7d312354" class="image"><a href="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2059.png"><img style="width:1920px" src="Lidar%20and%20Radar%20Fusion%20with%20Kalman%20Filters%20in%20C++%20%20493fa8814c4d4b61b8a4fa4e1136b3d3/Untitled%2059.png"/></a></figure><p id="fbbca6cd-bd19-4a5a-afc7-ad859279bb8f" class="">
+</p></div></article></body></html>

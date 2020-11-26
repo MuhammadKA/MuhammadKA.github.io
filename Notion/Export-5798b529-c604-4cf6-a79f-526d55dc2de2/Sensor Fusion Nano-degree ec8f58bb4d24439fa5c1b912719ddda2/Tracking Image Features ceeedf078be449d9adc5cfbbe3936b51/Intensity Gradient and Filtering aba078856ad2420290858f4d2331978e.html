@@ -1,0 +1,649 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Intensity Gradient and Filtering</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="aba07885-6ad2-4202-9085-8f4d2331978e" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">1️⃣</span></div><h1 class="page-title">Intensity Gradient and Filtering</h1></header><div class="page-body"><ul id="b7457a1a-6da3-48bd-8c04-3de1983ac5d8" class="bulleted-list"><li>Tracking key points means to follow interesting points in an image through a sequence of images taken by the same camera. Tracking is done by storing these pixel locations for all images in the sequence in which they appear in a long list. </li></ul><ul id="b4c6a499-e0bf-4318-b47d-647b05aab3aa" class="bulleted-list"><li>We compute the distance between pairs of points in one image and between corresponding pairs of points in the subsequent image, and based on the distance ratio between those pair points we can compute an estimate of the TTC. </li></ul><ul id="6f002723-5668-42aa-ac39-41c991c7af9e" class="bulleted-list"><li>We must find a way to describe the points in order to be able to find them again in the subsequent image and compare. </li></ul><p id="d69e3b96-3862-40a8-89cb-997cb6d85f4f" class=""><strong>Our goal is to transform the image in a way that locating suitable key points is easy. We will do that using a concept called </strong><mark class="highlight-red"><em><strong>Intensity gradient</strong></em></mark><strong>.</strong></p><h3 id="8b92f2d2-0e82-4a46-b39e-8aa09dfb5f53" class="">Locating Keypoints in an Image</h3><p id="1de96ae5-78b8-4a8e-8b41-f5087eae2b0b" class="">As discussed in the previous lesson, a camera is not able to measure distance to an object directly. However, for our collision avoidance system, we can compute time-to-collision based on relative distance ratios on the image sensor instead. To do so, we need a set of locations on the image plane which can serve as stable anchors to compute relative distances between them. This section discussed how to locate such anchor locations - or keypoints in an image.</p><p id="500f76d7-ed69-4ba5-839a-02c35adbad00" class="">Take a look at the three patches in the following figure which have been extracted from an image of a highway driving scene. The grid shows the borders of individual pixels. How would you describe meaningful locations within those patches that could be used as keypoints?</p><figure id="6f99bf6b-72fb-4ad0-ad5d-f0f512927bfb" class="image"><a href="Intensity%20Gradient%20and%20Filtering%20aba078856ad2420290858f4d2331978e/Untitled.png"><img style="width:429px" src="Intensity%20Gradient%20and%20Filtering%20aba078856ad2420290858f4d2331978e/Untitled.png"/></a></figure><p id="71c3aea6-8dd2-4140-a167-f77016cf1fea" class="">In the leftmost patch, there is a distinctive contrast between bright and dark pixels which resembles a line from the bottom-left to the upper-right. The patch in the middle resembles a corner formed by a group of very dark pixels in the upper-left. The rightmost patch looks like a bright blob that might be approximated by an ellipse.</p><p id="c219a238-06a8-4003-8239-af99e3e851ee" class="">In order to precisely locate a keypoint in an image, we need a way to assign them a unique coordinate in both x an y. Not all of the above patches lend themselves to this goal. Both the corner as well as the ellipse can be positioned accurately in x and y, the line in the leftmost image can not.</p><figure id="a5f76881-8243-4b98-b0dc-d51c5da9f42e" class="image"><a href="Intensity%20Gradient%20and%20Filtering%20aba078856ad2420290858f4d2331978e/Untitled%201.png"><img style="width:429px" src="Intensity%20Gradient%20and%20Filtering%20aba078856ad2420290858f4d2331978e/Untitled%201.png"/></a></figure><p id="faec36f8-addd-439e-8b51-7d8739c66554" class="">In the following, we will thus concentrate on detecting corners in an image. In a later section, we will also look at detector who are optimized for blob-like structures, such as the SIFT detector.</p><h3 id="3eedae20-7a51-4bb8-b66d-69e73dddbe25" class="">The Intensity Gradient</h3><p id="57b17459-2eec-4b6a-acfe-1bbffb540dcd" class="">In the above examples, the contrast between neighboring pixels contains the information we need : In order to precisely locate e.g. the corner in the middle patch, we do not need to know its color but instead we require the color difference between the pixels that form the corner to be as high as possible. An ideal corner would consist of only black and white pixels.</p><p id="ecd0469d-c21b-4fb1-86d9-418c9c315896" class="">The figure below shows the intensity profile of all pixels along the red line in the image as well as the intensity gradient, which is the derivative of image intensity.</p><figure id="a9c4db7a-4c9a-4031-8a2d-db49f290c7e8" class="image"><a href="Intensity%20Gradient%20and%20Filtering%20aba078856ad2420290858f4d2331978e/Untitled%202.png"><img style="width:1327px" src="Intensity%20Gradient%20and%20Filtering%20aba078856ad2420290858f4d2331978e/Untitled%202.png"/></a><figcaption>Adapted from <a href="https://cs.brown.edu/courses/cs143/lectures_Fall2017/07_Fall2017_EdgeDetection.pdf">https://cs.brown.edu/courses/cs143/lectures_Fall2017/07_Fall2017_EdgeDetection.pdf</a></figcaption></figure><p id="d087bfe3-9b48-459e-b30f-a9e8200b9cbd" class="">It can be seen that the intensity profile increases rapidly at positions where the contrast between neighboring pixels changes significantly. The lower part of the street lamp on the left side and the dark door show a distinct intensity difference to the light wall. If we wanted to assign unique coordinates to the pixels where the change occurs, we could do so by looking at the derivative of the intensity, which is the blue gradient profile you can see below the red line. Sudden changes in image intensity are clearly visible as distinct peaks and valleys in the gradient profile. If we were to look for such peaks not only from left to right but also from top to bottom, we could look for points which show a gradient peak both in horizontal and in vertical direction and choose them as keypoints with both x and y coordinates. In the example patches above, this would work best for the corner, whereas an edge-like structure would have more or less identical gradients at all positions with no clear peak in x and y.</p><p id="71460fcc-fd49-4154-897a-89fa7de8637a" class="">Based on the above observations, the first step into keypoint detection is thus the computation of a gradient image. Mathematically, the gradient is the partial derivative of the image intensity into both x and y direction. The figure below shows the intensity gradient for three example patches. The gradient direction is represented by the arrow.</p><figure id="94a44bc0-5c5f-423f-adae-35cee76500bf" class="image"><a href="Intensity%20Gradient%20and%20Filtering%20aba078856ad2420290858f4d2331978e/Untitled%203.png"><img style="width:1813px" src="Intensity%20Gradient%20and%20Filtering%20aba078856ad2420290858f4d2331978e/Untitled%203.png"/></a></figure><p id="2a89da27-84a7-44b0-898c-d38c6f9f67e0" class="">In equations (1) and (2), the intensity gradient is approximated by the intensity differences between neighboring pixels, divided by the distance between those pixels in x- and y-direction. Next, based on the intensity gradient vector, we can compute both the direction as well as the magnitude as given by the following equations:</p><figure id="6a2a8cf3-e7a9-4ae4-9fcb-d810689d7a1c" class="image"><a href="Intensity%20Gradient%20and%20Filtering%20aba078856ad2420290858f4d2331978e/Untitled%204.png"><img style="width:1751px" src="Intensity%20Gradient%20and%20Filtering%20aba078856ad2420290858f4d2331978e/Untitled%204.png"/></a></figure><p id="684fb4c3-f984-4a64-b670-8ccb92b38ef5" class="">There are numerous ways of computing the intensity gradient. The most straightforward approach would be to simply compute the intensity difference between neighboring pixels. This approach however is extremely sensitive to noise and should be avoided in practice. Further down in this section, we will look at a well-proven standard approach, the <em><mark class="highlight-red"><strong>Sobel operator</strong></mark></em>.</p><h3 id="d7a02550-7a12-4060-bf95-e65c387568d5" class="">Image Filters and Gaussian Smoothing</h3><p id="56d7de78-abb0-4a69-98f4-0b8def3fcc82" class="">Before we further discuss gradient computation, we need to think about noise, which is present in all images (except artificial ones) and which decreases with increasing light intensity. To counteract noise, especially under low-light conditions, a<strong> smoothing operator</strong> has to be applied to the image before gradient computation. Usually, a Gaussian filter is used for this purpose which is shifted over the image and combined with the intensity values beneath it. In order to parameterize the filter properly, two parameters have to be adjusted:</p><ol id="94141f37-c2e0-403c-90d6-88899197623a" class="numbered-list" start="1"><li><strong>The standard deviation</strong>, which controls the spatial extension of the filter in the image plane. The larger the standard deviation, the wider the area which is covered by the filter.</li></ol><ol id="c7158fec-dd20-49b4-ab54-f1d3a3f4973f" class="numbered-list" start="2"><li><strong>The kernel size</strong>, which defines how many pixels around the center location will contribute to the smoothing operation.</li></ol><p id="8653a4fb-c0e0-4a6b-828a-c7d44eca590b" class="">The following figure shows three Gaussian filter kernels with varying standard deviations.</p><figure id="38ae10e7-5016-443b-be9b-8ade3fa532b8" class="image"><a href="Intensity%20Gradient%20and%20Filtering%20aba078856ad2420290858f4d2331978e/Untitled%205.png"><img style="width:1515px" src="Intensity%20Gradient%20and%20Filtering%20aba078856ad2420290858f4d2331978e/Untitled%205.png"/></a></figure><p id="c2b0e373-4a9a-42ec-a779-18c4f9c4894c" class="">Gaussian smoothing works by assigning each pixel a weighted sum of the surrounding pixels based on the height of the Gaussian curve at each point. The largest contribution will come from the center pixel itself, whereas the contribution from the pixels surroundings will decrease depending on the height of the Gaussian curve and thus its standard deviation. It can easily be seen that the contribution of the surrounding pixels around the center location increases when the standard deviation is large (left image).</p><p id="49ec2750-c99f-4b9b-9647-169a719b2b97" class=""><strong>Applying the Gaussian filter (or any other filter) works in four successive steps which are illustrated by the figure below:</strong></p><ol id="d9811e63-ec17-4d40-9863-dc93c93ab298" class="numbered-list" start="1"><li>Create a filter kernel with the desired properties (e.g. Gaussian smoothing or edge detection)</li></ol><ol id="904d6118-7dd9-4ebb-bece-f2e0e2253e1f" class="numbered-list" start="2"><li>Define the anchor point within the kernel (usually the center position) and place it on top of the first pixel of the image.</li></ol><ol id="436754ac-5f92-4501-b6f3-41d0de81396c" class="numbered-list" start="3"><li>Compute the sum of the products of kernel coefficients with the corresponding image pixel values beneath.</li></ol><ol id="8ff9243e-b024-48f8-853a-ccf56af3a6be" class="numbered-list" start="4"><li>Place the result to the location of the kernel anchor in the input image.</li></ol><ol id="25754a9e-3335-4907-ac4a-094c60fe6c32" class="numbered-list" start="5"><li>Repeat the process for all pixels over the entire image.</li></ol><p id="4802001e-4c70-4c51-83f2-9ae785fdd076" class="">The following figure illustrates the process of shifting the (yellow) filter kernel over the image row by row and assigning the result of the two-dimensional sum H(x,y) to every pixel location.</p><figure id="f31400c9-383e-4ed4-b7f0-bc4eae9c051f" class="image"><a href="Intensity%20Gradient%20and%20Filtering%20aba078856ad2420290858f4d2331978e/Untitled%206.png"><img style="width:1890px" src="Intensity%20Gradient%20and%20Filtering%20aba078856ad2420290858f4d2331978e/Untitled%206.png"/></a></figure><p id="7d26e520-3b70-46c4-bf03-e36deec21ca6" class="">A filter kernel for Gaussian smoothing is shown in the next figure. In (a), a 3D Gaussian curve is shown and in (b), the corresponding discrete filter kernel can be seen with a central anchor point (41) corresponding to the maximum of the Gaussian curve and with decreasing values towards the edges in a (approximately) circular shape.</p><figure id="cc3ec1dd-1ffc-4efb-ba06-17a398456330" class="image"><a href="Intensity%20Gradient%20and%20Filtering%20aba078856ad2420290858f4d2331978e/Untitled%207.png"><img style="width:2428px" src="Intensity%20Gradient%20and%20Filtering%20aba078856ad2420290858f4d2331978e/Untitled%207.png"/></a></figure><h3 id="eed5a87a-98b0-45f3-aa88-7b7903b9a097" class="">Computing the Intensity Gradient</h3><p id="05f11a66-3ead-45fd-b81a-af642f43fc11" class="">After smoothing the image slightly to reduce the influence of noise, we can now compute the intensity gradient of the image in both x and y direction. In the literature, there are several approaches to gradient computation to be found. Among the most famous it the <strong>Sobel operator</strong> (proposed in 1968), but there are several others, such as the <strong>Scharr </strong>operator, which is optimized <strong>for rotational symmetry</strong>.</p><p id="13c388ed-771a-49b2-8a87-90686a95a13a" class="">The Sobel operator is based on applying small integer-valued filters both in horizontal and vertical direction. The operators are 3x3 kernels, one for the gradient in x and one for the gradient in y. Both kernels are shown below.</p><figure id="4ad61604-09a0-4bc0-a504-bf581275a5c9" class="image"><a href="Intensity%20Gradient%20and%20Filtering%20aba078856ad2420290858f4d2331978e/Untitled%208.png"><img style="width:2154px" src="Intensity%20Gradient%20and%20Filtering%20aba078856ad2420290858f4d2331978e/Untitled%208.png"/></a></figure><p id="bc8cd5cd-584e-4002-b1f2-18faac46144d" class="">In the following code, one kernel of the Sobel operator is applied to an image. Note that it has been converted to gray-scale to avoid computing the operator on each color channel.</p><pre id="ca32068c-2025-4034-a2d0-22bc31ca4fb2" class="code"><code>    // load image from file
+    cv::Mat img;
+    img = cv::imread(&quot;./img1.png&quot;);
+
+    // convert image to grayscale
+    cv::Mat imgGray;
+    cv::cvtColor(img, imgGray, cv::COLOR_BGR2GRAY);
+
+    // create filter kernel
+		float sobel_x[9] = {-1, 0, +1,
+                        -2, 0, +2, 
+                        -1, 0, +1};
+    cv::Mat kernel_x = cv::Mat(3, 3, CV_32F, sobel_x);
+
+    // apply filter
+    cv::Mat result_x;
+    cv::filter2D(imgGray, result_x, -1, kernel_x, cv::Point(-1, -1), 0, cv::BORDER_DEFAULT);
+
+    // show resultstring 
+		windowName = &quot;Sobel operator (x-direction)&quot;;
+    cv::namedWindow( windowName, 1 ); // create window 
+    cv::imshow(windowName, result_x);
+    cv::waitKey(0); // wait for keyboard input before continuing</code></pre><p id="59eab3b3-dfef-4958-be77-1d51d7fefa4e" class="">The resulting gradient image is shown below. It can be seen that areas of strong local contrast such as the cast shadow of the preceding vehicle leads to high values in the filtered image.</p><figure id="04dc15ad-3d89-4a81-912d-3552e5fe0c3a" class="image"><a href="Intensity%20Gradient%20and%20Filtering%20aba078856ad2420290858f4d2331978e/Untitled%209.png"><img style="width:2470px" src="Intensity%20Gradient%20and%20Filtering%20aba078856ad2420290858f4d2331978e/Untitled%209.png"/></a></figure><figure id="4b3e7272-7d41-4c90-9c5c-578b9b790d29" class="image"><a href="Intensity%20Gradient%20and%20Filtering%20aba078856ad2420290858f4d2331978e/Untitled%2010.png"><img style="width:952px" src="Intensity%20Gradient%20and%20Filtering%20aba078856ad2420290858f4d2331978e/Untitled%2010.png"/></a></figure><figure id="3aaf34e1-f278-4bb4-bdea-236428f02ae8" class="image"><a href="Intensity%20Gradient%20and%20Filtering%20aba078856ad2420290858f4d2331978e/Untitled%2011.png"><img style="width:2468px" src="Intensity%20Gradient%20and%20Filtering%20aba078856ad2420290858f4d2331978e/Untitled%2011.png"/></a></figure></div></article></body></html>

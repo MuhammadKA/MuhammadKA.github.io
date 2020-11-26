@@ -1,0 +1,631 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Autonomous Vehicle Sensor Sets</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="29e7266d-4a05-4542-91ea-3826e0629906" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">2️⃣</span></div><h1 class="page-title">Autonomous Vehicle Sensor Sets</h1></header><div class="page-body"><ul id="00a0e3ff-96b7-4b01-ba73-c10eb5d06ac3" class="bulleted-list"><li>There is not a single sensor set for autonomous vehicles. Depending on the autonomy level, on the area of application, and the engineering team&#x27;s mindset, the choices will differ. There are several sensor sets, so you can appreciate the differences between them and identify commonalities, such as the presence of a forward-looking camera.</li></ul><ul id="3798f0a1-5fb0-45fd-8e23-b93806b2f67a" class="bulleted-list"><li>One key to level 4 and level 5 autonomy is a smart combination of sensors and perception algorithms to monitor the vehicle environment at all times to guarantee a proper and safe reaction to all traffic events.</li></ul><ul id="6d52e519-7f40-4af6-b14c-08c85b693c1e" class="bulleted-list"><li>It is really important to have this overview of the variety of sensor types among vehicles. You will find that they have a varying degree of redundancy, overlapping fields of view, and in some cases fundamentally different approaches to sensor packing (that is how sensors are integrated into the vehicle).</li></ul><ul id="0219bf1f-8d76-4732-8812-0283b141d912" class="bulleted-list"><li>You should take note of similarities between those vehicles and think about reasons why the Tesla approach to autonomy might be different from Uber&#x27;s concept for example.   </li></ul><h3 id="565ffeb9-45ab-41ca-aad3-2b328a5f96c3" class="">A brief overview of some vehicles that aim at realizing level 4 or even level 5 driving</h3><h3 id="f49fee48-8a17-4e70-9093-ab85e16a0389" class="">1) The Uber ATG Autonomous Vehicle</h3><p id="d0c0b811-3274-4222-8ab7-d9ca68b1f746" class="">The current version of the Uber autonomous vehicle combines a top-mounted 360° Lidar scanner with several cameras and radar sensors placed around the car circumference.</p><figure id="68d1835b-d372-4575-bd0f-014f8a87638c" class="image"><a href="Autonomous%20Vehicle%20Sensor%20Sets%2029e7266d4a05454291ea3826e0629906/Untitled.png"><img style="width:2048px" src="Autonomous%20Vehicle%20Sensor%20Sets%2029e7266d4a05454291ea3826e0629906/Untitled.png"/></a></figure><p id="89faf54c-474a-455c-9cec-cbadd09bd3b5" class=""><strong>Let us take a look at those sensor classes one-by one:</strong></p><ol id="588aff6e-670c-4330-a2c2-6f3d4796d688" class="numbered-list" start="1"><li><strong><em>Cameras</em></strong>: Ubers fleet of modified Volvo XC90 SUVs features a range of cameras on their roofs, plus additional cameras that point to the sides and behind the car. The roof cameras are able to focus both close and far field, watch for braking vehicles, crossing pedestrians, traffic lights, and signage. The cameras feed their material to a central on-board computer, which also receives the signals of the other sensors to create a precise image of the vehicle’s surroundings. Much like human eyes, the performance of camera systems at night is strongly reduced, which makes them less reliable to locate objects with the required <strong>detection rates</strong> and <strong>positional accuracy</strong>. This is why the Uber fleet is equipped with two additional sensor types.</li></ol><ol id="f42ba762-8fd5-4abf-88e4-6c627661488e" class="numbered-list" start="2"><li><strong><em>Radar</em></strong>: Radar systems emit radio waves which are reflected off of (many but not all) objects. The returning waves can be analyzed with regard to their runtime (which gives distance) as well as their<strong> shifted frequency</strong> (which gives relative speed). The latter property clearly distinguished the radar from the other two sensor types as it is <strong>the only one who is able to directly measure the speed of objects.</strong> Also, <strong>radar is very robust against adverse weather conditions like heavy snow and thick fog. </strong>Used by cruise control systems for many years, <strong>radar works best when identifying larger objects with good reflective properties.</strong> <strong>When it comes to detecting smaller or „soft“ objects (humans, animals) with reduced reflective properties, the radar detection performance drops.</strong> Even though camera and radar combine well, there are situations where both sensors do not work optimally - which is why Uber chose to throw a third sensor into the mix.</li></ol><ol id="1eab944e-882a-4330-9397-a6bf9b2747ef" class="numbered-list" start="3"><li><strong><em>Lidar</em></strong><strong> </strong>: Lidar works in a similar way to radar, but instead of emitting radio waves it <strong>uses infrared light</strong>. The roof-mouted sensor rotates at a high velocity and builds a detailed 3D image of its surroundings. In case of the Velodyne VLS-128, a total of 128 laser beams is used to detect obstacles up to a distance of 300 meters. During a single spin through 360 degrees, a total of up to <strong>4 million datapoints per second</strong> is generated. Similar to the camera, Lidar is an optical sensor. It has the <strong>significant advantage however of &quot;bringing its own light source“</strong>, whereas <strong>cameras are dependent on ambient light and the vehicle headlights</strong>. It has to be noted however, that Lidar <strong>performance is also reduced in adverse environmental conditions such as snow, heavy rain or fog</strong>. <strong>Coupled with low reflective properties of certain materials, a Lidar might thus fail at generating a sufficiently dense point cloud for some objects in traffic, leaving only a few 3D points with which to work.</strong> It is thus a good idea to combine Lidar with other sensors to ensure that detection performance is sufficiently high for autonomous navigation through traffic.</li></ol><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="ed9a8181-e441-4030-8a21-2af77e495794"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">The following scene shows the Lidar 3D point cloud generated by the Uber autonomous vehicle as well as the image of the front camera as an overlay in the top-left corner. The overall impression of the reconstructed scene is very positive. If you look closely however, you can observe that the number of Lidar points varies greatly between the objects in the scene.</div></figure><figure id="dd5785d5-974d-49e8-b398-8cd23acb711b" class="image"><a href="Autonomous%20Vehicle%20Sensor%20Sets%2029e7266d4a05454291ea3826e0629906/Untitled%201.png"><img style="width:1080px" src="Autonomous%20Vehicle%20Sensor%20Sets%2029e7266d4a05454291ea3826e0629906/Untitled%201.png"/></a></figure><figure id="9762f9f7-55e1-4011-b504-86f10a0c5031"><a href="https://eng.uber.com/atg-dataviz/" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Engineering Uber&#x27;s Self-Driving Car Visualization Platform for the Web</div><div class="bookmark-description">The (Advanced Technologies Group) at Uber is shaping the future of driverless transportation. Earlier this year, the Data Visualization Team -which uses visualization for exploration, inspection, debugging and exposition of data-partnered with the ATG to improve how its self-driving vehicles (cars and trucks) interpret and perceive the world around them.</div></div><div class="bookmark-href"><img src="https://1fykyq3mdn5r21tpna3wkdyi-wpengine.netdna-ssl.com/wp-content/uploads/2018/09/favicon.png" class="icon bookmark-icon"/>https://eng.uber.com/atg-dataviz/</div></div><img src="https://eng.uber.com/wp-content/uploads/2017/08/Header.jpg" class="bookmark-image"/></a></figure><p id="eb2c1bf0-c453-4a50-a447-381423e89e13" class="">
+</p><h3 id="1a239dea-74cb-407d-9038-4c16f3a66328" class="">2) Mercedes Benz Autonomous Prototype</h3><p id="d1708da7-6d2c-47b9-b73d-39d62131cfc1" class="">Currently, German car maker Mercedes Benz is developing an autonomous vehicle prototype that is equipped with cameras, Lidar and radar sensors, similar to the Uber vehicle. Mercedes uses several cameras to scan the area around the vehicle. Of special interest is a stereo setup consisting of two synchronized cameras, which is able to measure depth by finding corresponding features in both images. The picture below shows the entire host of cameras used by the system. Mercedes states that the stereo camera alone generates a total of 100 gigabytes of data for every kilometre driven.</p><figure id="fafe3bf3-1e07-4d31-ac59-10753a3558e7" class="image"><a href="Autonomous%20Vehicle%20Sensor%20Sets%2029e7266d4a05454291ea3826e0629906/Untitled%202.png"><img style="width:2588px" src="Autonomous%20Vehicle%20Sensor%20Sets%2029e7266d4a05454291ea3826e0629906/Untitled%202.png"/></a></figure><figure id="2d3a19e1-b255-427a-8ba6-2523375525f5"><a href="https://www.mercedes-benz.com/en/mercedes-benz/innovation/successful-autonomous-driving-a-pilot-project-by-daimler-and-bosch/" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Successful autonomous driving - A pilot project by Daimler and Bosch.</div><div class="bookmark-description">Daimler and Bosch are testing autonomous driving in city traffic in a pilot project.</div></div><div class="bookmark-href"><img src="https://assets.oneweb.mercedes-benz.com/global/1.9.0/favicon/favicon.ico" class="icon bookmark-icon"/>https://www.mercedes-benz.com/en/mercedes-benz/innovation/successful-autonomous-driving-a-pilot-project-by-daimler-and-bosch/</div></div><img src="https://www.mercedes-benz.com/en/innovation/autonomous/successful-autonomous-driving-a-pilot-project-by-daimler-and-bosch/_jcr_content/image/MQ6-12-image-20190114132435/00-mercedes-benz-autonomous-driving-daimler-bosch-pilot-project-2560x1440-2560x1440.jpeg" class="bookmark-image"/></a></figure><h3 id="662a0466-b820-4a9b-a028-e7a67e9a144e" class="">Stereo Cameras</h3><p id="6aa6bfb1-08ac-49b1-b2d0-b9efb01114fa" class="">They are useful but it depends somehow of the overall sensor configurations (other sensors that you have in the car). If you have lidar and radar on the vehicle who can measure distance and velocity much more precisely so the benefit of stereo is decreasing, it still redundancy though 😉</p><p id="4af40c94-3f3f-4221-92f6-d43bea322f69" class=""><mark class="highlight-teal_background"><strong>Depth estimation from stereo camera:
+</strong></mark>The density of the depth map compared to any other sensor is really high and the precision is also great in the near field. It is just a problem in the far field. 
+In terms of cost: If you want to have cheap high resolution depth sensor, stereo camera is the way to go. </p><p id="77d7460e-cf45-4122-92cd-3d51189269b8" class="">If you compare stereo to structure from motion with single camera, you can basically choose (if you have a single camera) either reconstruct the 3D environment based on your own motion, or you can use features in the static environment to estimate your own motion (this is the visual odometry part). </p><p id="b6319392-2e80-45c0-ac4e-fcd47d58d434" class="">But as soon as you have dynamic objects in the scene and you are also moving yourself, then you can&#x27;t really estimate the distance and the velocity of other traffic participants anymore. That you can only do with stereo and that&#x27;s way it is still very valuable. </p><h3 id="46f3c56b-e851-41b5-a2c9-82817bd3c2bb" class="">3) The Tesla Autopilot</h3><p id="2fa1d41a-0064-48b5-8fed-16cc3982f99b" class="">When the Autopilot system was first sold, it basically was a combination of adaptive cruise control and lane change assist - a set of functions which had long been available with other manufacturers around the globe. The name „Autopilot“ implied however, that the car would be truly autonomous. And indeed did many Tesla owners test the system to its limits by climbing onto the back seat , reading a book or taking a nap while being driven by the system. On the SAE scale however, the Autopilot can „only“ be classified as level 2, i.e. the driver is responsible for the driving task at all times.</p><p id="92902a8a-a05b-4eec-927f-d2c35e77f833" class="">In October 2016, the Tesla Model S and X sensor set was significantly upgraded and the capabilities of the Autopilot were extended by regular airborne software updates.</p><p id="627ba8e8-cad8-42b0-ac03-97d532a69344" class="">The image shows the interior of a Tesla with the camera views superimposed on the right side. The image shows left and right rear-facing cameras as well as a forward-facing camera for medium-range perception.</p><figure id="91efa865-5f99-4d6d-a624-850d99e0c748" class="image"><a href="Autonomous%20Vehicle%20Sensor%20Sets%2029e7266d4a05454291ea3826e0629906/Untitled%203.png"><img style="width:2800px" src="Autonomous%20Vehicle%20Sensor%20Sets%2029e7266d4a05454291ea3826e0629906/Untitled%203.png"/></a></figure><p id="17d41782-e04a-4789-b1a3-3f68a176e708" class="">As can be seen in the overview, the system combines several camera sensors with partially overlapping fields of view with a forward-facing radar sensor.</p><figure id="1295dea6-4928-4237-b3e9-f95e99993229" class="image"><a href="Autonomous%20Vehicle%20Sensor%20Sets%2029e7266d4a05454291ea3826e0629906/Untitled%204.png"><img style="width:2119px" src="Autonomous%20Vehicle%20Sensor%20Sets%2029e7266d4a05454291ea3826e0629906/Untitled%204.png"/></a><figcaption><a href="https://www.tesla.com/de_DE/autopilot">https://www.tesla.com/de_DE/autopilot</a></figcaption></figure><p id="f17125e1-f1c6-4cba-8bcd-3458d5e03558" class="">Let us look at each sensor type in turn:</p><ol id="884a3b9f-a429-4ed4-91a5-b4ea544250d5" class="numbered-list" start="1"><li><strong>Cameras </strong>: The forward-facing optical array consists of four cameras with differing focal lengths. The narrow-forward camera captures footage up until 250m in front, the forward camera with a slightly larger opening angle looks up until 150m in front, a wide-angle camera that captures 60m in front, and a set of forward-looking side cameras that capture footage 80m in front and to the side of the car. The wide-angle camera is designed to read road signs and traffic lights, allowing the car to react accordingly. It is debated however, whether this feature can be reliably used in traffic.</li></ol><ol id="9de2011a-648d-4b0b-8399-af7765d6353e" class="numbered-list" start="2"><li><strong>Radar </strong>: The forward-looking radar can see up to 160m ahead of the car. According to Tesla founder Elon Musk it is able to see through &quot;sand, snow, fog—almost anything&quot;.</li></ol><ol id="2456ce50-45a7-49b9-b54e-2d97a31c57df" class="numbered-list" start="3"><li><strong>Sonar </strong>: A 360° ultrasonic sonar detects obstacles in an eight-meter radius around the car. The ultrasonic sensors work at any speed and are used to spot objects in close proximity of the car. The ultrasonic sensors can also be used to assist the car when automatically switching lanes. Their range however, compared to the other sensors of the set, is significantly limited and ends at about 8 meters distance.</li></ol><p id="fb54de6b-5107-4f41-980f-357ab83f562b" class="">As you may have noticed, Tesla is not using a Lidar sensor despite its plans to offer level 4 or even level 5 autonomous driving with this setup. Unlike many other manufacturers who aim at full autonomy such as Uber, Waymo and several others, Tesla is convinced that a set of high-performance cameras coupled with a powerful radar sensor will be sufficient for level 4 / level 5 autonomy. At the time of writing, there is a fierce debate going on about the best sensor set of autonomous vehicles. Tesla argues that the price and packaging disadvantage of Lidar would make the Autopilot unattractive to customers. Harsh critics such as GM&#x27;s director of autonomous vehicle integration Scott Miller disagrees and argues with the highly elevated safety requirements of autonomous vehicles, which would not be met with cameras and radar alone.</p><h3 id="d3e9c171-13cb-4030-a969-8119f3f2ce70" class=""><strong>On the importance of forward-looking cameras</strong></h3><p id="7d6df76b-e248-4049-8152-baa199255ddb" class="">It has to be noted however that in all sensor setups, be it Uber, Tesla, Waymo or traditional manufacturers such as Mercedes or Audi, cameras are always used. Even though there is an ongoing debate on whether radar or Lidar or a combination of the two would be best, cameras are never in question. It is therefore a good idea to learn about cameras and computer vision.</p><h2 id="2f69b7b4-450c-4cfb-b8c5-f5f278b6a0df" class=""><strong>Sensor Selection Criteria</strong></h2><p id="7e898f62-27e6-4a14-882a-23b3abc9bf5a" class="">Selecting an appropriate sensor set for an autonomous vehicle is a delicate task as you need to balance a range of factors from reliability to cost so your company can identify the sweet spot and select the optimal sensor set.</p><p id="f1b2c363-7962-4854-9096-e6c60a9f8bc5" class=""><strong>In the following, the most typical selection criteria are briefly discussed.</strong></p><ol id="7fe629b8-fa22-41ee-8229-895c448d3611" class="numbered-list" start="1"><li><strong>Range</strong> : Lidar and radar systems can detect objects at distances ranging from a few meters to more than 200m. Many Lidar systems have difficulties detecting objects at very close distances, whereas radar can detect objects from less than a meter, depending on the system type (either long, mid or short range) . Mono cameras are not able to reliably measure metric distance to object - this is only possible by making some assumptions about the nature of the world (e.g. planar road surface). Stereo cameras on the other hand can measure distance, but only up to a distance of approx. 80m with accuracy deteriorating significantly from there.</li></ol><ol id="41ea8a07-7396-49ca-8539-9be70d746832" class="numbered-list" start="2"><li><strong>Spatial resolution</strong> : Lidar scans have a spatial resolution in the order of 0.1° due to the short wavelength of the emitted IR laser light . This allows for high-resolution 3D scans and thus characterization of objects in a scene. Radar on the other hand can not resolve small features very well, especially as distances increase. The spatial resolution of camera systems is defined by the optics, by the pixel size on the image and by its signal-to-noise ratio. Details on small object are lost as soon as the light rays emanating from them are spread to several pixels on the image sensor (blurring). Also, when little ambient light exists to illuminate objects, spatial resolution decreases as objects details are superimposed by increasing noise levels of the imager.</li></ol><ol id="9051803f-3174-433f-b596-04bf1da0eb06" class="numbered-list" start="3"><li><strong>Robustness in darkness</strong> : Both radar and Lidar have an excellent robustness in darkness, as they are both active sensors. While daytime performance of Lidar systems is very good, they have an even better performance at night because there is no ambient sunlight that might interfere with the detection of IR laser reflections. Cameras on the other hand have a very reduced detection capability at night, as they are passive sensors that rely on ambient light. Even though there have been advances in night time performance of image sensors, they have the lowest performance among the three sensor types.</li></ol><ol id="b2c72ba9-9a0a-42fb-9183-bcae037f5c33" class="numbered-list" start="4"><li><strong>Robustness in rain, snow, fog</strong> : One of the biggest benefits of radar sensors is their performance under adverse weather conditions. They are not significantly affected by snow, heavy rain or any other obstruction in the air such as fog or sand particles. As an optical system, Lidar and camera are susceptible to adverse weather and its performance usually degrades significantly with increasing levels of adversity.</li></ol><ol id="39f64406-df28-4989-8e38-ca3c8150a8e4" class="numbered-list" start="5"><li><strong>Classification of objects</strong> : Cameras excel at classifying objects such as vehicles, pedestrians, speed signs and many others. This is one of the prime advantages of camera systems and recent advances in AI emphasize this even stronger. Lidar scans with their high-density 3D point clouds also allow for a certain level of classification, albeit with less object diversity than cameras. Radar systems do not allow for much object classification.</li></ol><ol id="08ebfc43-8b91-4da9-bd3b-cc8044697a40" class="numbered-list" start="6"><li><strong>Perceiving 2D structures</strong> : Camera systems are the only sensor able to interpret two-dimensional information such as speed signs, lane markings or traffic lights, as they are able to measure both color and light intensity. This is the primary advantage of cameras over the other sensor types.</li></ol><ol id="88aed4ca-c342-4fff-8882-9950382ba78f" class="numbered-list" start="7"><li><strong>Measure speed</strong> : Radar can directly measure the velocity of objects by exploiting the Doppler frequency shift. This is one of the primary advantages of radar sensors. Lidar can only approximate speed by using successive distance measurements, which makes it less accurate in this regard. Cameras, even though they are not able to measure distance, can measure time to collision by observing the displacement of objects on the image plane. This property will be used later in this course.</li></ol><ol id="4712f0bd-42a2-4377-948b-063c4c472e1b" class="numbered-list" start="8"><li><strong>System cost</strong> : Radar systems have been widely used in the automotive industry in recent years with current systems being highly compact and affordable. The same holds for mono cameras, which have a price well below US$100 in most cases. Stereo cameras are more expensive due to the increased hardware cost and the significantly lower number of units in the market. Lidar has gained popularity over the last years, especially in the automotive industry. Due to technological advances, its cost has dropped from more than US$75,000 to below US$5,000. Many experts predict that the cost of a Lidar module might drop to less than US$500 over the next few years.</li></ol><ol id="29730b39-b9b7-4998-9686-8cab298c1407" class="numbered-list" start="9"><li><strong>Package size</strong> : Both radar and mono cameras can be integrated very well into vehicles. Stereo cameras are in some cases bulky, which makes it harder to integrate them behind the windshield as they sometimes may restrict the driver&#x27;s field of vision. Lidar systems exist in various sizes. The 360° scanning Lidar is typically mounted on top of the roof and is thus very well visible. The industry shift towards much smaller solid-state Lidar systems will dramatically shrink the system size of Lidar sensors in the very near future.</li></ol><ol id="6654a7d2-2fce-4287-9be2-1247aacea402" class="numbered-list" start="10"><li><strong>Computational requirements</strong> : Lidar and radar require little back-end processing. While cameras are a cost-efficient and easily available sensor, they require significant processing to extract useful information from the images, which adds to the overall system cost.</li></ol><div id="ff3c5566-635b-463a-a8dd-424911c58ffd" class="collection-content"><h4 class="collection-title">Copy of Sensor Types with Criteria Discussed</h4><table class="collection-content"><thead><tr><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesTitle"><path d="M7.73943662,8.6971831 C7.77640845,8.7834507 7.81338028,8.8943662 7.81338028,9.00528169 C7.81338028,9.49823944 7.40669014,9.89260563 6.91373239,9.89260563 C6.53169014,9.89260563 6.19894366,9.64612676 6.08802817,9.30105634 L5.75528169,8.33978873 L2.05809859,8.33978873 L1.72535211,9.30105634 C1.61443662,9.64612676 1.2693662,9.89260563 0.887323944,9.89260563 C0.394366197,9.89260563 0,9.49823944 0,9.00528169 C0,8.8943662 0.0246478873,8.7834507 0.0616197183,8.6971831 L2.46478873,2.48591549 C2.68661972,1.90669014 3.24119718,1.5 3.90669014,1.5 C4.55985915,1.5 5.12676056,1.90669014 5.34859155,2.48591549 L7.73943662,8.6971831 Z M2.60035211,6.82394366 L5.21302817,6.82394366 L3.90669014,3.10211268 L2.60035211,6.82394366 Z M11.3996479,3.70598592 C12.7552817,3.70598592 14,4.24823944 14,5.96126761 L14,9.07922535 C14,9.52288732 13.6549296,9.89260563 13.2112676,9.89260563 C12.8169014,9.89260563 12.471831,9.59683099 12.4225352,9.19014085 C12.028169,9.6584507 11.3257042,9.95422535 10.5492958,9.95422535 C9.60035211,9.95422535 8.47887324,9.31338028 8.47887324,7.98239437 C8.47887324,6.58978873 9.60035211,6.08450704 10.5492958,6.08450704 C11.3380282,6.08450704 12.040493,6.33098592 12.4348592,6.81161972 L12.4348592,5.98591549 C12.4348592,5.38204225 11.9172535,4.98767606 11.1285211,4.98767606 C10.6602113,4.98767606 10.2411972,5.11091549 9.80985915,5.38204225 C9.72359155,5.43133803 9.61267606,5.46830986 9.50176056,5.46830986 C9.18133803,5.46830986 8.91021127,5.1971831 8.91021127,4.86443662 C8.91021127,4.64260563 9.0334507,4.44542254 9.19366197,4.34683099 C9.87147887,3.90316901 10.6232394,3.70598592 11.3996479,3.70598592 Z M11.1778169,8.8943662 C11.6830986,8.8943662 12.1760563,8.72183099 12.4348592,8.37676056 L12.4348592,7.63732394 C12.1760563,7.29225352 11.6830986,7.11971831 11.1778169,7.11971831 C10.5616197,7.11971831 10.056338,7.45246479 10.056338,8.0193662 C10.056338,8.57394366 10.5616197,8.8943662 11.1778169,8.8943662 Z M0.65625,11.125 L13.34375,11.125 C13.7061869,11.125 14,11.4188131 14,11.78125 C14,12.1436869 13.7061869,12.4375 13.34375,12.4375 L0.65625,12.4375 C0.293813133,12.4375 4.43857149e-17,12.1436869 0,11.78125 C-4.43857149e-17,11.4188131 0.293813133,11.125 0.65625,11.125 Z"></path></svg></span>Sensor</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesMultipleSelect"><path d="M4,3 C4,2.447715 4.447715,2 5,2 L12,2 C12.5523,2 13,2.447716 13,3 C13,3.55228 12.5523,4 12,4 L5,4 C4.447715,4 4,3.55228 4,3 Z M4,7 C4,6.447715 4.447715,6 5,6 L12,6 C12.5523,6 13,6.447716 13,7 C13,7.55228 12.5523,8 12,8 L5,8 C4.447715,8 4,7.55228 4,7 Z M4,11 C4,10.447715 4.447715,10 5,10 L12,10 C12.5523,10 13,10.447716 13,11 C13,11.55228 12.5523,12 12,12 L5,12 C4.447715,12 4,11.55228 4,11 Z M2,4 C1.44771525,4 1,3.55228475 1,3 C1,2.44771525 1.44771525,2 2,2 C2.55228475,2 3,2.44771525 3,3 C3,3.55228475 2.55228475,4 2,4 Z M2,8 C1.44771525,8 1,7.55228475 1,7 C1,6.44771525 1.44771525,6 2,6 C2.55228475,6 3,6.44771525 3,7 C3,7.55228475 2.55228475,8 2,8 Z M2,12 C1.44771525,12 1,11.5522847 1,11 C1,10.4477153 1.44771525,10 2,10 C2.55228475,10 3,10.4477153 3,11 C3,11.5522847 2.55228475,12 2,12 Z"></path></svg></span>Range measurement</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesMultipleSelect"><path d="M4,3 C4,2.447715 4.447715,2 5,2 L12,2 C12.5523,2 13,2.447716 13,3 C13,3.55228 12.5523,4 12,4 L5,4 C4.447715,4 4,3.55228 4,3 Z M4,7 C4,6.447715 4.447715,6 5,6 L12,6 C12.5523,6 13,6.447716 13,7 C13,7.55228 12.5523,8 12,8 L5,8 C4.447715,8 4,7.55228 4,7 Z M4,11 C4,10.447715 4.447715,10 5,10 L12,10 C12.5523,10 13,10.447716 13,11 C13,11.55228 12.5523,12 12,12 L5,12 C4.447715,12 4,11.55228 4,11 Z M2,4 C1.44771525,4 1,3.55228475 1,3 C1,2.44771525 1.44771525,2 2,2 C2.55228475,2 3,2.44771525 3,3 C3,3.55228475 2.55228475,4 2,4 Z M2,8 C1.44771525,8 1,7.55228475 1,7 C1,6.44771525 1.44771525,6 2,6 C2.55228475,6 3,6.44771525 3,7 C3,7.55228475 2.55228475,8 2,8 Z M2,12 C1.44771525,12 1,11.5522847 1,11 C1,10.4477153 1.44771525,10 2,10 C2.55228475,10 3,10.4477153 3,11 C3,11.5522847 2.55228475,12 2,12 Z"></path></svg></span>Robustness in Darkness</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesMultipleSelect"><path d="M4,3 C4,2.447715 4.447715,2 5,2 L12,2 C12.5523,2 13,2.447716 13,3 C13,3.55228 12.5523,4 12,4 L5,4 C4.447715,4 4,3.55228 4,3 Z M4,7 C4,6.447715 4.447715,6 5,6 L12,6 C12.5523,6 13,6.447716 13,7 C13,7.55228 12.5523,8 12,8 L5,8 C4.447715,8 4,7.55228 4,7 Z M4,11 C4,10.447715 4.447715,10 5,10 L12,10 C12.5523,10 13,10.447716 13,11 C13,11.55228 12.5523,12 12,12 L5,12 C4.447715,12 4,11.55228 4,11 Z M2,4 C1.44771525,4 1,3.55228475 1,3 C1,2.44771525 1.44771525,2 2,2 C2.55228475,2 3,2.44771525 3,3 C3,3.55228475 2.55228475,4 2,4 Z M2,8 C1.44771525,8 1,7.55228475 1,7 C1,6.44771525 1.44771525,6 2,6 C2.55228475,6 3,6.44771525 3,7 C3,7.55228475 2.55228475,8 2,8 Z M2,12 C1.44771525,12 1,11.5522847 1,11 C1,10.4477153 1.44771525,10 2,10 C2.55228475,10 3,10.4477153 3,11 C3,11.5522847 2.55228475,12 2,12 Z"></path></svg></span>Robustness in rain, snow, fog</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesMultipleSelect"><path d="M4,3 C4,2.447715 4.447715,2 5,2 L12,2 C12.5523,2 13,2.447716 13,3 C13,3.55228 12.5523,4 12,4 L5,4 C4.447715,4 4,3.55228 4,3 Z M4,7 C4,6.447715 4.447715,6 5,6 L12,6 C12.5523,6 13,6.447716 13,7 C13,7.55228 12.5523,8 12,8 L5,8 C4.447715,8 4,7.55228 4,7 Z M4,11 C4,10.447715 4.447715,10 5,10 L12,10 C12.5523,10 13,10.447716 13,11 C13,11.55228 12.5523,12 12,12 L5,12 C4.447715,12 4,11.55228 4,11 Z M2,4 C1.44771525,4 1,3.55228475 1,3 C1,2.44771525 1.44771525,2 2,2 C2.55228475,2 3,2.44771525 3,3 C3,3.55228475 2.55228475,4 2,4 Z M2,8 C1.44771525,8 1,7.55228475 1,7 C1,6.44771525 1.44771525,6 2,6 C2.55228475,6 3,6.44771525 3,7 C3,7.55228475 2.55228475,8 2,8 Z M2,12 C1.44771525,12 1,11.5522847 1,11 C1,10.4477153 1.44771525,10 2,10 C2.55228475,10 3,10.4477153 3,11 C3,11.5522847 2.55228475,12 2,12 Z"></path></svg></span>Classification of objects</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesMultipleSelect"><path d="M4,3 C4,2.447715 4.447715,2 5,2 L12,2 C12.5523,2 13,2.447716 13,3 C13,3.55228 12.5523,4 12,4 L5,4 C4.447715,4 4,3.55228 4,3 Z M4,7 C4,6.447715 4.447715,6 5,6 L12,6 C12.5523,6 13,6.447716 13,7 C13,7.55228 12.5523,8 12,8 L5,8 C4.447715,8 4,7.55228 4,7 Z M4,11 C4,10.447715 4.447715,10 5,10 L12,10 C12.5523,10 13,10.447716 13,11 C13,11.55228 12.5523,12 12,12 L5,12 C4.447715,12 4,11.55228 4,11 Z M2,4 C1.44771525,4 1,3.55228475 1,3 C1,2.44771525 1.44771525,2 2,2 C2.55228475,2 3,2.44771525 3,3 C3,3.55228475 2.55228475,4 2,4 Z M2,8 C1.44771525,8 1,7.55228475 1,7 C1,6.44771525 1.44771525,6 2,6 C2.55228475,6 3,6.44771525 3,7 C3,7.55228475 2.55228475,8 2,8 Z M2,12 C1.44771525,12 1,11.5522847 1,11 C1,10.4477153 1.44771525,10 2,10 C2.55228475,10 3,10.4477153 3,11 C3,11.5522847 2.55228475,12 2,12 Z"></path></svg></span>Perceiving 2D structures</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesMultipleSelect"><path d="M4,3 C4,2.447715 4.447715,2 5,2 L12,2 C12.5523,2 13,2.447716 13,3 C13,3.55228 12.5523,4 12,4 L5,4 C4.447715,4 4,3.55228 4,3 Z M4,7 C4,6.447715 4.447715,6 5,6 L12,6 C12.5523,6 13,6.447716 13,7 C13,7.55228 12.5523,8 12,8 L5,8 C4.447715,8 4,7.55228 4,7 Z M4,11 C4,10.447715 4.447715,10 5,10 L12,10 C12.5523,10 13,10.447716 13,11 C13,11.55228 12.5523,12 12,12 L5,12 C4.447715,12 4,11.55228 4,11 Z M2,4 C1.44771525,4 1,3.55228475 1,3 C1,2.44771525 1.44771525,2 2,2 C2.55228475,2 3,2.44771525 3,3 C3,3.55228475 2.55228475,4 2,4 Z M2,8 C1.44771525,8 1,7.55228475 1,7 C1,6.44771525 1.44771525,6 2,6 C2.55228475,6 3,6.44771525 3,7 C3,7.55228475 2.55228475,8 2,8 Z M2,12 C1.44771525,12 1,11.5522847 1,11 C1,10.4477153 1.44771525,10 2,10 C2.55228475,10 3,10.4477153 3,11 C3,11.5522847 2.55228475,12 2,12 Z"></path></svg></span>Measure speed/ TTC</th><th><span class="icon property-icon"><svg viewBox="0 0 14 14" style="width:14px;height:14px;display:block;fill:rgba(55, 53, 47, 0.4);flex-shrink:0;-webkit-backface-visibility:hidden" class="typesMultipleSelect"><path d="M4,3 C4,2.447715 4.447715,2 5,2 L12,2 C12.5523,2 13,2.447716 13,3 C13,3.55228 12.5523,4 12,4 L5,4 C4.447715,4 4,3.55228 4,3 Z M4,7 C4,6.447715 4.447715,6 5,6 L12,6 C12.5523,6 13,6.447716 13,7 C13,7.55228 12.5523,8 12,8 L5,8 C4.447715,8 4,7.55228 4,7 Z M4,11 C4,10.447715 4.447715,10 5,10 L12,10 C12.5523,10 13,10.447716 13,11 C13,11.55228 12.5523,12 12,12 L5,12 C4.447715,12 4,11.55228 4,11 Z M2,4 C1.44771525,4 1,3.55228475 1,3 C1,2.44771525 1.44771525,2 2,2 C2.55228475,2 3,2.44771525 3,3 C3,3.55228475 2.55228475,4 2,4 Z M2,8 C1.44771525,8 1,7.55228475 1,7 C1,6.44771525 1.44771525,6 2,6 C2.55228475,6 3,6.44771525 3,7 C3,7.55228475 2.55228475,8 2,8 Z M2,12 C1.44771525,12 1,11.5522847 1,11 C1,10.4477153 1.44771525,10 2,10 C2.55228475,10 3,10.4477153 3,11 C3,11.5522847 2.55228475,12 2,12 Z"></path></svg></span>Package size</th></tr></thead><tbody><tr id="8827bbbf-dc06-4f5c-916e-da246eea3e26"><td class="cell-title"><a href="Autonomous%20Vehicle%20Sensor%20Sets%2029e7266d4a05454291ea3826e0629906/Copy%20of%20Sensor%20Types%20with%20Criteria%20Discussed%20ff3c5566635b463aa8dd424911c58ffd/Camera%208827bbbfdc064f5c916eda246eea3e26.html">Camera</a></td><td class="cell-\]uC"><span class="selected-value select-value-color-gray">-</span></td><td class="cell-Njme"><span class="selected-value select-value-color-red">-</span></td><td class="cell-^I@e"><span class="selected-value">-</span></td><td class="cell-u&gt;sx"><span class="selected-value">++</span></td><td class="cell-nTW="><span class="selected-value">++</span></td><td class="cell-Z=|["><span class="selected-value">+</span></td><td class="cell-Xnsf"><span class="selected-value">+</span></td></tr><tr id="1adbf2dc-728c-4dbc-8108-eb97dc943020"><td class="cell-title"><a href="Autonomous%20Vehicle%20Sensor%20Sets%2029e7266d4a05454291ea3826e0629906/Copy%20of%20Sensor%20Types%20with%20Criteria%20Discussed%20ff3c5566635b463aa8dd424911c58ffd/Radar%201adbf2dc728c4dbc8108eb97dc943020.html">Radar</a></td><td class="cell-\]uC"><span class="selected-value select-value-color-green">++</span></td><td class="cell-Njme"><span class="selected-value select-value-color-orange">++</span></td><td class="cell-^I@e"><span class="selected-value select-value-color-green">++</span></td><td class="cell-u&gt;sx"><span class="selected-value">-</span></td><td class="cell-nTW="><span class="selected-value">-</span></td><td class="cell-Z=|["><span class="selected-value">++</span></td><td class="cell-Xnsf"><span class="selected-value">+</span></td></tr><tr id="ae2414a3-9502-4d57-a28f-28df0f8df786"><td class="cell-title"><a href="Autonomous%20Vehicle%20Sensor%20Sets%2029e7266d4a05454291ea3826e0629906/Copy%20of%20Sensor%20Types%20with%20Criteria%20Discussed%20ff3c5566635b463aa8dd424911c58ffd/Lidar%20ae2414a395024d57a28f28df0f8df786.html">Lidar</a></td><td class="cell-\]uC"><span class="selected-value select-value-color-purple">+</span></td><td class="cell-Njme"><span class="selected-value select-value-color-orange">++</span></td><td class="cell-^I@e"><span class="selected-value select-value-color-blue">+</span></td><td class="cell-u&gt;sx"><span class="selected-value">+</span></td><td class="cell-nTW="><span class="selected-value">-</span></td><td class="cell-Z=|["><span class="selected-value">+</span></td><td class="cell-Xnsf"><span class="selected-value">-</span></td></tr></tbody></table></div><figure id="6b708dee-984f-4685-9257-e471fd4efd90" class="image"><a href="Autonomous%20Vehicle%20Sensor%20Sets%2029e7266d4a05454291ea3826e0629906/Untitled%205.png"><img style="width:975px" src="Autonomous%20Vehicle%20Sensor%20Sets%2029e7266d4a05454291ea3826e0629906/Untitled%205.png"/></a></figure><figure id="0d943b7e-8417-4907-9039-6916875621d2" class="image"><a href="Autonomous%20Vehicle%20Sensor%20Sets%2029e7266d4a05454291ea3826e0629906/Untitled%206.png"><img style="width:967px" src="Autonomous%20Vehicle%20Sensor%20Sets%2029e7266d4a05454291ea3826e0629906/Untitled%206.png"/></a></figure><figure id="ec7ad203-3084-40ef-a38e-73dccb9d035c" class="image"><a href="Autonomous%20Vehicle%20Sensor%20Sets%2029e7266d4a05454291ea3826e0629906/Untitled%207.png"><img style="width:952px" src="Autonomous%20Vehicle%20Sensor%20Sets%2029e7266d4a05454291ea3826e0629906/Untitled%207.png"/></a></figure><p id="92746c1e-6a7f-4d9e-bef4-c8b7e7a80616" class="">
+</p></div></article></body></html>

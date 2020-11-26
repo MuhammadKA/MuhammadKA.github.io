@@ -1,0 +1,648 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Harris Corner Detection</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="a16f40c9-7a98-4319-a818-1fe6f93bb383" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">2️⃣</span></div><h1 class="page-title">Harris Corner Detection</h1></header><div class="page-body"><p id="09acc488-d129-4cd5-84b2-d171042a9190" class="">Looks for areas of significant change in the image by evaluating a local neighborhood around each pixel and based on this concept, Harris defined a so-called colonists measure, which takes the image gradients as input and provides a number as output that is high at locations where there is change in all directions.</p><h3 id="bbd4beb4-4ef1-4026-88cc-deaa0f05d9cb" class="">Local Measures of Uniqueness</h3><p id="37c05d8d-677b-4f9d-8fc8-ced33a265762" class="">The idea of keypoint detection is to detect a unique structure in an image that can be precisely located in both coordinate directions. As discussed in the previous section, corners are ideally suited for this purpose. To illustrate this, the following figure shows an image patch which consists of line structures on a homogeneously colored background. A red arrow indicates that no unique position can be found in this direction. The green arrow expresses the opposite. As can be seen, the corner is the only local structure that can be assigned a unique coordinate in x and y.</p><figure id="647ac4f3-9b34-4e64-a891-49f62cdc3b17" class="image"><a href="Harris%20Corner%20Detection%20a16f40c97a984319a8181fe6f93bb383/Untitled.png"><img style="width:2199px" src="Harris%20Corner%20Detection%20a16f40c97a984319a8181fe6f93bb383/Untitled.png"/></a></figure><p id="87bac64d-7270-47b3-ac07-9b61c4ef2ce7" class="">In order to locate a corner, we consider how the content of the window would change when shifting it by a small amount. For case (a) in the figure above, there is no measurable change in any coordinate direction at the current location of the red window W whereas for (b), there will be significant change into the direction orthogonal to the edge and no change when moving into the direction of the edge. In case of (c), the window content will change in any coordinate direction.</p><p id="0ee6370f-d9b8-4e67-bc37-4d64fcd5c4d4" class="">The idea of locating corners by means of an algorithm is to find a way to detect areas with a significant change in the image structure based on a displacement of a local window W. Generally, a suitable measure for describing change mathematically is the sum of squared differences (SSD), which looks at the deviations of all pixels in a local neighborhood before and after performing a coordinate shift. The equation below illustrates the concept.</p><figure id="f48d2b5d-7a2b-4225-95cd-7286fc80c485" class="image"><a href="Harris%20Corner%20Detection%20a16f40c97a984319a8181fe6f93bb383/Untitled%201.png"><img style="width:805px" src="Harris%20Corner%20Detection%20a16f40c97a984319a8181fe6f93bb383/Untitled%201.png"/></a></figure><p id="722e7c6d-e435-4e9d-8e56-7511792a3c09" class="">After shifting the Window W by an amount u in x-direction and v in y-direction the equation sums up the squared differences of all pixels within W at the old and at the new window position. In the following we will use some mathematical transformations to derive a measure for the change of the local environment around a pixel from the general definition of the SSD.</p><figure id="8706efe0-e858-4277-99e1-d9f39a6b1d38" class="image"><a href="Harris%20Corner%20Detection%20a16f40c97a984319a8181fe6f93bb383/Untitled%202.png"><img style="width:942px" src="Harris%20Corner%20Detection%20a16f40c97a984319a8181fe6f93bb383/Untitled%202.png"/></a></figure><figure id="56b4bc44-68b3-47b6-af2e-2681a10e4d67" class="image"><a href="Harris%20Corner%20Detection%20a16f40c97a984319a8181fe6f93bb383/Untitled%203.png"><img style="width:4058px" src="Harris%20Corner%20Detection%20a16f40c97a984319a8181fe6f93bb383/Untitled%203.png"/></a></figure><p id="92f934dd-88e9-4399-97bc-49db8bbd3224" class="">The derivation of the image intensity II both in x- and y-direction is something you have learned in the previous section already - this is simply the intensity gradient . From this point on, we will use the shorthand notation shown above to express the gradient.</p><p id="f8dc059a-beba-4367-8b18-77d70f0aadc2" class="">In the second step, we will now insert the approximated expression of I(x+u, y+v)I(x+u,y+v) into the SSD equation above, which simplifies to the following form:</p><figure id="dbee12a0-0e0b-4ab2-b515-161b1cac9fa5" class="image"><a href="Harris%20Corner%20Detection%20a16f40c97a984319a8181fe6f93bb383/Untitled%204.png"><img style="width:1954px" src="Harris%20Corner%20Detection%20a16f40c97a984319a8181fe6f93bb383/Untitled%204.png"/></a></figure><p id="7c5ccbb2-1ce2-401f-9070-345a4bb2869c" class="">The result of our mathematical transformations is a matrix <em><strong>H</strong></em>, which can now be conveniently analyzed to locate structural change in a local window <em><strong>W</strong></em> around every pixel position <em><strong>u,v</strong></em> in an image. In the literature, the matrix <em><strong>H </strong></em>is often referred to as covariance matrix.</p><p id="60e95944-b663-4e68-a151-c8eada812ff1" class="">To do this, it helps to visualize the matrix <em><strong>H</strong></em> as an ellipse, whose axis length and directions are given by its eigenvalues and eigenvectors. As can be seen in the following figure, the larger eigenvector points into the direction of maximal intensity change, whereas the smaller eigenvector points into the direction of minimal change. So in order to identify corners, we need to find positions in the image which have two significantly large eigenvalues of <em><strong>H</strong></em>.</p><figure id="641b2543-ea36-46ac-809e-41f5dd904a01" class="image"><a href="Harris%20Corner%20Detection%20a16f40c97a984319a8181fe6f93bb383/Untitled%205.png"><img style="width:1459px" src="Harris%20Corner%20Detection%20a16f40c97a984319a8181fe6f93bb383/Untitled%205.png"/></a></figure><p id="02a000ac-3d09-4a2c-8a2e-49908ac5bdd1" class="">Without going into details on eigenvalues in this course, we will look at a simple formula of how they can be computed from <em><strong>H</strong></em>:</p><figure id="af33d119-0331-4510-a147-026ab9bb38a4" class="image"><a href="Harris%20Corner%20Detection%20a16f40c97a984319a8181fe6f93bb383/Untitled%206.png"><img style="width:2009px" src="Harris%20Corner%20Detection%20a16f40c97a984319a8181fe6f93bb383/Untitled%206.png"/></a></figure><p id="e0552f38-172e-4a03-8416-3d5a86562fa8" class="">In addition to the smoothing of the image before gradient computation, the Harris detector uses a Gaussian window <em><strong>w(x,y)</strong></em> to compute a weighted sum of the intensity gradients around a local neighborhood. The size of this neighborhood is called scale in the context of feature detection and it is controlled by the standard deviation of the Gaussian distribution.</p><figure id="2ce04196-affb-441a-a88e-07c6db133b90" class="image"><a href="Harris%20Corner%20Detection%20a16f40c97a984319a8181fe6f93bb383/Untitled%207.png"><img style="width:1763px" src="Harris%20Corner%20Detection%20a16f40c97a984319a8181fe6f93bb383/Untitled%207.png"/></a></figure><p id="7695c806-0ec1-4b48-be38-3ccdb39d2107" class="">As can be seen, the larger the scale of the Gaussian window, the larger the feature below that contributes to the sum of gradients. By adjusting scale, we can thus control the keypoints we are able to detect.</p><h3 id="dce816de-cfee-4c93-99a2-f76924fa9d63" class="">The Harris Corner Detector</h3><p id="70ba5040-bbc0-4888-ba21-a898acc98c58" class="">Based on the eigenvalues of <em><strong>H</strong></em>, one of the most famous corner detectors is the Harris detector. This method evaluates the following expression to derive a corner response measure at every pixel location with the factor k being an empirical constant which is usually in the range between k = 0.04 - 0.06.</p><figure id="3ef8be74-60c2-44b6-85de-f539b03fe2e7" class="image"><a href="Harris%20Corner%20Detection%20a16f40c97a984319a8181fe6f93bb383/Untitled%208.png"><img style="width:1975px" src="Harris%20Corner%20Detection%20a16f40c97a984319a8181fe6f93bb383/Untitled%208.png"/></a></figure><p id="ce381745-c244-4420-bcfe-dae7a06e3029" class="">Based on the concepts presented in this section, the following code computes the corner response for a given image and displays the result.</p><pre id="aba67c93-c107-4791-87af-b6ed832fa984" class="code"><code>    // load image from file
+    cv::Mat img;
+    img = cv::imread(&quot;./img1.png&quot;);
+
+    // convert image to grayscale
+    cv::Mat imgGray; 
+    cv::cvtColor(img, imgGray, cv::COLOR_BGR2GRAY);
+
+    // Detector parametersint blockSize = 2; // for every pixel, a blockSize × blockSize neighborhood is consideredint apertureSize = 3; // aperture parameter for Sobel operator (must be odd)int minResponse = 100; // minimum value for a corner in the 8bit scaled response matrixdouble k = 0.04; // Harris parameter (see equation for details)// Detect Harris corners and normalize output
+    cv::Mat dst, dst_norm, dst_norm_scaled;
+    dst = cv::Mat::zeros(imgGray.size(), CV_32FC1 );
+    cv::cornerHarris( imgGray, dst, blockSize, apertureSize, k, cv::BORDER_DEFAULT ); 
+    cv::normalize( dst, dst_norm, 0, 255, cv::NORM_MINMAX, CV_32FC1, cv::Mat() );
+    cv::convertScaleAbs( dst_norm, dst_norm_scaled );
+
+    // visualize resultsstring windowName = &quot;Harris Corner Detector Response Matrix&quot;;
+    cv::namedWindow( windowName, 4 );
+    cv::imshow( windowName, dst_norm_scaled );
+    cv::waitKey(0);</code></pre><p id="9a4b66c0-a286-49e1-83f7-9b087e3d56ef" class="">The result can be seen below : The brighter a pixel, the higher the Harris corner response.</p><figure id="bdd71c6b-ddc5-448b-b89b-a4ce00056a8a" class="image"><a href="Harris%20Corner%20Detection%20a16f40c97a984319a8181fe6f93bb383/Untitled%209.png"><img style="width:2472px" src="Harris%20Corner%20Detection%20a16f40c97a984319a8181fe6f93bb383/Untitled%209.png"/></a></figure><p id="a0ed15ae-b0f2-4c16-9268-fab9d4560723" class="">So output of Harris detector is basically a collection of light and dark patches. Now, we need to locate keypoints in the image that satisfy 2 conditions:</p><ol id="63900cad-c0fd-425b-b01c-9f8633f65475" class="numbered-list" start="1"><li>They give the highest columnist in a local neighborhood.</li></ol><ol id="80e7e936-5da9-4d5f-970b-e6326b955735" class="numbered-list" start="2"><li>They should not overlap too much with other keypoints around them to avoid too many points clustering in a small neighborhood. </li></ol><p id="a3c75e4e-602e-4883-91fe-adfe849f6eec" class="">Such a technique is called Non-maximum suppression (NMS). </p><p id="2264de69-99ec-4791-b708-7969af245040" class="">Applying NMS will result in the following image:</p><figure id="38febcc3-a50e-47bc-9d93-49aa2ec6919d" class="image"><a href="Harris%20Corner%20Detection%20a16f40c97a984319a8181fe6f93bb383/Untitled%2010.png"><img style="width:2474px" src="Harris%20Corner%20Detection%20a16f40c97a984319a8181fe6f93bb383/Untitled%2010.png"/></a></figure><h2 id="7f668cc1-e31e-4d61-a93a-717373ab1b04" class="">CV Library </h2><ul id="97adcea0-bc6c-46b1-9c31-5a7d64d7c46f" class="bulleted-list"><li>cv::Mat → rows, cols</li></ul><ul id="f1224a20-5cdd-4814-afec-c96058aed195" class="bulleted-list"><li>matrixName.at(x,y) → returns the reference to the element present in that location.</li></ul><ul id="73cf99ed-1037-48c2-8e10-00d4d55cbe6c" class="bulleted-list"><li>cv::KeyPoint → pt  → Data structure for salient point detectors.</li></ul><pre id="25b67dd2-24e8-4728-aac3-8adc33ce2683" class="code"><code>cv::KeyPoint newKeyPoint;
+newKeyPoint.pt = cv.Point2f(i, j); // coordinates of the keypoints
+newKeyPoint.size = 2 * apertureSize; // diameter of the meaningful keypoint neighborhood
+newKeyPoint.response = response; // the response by which the most strong keypoints have been selected.</code></pre><figure id="f47308dc-ee6a-4d8d-8daa-85ab4118fc51" class="image"><a href="Harris%20Corner%20Detection%20a16f40c97a984319a8181fe6f93bb383/Untitled%2011.png"><img style="width:1232px" src="Harris%20Corner%20Detection%20a16f40c97a984319a8181fe6f93bb383/Untitled%2011.png"/></a></figure><p id="8d4b7025-969b-45a9-9aea-c3d1be9e9b2a" class="">→ Very similar to IOU (intersection over Union) which is used in bounding boxes with neural networks. 🙂</p></div></article></body></html>

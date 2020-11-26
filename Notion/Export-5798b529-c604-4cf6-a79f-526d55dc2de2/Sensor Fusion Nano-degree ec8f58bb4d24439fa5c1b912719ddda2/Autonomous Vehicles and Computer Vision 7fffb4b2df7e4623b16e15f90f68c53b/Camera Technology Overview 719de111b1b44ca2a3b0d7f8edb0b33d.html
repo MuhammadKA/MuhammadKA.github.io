@@ -1,0 +1,630 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Camera Technology Overview</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="719de111-b1b4-4ca2-a3b0-d7f8edb0b33d" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">3️⃣</span></div><h1 class="page-title">Camera Technology Overview</h1></header><div class="page-body"><p id="3788feb1-a603-4dca-8821-95cac75d2828" class="">To correctly interpret an image, you need to understand how it has been formed in the first place.</p><p id="28e9c3d0-f7af-4c51-8b3b-292b1940ffe5" class="">If your camera is set up poorly or the optics or the image sensor does not fit the scene you want to capture, even the best computer vision algorithm will not help you. Also, when you get to the point where you will reconstruct a scene in 3D space, you will need to have a solid knowledge of camera geometry and on the various coordinate systems involved.</p><h3 id="6be286ed-ea58-4e19-87b1-9835624d461f" class="">Outlines</h3><ul id="f397f0fe-ef8d-4533-997a-96bf775295f0" class="bulleted-list"><li><strong>Pinhole Camera
+</strong>The most basic model</li></ul><ul id="92beaba9-51fb-421a-9975-5491350b33b5" class="bulleted-list"><li><strong>Lenses 
+</strong>Key component of camera systems which of its properties influence image appearance and quality and which parameters you have to consider in order to successfully extract meaningful information from these images</li></ul><h2 id="4aed707b-0456-48b1-b94e-9300c687c25c" class="">The Pinhole camera</h2><p id="c81f21df-73d4-4da5-9415-6d059fcea303" class="">A very simple camera can be designed by placing a light barrier with a tiny opening (the pinhole) between an object of interest. The light emitted by the object passes through the pinhole and lands on a photosensitive surface which stores the light information as an image. The reason why the pinhole has been made so small is to avoid image blurring due to superimposing rays of light stemming from various parts of the object of interest.</p><p id="ecc4c035-fd05-4f1b-8966-e1eb94b83efe" class="">This simple principle has been well known for centuries and was for example used by artists to create photo-realistic portraits.</p><figure id="9b3dea7a-4875-4532-9e0f-1b720d167a1b" class="image"><a href="Camera%20Technology%20Overview%20719de111b1b44ca2a3b0d7f8edb0b33d/Untitled.png"><img style="width:1582px" src="Camera%20Technology%20Overview%20719de111b1b44ca2a3b0d7f8edb0b33d/Untitled.png"/></a></figure><p id="9c47a377-4309-4e16-a0d0-b3678f21c944" class="">A formal model of the pinhole camera model is shown below.</p><figure id="6ef61fae-2592-450c-8a29-dd8090a6971b" class="image"><a href="Camera%20Technology%20Overview%20719de111b1b44ca2a3b0d7f8edb0b33d/Untitled%201.png"><img style="width:1002px" src="Camera%20Technology%20Overview%20719de111b1b44ca2a3b0d7f8edb0b33d/Untitled%201.png"/></a></figure><p id="e12040a0-802f-498e-a866-0b3a8e9dc20f" class="">The photosensitive surface on the left is called the <em>image plane</em> whereas the pinhole is called the <em>camera center</em>. The distance between the camera center and the image plane is called the <em>focal length f</em>.</p><p id="2dc6091b-bf9d-453d-aa7d-d050f72e9ff9" class="">A point P on the object of interest can be mapped to a point P’ on the image plane by casting a beam through the center of projection until it hits the image plane as shown in the figure below.</p><figure id="0aeafb25-9b6c-4074-b2f9-f16ac874cdbf" class="image"><a href="Camera%20Technology%20Overview%20719de111b1b44ca2a3b0d7f8edb0b33d/Untitled%202.png"><img style="width:975px" src="Camera%20Technology%20Overview%20719de111b1b44ca2a3b0d7f8edb0b33d/Untitled%202.png"/></a></figure><p id="21e4d74d-3a64-4051-a719-bd6485bab3c0" class="">In three-dimensional space, the relation between P and P&#x27; is expressed by the following equations:</p><figure id="51abb938-d99d-4efc-b76e-a626d1ea879e" class="image"><a href="Camera%20Technology%20Overview%20719de111b1b44ca2a3b0d7f8edb0b33d/Untitled%203.png"><img style="width:1011px" src="Camera%20Technology%20Overview%20719de111b1b44ca2a3b0d7f8edb0b33d/Untitled%203.png"/></a></figure><p id="f8d909ab-52fa-4fb5-8358-5507f36e0608" class="">Based on these equations, we are able to compute the 2D position of an object on the image plane, given the 3D position of the object in space as well as the focal length of the camera. Note however that the resulting coordinates x’ and y’ are metrical coordinates and not pixel positions yet.</p><p id="9f4c948f-b70d-43fd-88a2-2a1277de402e" class="">The problem with pinhole cameras is that the amount of light passing through the pinhole is not sufficient to generate a decent image on an image sensor. If one were to increase the amount of light by widening the pinhole opening as shown in the figure below, rays of light from other parts of the object of interest would superimpose each other, leading to a blurring effect: The larger the pinhole, the brighter the image but at the same time, the more severe the blurring of the object on the image plane would be.</p><figure id="19e7ff1c-04b5-49a4-a116-94969da2e81e" class="image"><a href="Camera%20Technology%20Overview%20719de111b1b44ca2a3b0d7f8edb0b33d/Untitled%204.png"><img style="width:1009px" src="Camera%20Technology%20Overview%20719de111b1b44ca2a3b0d7f8edb0b33d/Untitled%204.png"/></a></figure><p id="012dd900-fcb4-48d0-9f3f-d46305a57d1d" class="">One way to solve this problem is use a lens, which is able to capture multiple rays of light that emanate from the same point on the object of interest. </p><h2 id="a3251823-89a0-4780-9157-725a5d95892d" class="">Lenses and Aperture</h2><p id="2cc396c7-7d57-4b4c-96ef-cab582af2144" class="">A properly sized and positioned lens refracts all rays of light that emanate from a point P1 on an object in space such that they converge to a single point p_1&#x27;<em>p</em>1′ in the image plane. Rays of light passing through the lens center are not refracted however, they continue on as a straight line until they intersect the image plane.</p><p id="19d2663e-0cec-4a9d-9be5-750a112ad552" class="">Points on the object that are closer or farther away, such as P_2<em>P</em>2, appear out of focus on the image plane, because the set of light rays emanating from them does not converge in a point but rather in a circle with a finite radius instead. This blurry circle is usually referred to as <em>circle of confusion (COF)</em>. To reduce blurring, an aperture can be used, which is a concentric opening of usually adjustable size placed directly behind the lens. The following figure illustrates the principle:</p><figure id="f88530b4-e3fb-4e46-a8dd-7d944a064247" class="image"><a href="Camera%20Technology%20Overview%20719de111b1b44ca2a3b0d7f8edb0b33d/Untitled%205.png"><img style="width:1003px" src="Camera%20Technology%20Overview%20719de111b1b44ca2a3b0d7f8edb0b33d/Untitled%205.png"/></a></figure><p id="5d18d9ed-035b-4c34-934b-39100cc6b8e6" class="">By reducing the diameter of the aperture, light rays passing through the lens on the outer edges are blocked, which reduces the size of the COF on the image plane. It can easily be seen that a smaller aperture results in reduced blurring, but at the expense of low light sensitivity. The larger the aperture, the more light rays are focused onto the image area, resulting in brighter images with a better signal-to-noise ratio.</p><p id="3c21b4e5-2d77-45dc-b5dc-202048867ca0" class="">So how can we compute where an object in space will appear in the image? Given a 3D point in space, its 2D position on the image plane after passing through a lens can be computed similar to the pinhole camera. In practice, <strong>lenses introduce distortion into images</strong>, depending on the lens type. The distortion most relevant to practice is called “<strong>radial distortion</strong>”. It is caused by the focal length of the lens not being uniform over its diameter. Therefore, the magnification effect of the lens changes depending on the distance between the camera center (the optical axis) and the ray of light passing through the lens. <strong>If the magnification increases</strong>, the resulting distortion effect is called <strong>pin cushion distortion</strong>. If it <strong>decreases</strong>, it is called <strong>barrel distortion</strong> instead. Barrel distortions usually occur, when wide-angle lenses are used. In the figure below, both distortion types are illustrated.</p><figure id="c392f5f5-6892-418e-ac11-74ac4206edfc" class="image"><a href="Camera%20Technology%20Overview%20719de111b1b44ca2a3b0d7f8edb0b33d/Untitled%206.png"><img style="width:556px" src="Camera%20Technology%20Overview%20719de111b1b44ca2a3b0d7f8edb0b33d/Untitled%206.png"/></a></figure><p id="50c1e9d5-2df2-4164-b36f-dd1a14248a26" class="">When extracting information from camera images, many applications seek to draw conclusions on the spatial location of objects of interest (e.g. vehicles). To get there, the distortion effect of the lens must be removed or at least mitigated. The relevant process is called calibration. For each camera-lens-setup, a calibration procedure must be performed so the distortion parameters can be individually computed.</p><p id="e042e10b-8550-444e-8c22-1f2e5128fafe" class="">This is usually done by taking a set of pictures of well-known objects such as planar checkerboard patterns, from whose known geometry all lens and image sensor parameters can be robustly derived. The process of removing distortions from a camera image is called rectification. In the image below, the calibration setup used to rectify most of the images in this course is shown. It can easily be seen that lines at both left and right are distorted significantly.</p><figure id="c2e34b38-9ac2-48f6-a96c-4f2f195153a8" class="image"><a href="Camera%20Technology%20Overview%20719de111b1b44ca2a3b0d7f8edb0b33d/Untitled%207.png"><img style="width:1392px" src="Camera%20Technology%20Overview%20719de111b1b44ca2a3b0d7f8edb0b33d/Untitled%207.png"/></a></figure><p id="90975e78-7cd4-40ff-b8ac-6ef2b1b0eaf0" class="">It is beyond the scope of this course however to go into the details of distortion correction. Most of the images you will be using are already free of lens distortion. When using your own camera setup however, a calibration procedure must be performed when precise measurements and a spatial reconstruction of objects is the goal.</p><p id="c4982e33-7227-4a90-b6c7-c6b2ef56d9f8" class="">As mentioned before, the projection of points in 3D space onto the image plane does not directly correspond to what we see in actual digital images, which are made up of thousands of picture elements or pixels. To understand how images can be expressed in discrete pixels, we need to take a closer look at the above-mentioned camera model once more.</p><p id="56dcfb9d-49ba-4a59-a826-796211246fc0" class="">In the figure below, the camera center is shown with a position <em>O</em> in space along with its own coordinate system with axes i, <em>j</em> and <em>k</em>, where k is pointing into the direction of the image plane. The position <em>C</em>′ where <em>k</em> intersects the image plane is called the principal point and represents the center of the image coordinate system.The first step after projecting a point P<em>P</em> in space onto the image plane is thus to subtract the principal point coordinates so that the discrete image has its own coordinate system centered in e.g. the lower left corner of the image plane.</p><p id="87684bb7-e019-4b5a-80fc-1e85a22c75aa" class="">Note that the indices of spatial coordinates sometimes differ depending on the area of application and on the author you are reading. In computer vision, points in space are often described with <em>i</em>, j and k or with X, <em>Y</em> and <em>Z</em>. When referring to points on the image plane though, in almost all cases, the coordinate axes are denoted as <em>x</em> and <em>y</em>.</p><figure id="c32cab3d-fab3-41e1-83f8-fc80b40880e9" class="image"><a href="Camera%20Technology%20Overview%20719de111b1b44ca2a3b0d7f8edb0b33d/Untitled%208.png"><img style="width:886px" src="Camera%20Technology%20Overview%20719de111b1b44ca2a3b0d7f8edb0b33d/Untitled%208.png"/></a></figure><p id="69604b90-2e02-4360-ad82-061aad1d995a" class="">The second step in the transformation process is to move from metric to pixel coordinates. To do so, we can use parameters kk and ll provided by the calibration procedure which convert meters to pixels and which can be easily integrated into the projection equations as seen below. Note that in image coordinates, the y-axis has its origin in the upper-left corner and is pointing downwards.</p><figure id="4fb0096b-0a13-40c9-bed9-537bc341c000" class="image"><a href="Camera%20Technology%20Overview%20719de111b1b44ca2a3b0d7f8edb0b33d/Untitled%209.png"><img style="width:1002px" src="Camera%20Technology%20Overview%20719de111b1b44ca2a3b0d7f8edb0b33d/Untitled%209.png"/></a></figure><p id="c692c881-eed2-4315-a082-b626d80754d0" class="">In a later section of this course, we will be mapping Lidar 3D points into the camera image. To do so, we will make use of these equations. Specifically, the product of focal width ff and kk and ll respectively (also termed alpha and beta) will be used in a calibration matrix to simplify the mapping operation significantly.</p><p id="7a28c0ee-70b1-4b1f-a1b7-012b8827c69d" class="">One final note on image rectification: In many applications (e.g. feature tracking) it makes sense to process the original image to avoid interpolation errors when the rectified image is computed and transformed pixels do not fall exactly onto the center of a discrete pixel in the rectified image but close to the border to another pixel instead. In such a case, it is advisable to locate the features in the unmodified original image and then transform the resulting coordinates using the equations above. When using deep learning based on a set of trained weights, it makes sense to rectify the image first before feeding it to a network - if we would use the original image, distortions (such as from a fish-eye lens) would lead to detection errors as networks are usually trained on a distortion-free image set.</p><h3 id="fc4310fb-125e-4bb2-9e98-7efd2afca01f" class="">Imagers and Bayer Pattern</h3><p id="5f2a9170-bd49-4a87-869f-905a6d93126d" class="">How rays of light with a certain wavelength are converted into color pixels that can be stored digitally 😉</p><p id="04546834-8034-4f16-9972-8a5bb2dc389e" class="">When an image is captured by a camera, light passes through the lens and falls on the image sensor. This sensor consists of light sensitive elements that register the amount of light that falls on them and convert it into a corresponding number of electrons. The more light, the more electrons are generated. Once the exposure time is complete, the generated electrons are converted into a voltage, which is finally transformed into a discrete number by means of an A/D-converter.</p><p id="e7934a4c-f427-4136-ad8b-e8cdadb612c7" class="">Currently, there are two main image technologies, which are CCD (Charge-Coupled Device) and CMOS (Complementary Metal-oxide Semiconductor). Both technologies convert electrons into voltage and are inherently color blind, as they can not distinguish the different wavelengths which generate the electrons.</p><p id="f13208f2-a2f8-43e3-a8c4-8adeac4393f6" class="">To enable color vision, tiny filter elements (also micro-lenses) are placed in front of each pixel which only allow a certain wavelength to pass through. One common way to map wavelength to color is to arrange the filter elements in an RGB (Red, Green, Blue) pattern to allow the primary colors to pass through individually, which gives us three individual images - one for each primary color.</p><figure id="9461214b-ad39-4bdf-aefc-6fdcc0080136" class="image"><a href="Camera%20Technology%20Overview%20719de111b1b44ca2a3b0d7f8edb0b33d/Untitled%2010.png"><img style="width:1644px" src="Camera%20Technology%20Overview%20719de111b1b44ca2a3b0d7f8edb0b33d/Untitled%2010.png"/></a></figure><p id="bc7d2e7e-b1b3-47a0-83d3-24ca78bcbdec" class="">Mixed in different combinations, RGB values can produce most of the colors visible to the human eye. When each discrete color value is coded with 8-bits (i.e. 256 values), a total of 16.7 million different colors can be created with the RGB filter concept. The most common way of arranging the RGB filters is called a Bayer pattern, which has alternating rows of red-green and green-blue filters. Since the human eye is more sensitive to green than to red or blue, the Bayer array has twice as many green color filters. When processing color images in a computer vision application, all three RGB layers are available and it has to be decided which color layers to use. If processing power is limited, the different channels are combined into a gray scale image. In the upcoming section on computer vision, you will be introduced to the OpenCV computer vision library. You can take a look at the conversion formula to get from RGB to grayscale which is used in the method cvtColor here:</p><figure id="babd08ac-e67b-49df-baa2-5f48a18208a0"><a href="https://docs.opencv.org/3.1.0/de/d25/imgproc_color_conversions.html" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">OpenCV: Color conversions</div><div class="bookmark-description">The output RGB components of a pixel are interpolated from 1, 2, or 4 neighbors of the pixel having the same color. There are several modifications of the above pattern that can be achieved by shifting the pattern one pixel left and/or one pixel up.</div></div><div class="bookmark-href"><img src="https://docs.opencv.org/3.1.0/opencv.ico" class="icon bookmark-icon"/>https://docs.opencv.org/3.1.0/de/d25/imgproc_color_conversions.html</div></div><img src="https://docs.opencv.org/3.1.0/bayer.png" class="bookmark-image"/></a></figure><h3 id="3550fc3a-1d57-4e2e-b8b6-74bab5c6ffa8" class="">CCD vs. CMOS</h3><p id="a8483d29-52d9-4e8a-a83c-ae4696b948b1" class="">In a <em>CCD sensor</em>, the electrons collected in each picture element are transferred from the chip through a single or only a few output nodes. The charges are then converted to voltage levels, buffered, and sent out as an analog signal. This signal is then amplified and converted to discrete numbers using an A/D-converter outside the sensor. Originally, CCD technology has had several advantages compared to CMOS, such as higher light sensitivity and less noise. In recent years, however, these differences have all but disappeared. The major disadvantages of CCD are a higher production price and a higher power consumption (up to 100x more than CMOS) , which usually leads to heat issues in the camera.</p><p id="c9de559a-60cd-4d0c-bb4b-53cda72d3ebf" class="">CMOS <em>sensors</em> were originally used for machine vision applications, but the image quality was poor due to their inferior light sensitivity. With modern CMOS sensors however, both quality and light sensitivity have significantly increased. The CMOS technology has several advantages: Unlike CCD, CMOS chips incorporate amplifiers and A/D-converters, which brings a huge cost advantage. With CCD, those components are located outside of the chip. CMOS sensors also have a faster data readout, lower power consumption, higher noise immunity, and a smaller system size. In automotive applications, almost all cameras use CMOS sensors because of these advantages. The camera setup used for recording most of the image sequences in this course can be found here:</p><figure id="bdee9efd-131f-4342-bc7f-162201ca3c8f"><a href="http://www.cvlibs.net/datasets/kitti/setup.php" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">The KITTI Vision Benchmark Suite</div><div class="bookmark-description">This page provides additional information about the recording platform and sensor setup we have used to record this dataset. Our recording platform is a Volkswagen Passat B6, which has been modified with actuators for the pedals (acceleration and brake) and the steering wheel.</div></div><div class="bookmark-href"><img src="http://www.cvlibs.net/favicon.ico" class="icon bookmark-icon"/>http://www.cvlibs.net/datasets/kitti/setup.php</div></div><img src="http://www.cvlibs.net/datasets/kitti/images/kit.jpg" class="bookmark-image"/></a></figure><h2 id="cc33dd06-0a9e-4c0a-ae8f-f1445d8ce857" class="">Types of Lenses used in Self-driving Cars</h2><ul id="be2f5a70-90bd-4a05-b851-b211c99383f7" class="bulleted-list"><li>Wide angle lenses: for near field</li></ul><ul id="c54914fc-2014-4b44-9ee8-bf864809782d" class="bulleted-list"><li>Narrow angle lenses: for far field</li></ul><p id="ef7114d0-27c9-4c90-aca4-969fc7b6bf9c" class="">One important factor is to have intense light sensitivity, requires large aperture to get as much light in as possible.</p><h2 id="e985ffad-0d00-44f4-9ebd-d8c1e5650c2b" class="">Types of Chips sets used in Cameras</h2><p id="a73c2a30-21e3-4347-bebd-6f5668521a94" class="">The regular smartphone chip has a typical RGB bio pattern and has maybe a resolution of 16 megapixels. 
+<mark class="highlight-blue"><strong>The resolution for self-driving cars is not that important, it is really about the sensitivity.</strong></mark> Self-driving cars use chips ranging from 1 megapixel to 8 megapixels in terms of resolution. There are also chips that don&#x27;t have that regular RGB bio pattern but a clear pixel -every fourth pixel has no color filter-, so you can have better light sensitivity because of that. </p><h2 id="1f8f679b-ade8-4bf6-bbb9-5e1475dcad49" class="">What makes a Camera Automotive Grade</h2><ol id="8b16529b-2b2b-4b93-9cd9-290735decead" class="numbered-list" start="1"><li>Packaging </li></ol><ol id="7c64cbd6-c851-4341-a90b-b3d5075afbbd" class="numbered-list" start="2"><li>Ruggedness</li></ol><ol id="1988c120-3346-4ebd-be5e-80a38959a173" class="numbered-list" start="3"><li>Durability of the entire setup (integration of the chip and the lens, so it doesn&#x27;t decalibrate quickly with varying temperatures in different conditions)</li></ol><ol id="13ffa6f4-ca91-41e4-943c-7c8fc05e27e5" class="numbered-list" start="4"><li>They have larger pixels than normal cameras to allow more photons to fall into the one pixel, so you have better low light resolution.</li></ol><h3 id="9a5b4f91-053c-4f51-861f-3878b0164fa2" class="">Notes</h3><ul id="d1663d9f-57f2-4c5c-ab59-914361590eb6" class="bulleted-list"><li>The focal length is the distance between the center of the camera and its focus point.</li></ul><ul id="a5eeacc8-26bf-4063-a4cd-4ca9032a80f8" class="bulleted-list"><li>There are a couple of ways that blurring of objects in an image can be reduced:</li></ul><ol id="3689547f-1588-4924-802c-48af54fdd916" class="numbered-list" start="1"><li>By introducing an aperture to reduce the diameter of the circle of confusion.</li></ol><ol id="96b18b60-2f0d-47d8-8dfa-9bc97714dc0b" class="numbered-list" start="2"><li>By moving the camera (or object) to a position such that the focus points of all rays emanating from the object are on the image plane.</li></ol><ul id="6d4c6847-fbb9-4f79-9463-62e8d1ccd1a1" class="bulleted-list"><li>The principal point is the coordinate on the image plane where the optical axis of the camera intersects the image plane. In order to compute the pixel position of a point projected onto the image plane, the principal point location is used to shift the image coordinate system to the lower (or upper) left corner of the image plane.</li></ul><ul id="f939f79e-a106-4636-99fd-d3e8647bc06d" class="bulleted-list"><li>The Bayer pattern uses twice as many green pixels as the human (daylight) vision is more sensitive to green light.</li></ul><ul id="9e5dcb23-aabb-4dbe-a545-52d6716e3be8" class="bulleted-list"><li></li></ul><h2 id="f930948a-02ab-4bb5-a94c-38ec9155e111" class="">Does it make sense to have multiple cameras on self-driving car?</h2><p id="e836b871-82d1-483a-a536-07c68bfc7392" class="">It makes a lot of sense because you have different use cases. You want to have different field of views. For tailor lens, you want to see further away. You have wide angle lenses for near field around the car. </p><p id="26598c13-edd5-421f-a463-9a55145b6165" class="">You have different chips that cover different spectrum, for night time driving, for high dynamic range. There are various types of applications and there are specialized cameras for each of those fields. </p><h2 id="1b60c136-9179-44b3-ac03-b40b88b74182" class="">How reliable is camera only depth detection?</h2><p id="6d6dabfe-4cae-4676-b9d3-0889366bbb00" class="">Camera only depth perception can be very reliable mostly in the near field, in the far field it is getting really difficult. </p><h2 id="ca831325-ae06-4700-acad-9f3fdc2fe301" class="">How to stitch together images from different cameras on the same vehicle?</h2><p id="87021c3e-b97d-4acb-aae4-d6ef97a3aac4" class="">We don&#x27;t do relative synchronization or stitching of images, but for each camera we do absolute calibration with respect to a common time frame or common position that is usually the rear axle of the vehicle for instance. If we have this intrinsic and extrinsic calibrations, we can map everything into one holistic global frame.</p><h2 id="7f28cd0d-e004-43ed-a568-1ecc537f3217" class="">Camera downsides</h2><p id="f83c13f6-10a8-4808-aa2a-107417241ba7" class="">Measuring distance very precisely in the far field, because of the high resolution in a radial direction, you can see cross traffic really well -considering a front facing camera- and measure the velocity, but if you have oncoming traffic it is really difficult to detect that velocity accurately. </p></div></article></body></html>

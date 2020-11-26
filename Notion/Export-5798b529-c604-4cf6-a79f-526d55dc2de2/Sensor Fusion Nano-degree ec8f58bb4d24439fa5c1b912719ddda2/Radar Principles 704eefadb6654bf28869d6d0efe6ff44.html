@@ -1,0 +1,633 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Radar Principles </title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="704eefad-b665-4bf2-8869-d6d0efe6ff44" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">1️⃣</span></div><h1 class="page-title">Radar Principles </h1></header><div class="page-body"><h2 id="36127c9e-7c34-4bae-91d8-00afeaa579dc" class="">Why Self-driving Cars Specially Use Radar</h2><ul id="4aef5213-7a48-4d2c-bc51-412a1e9e5b7d" class="bulleted-list"><li>One of the biggest advantages of Radar is that: It measures the radial velocity directly, this helps to distinguish between stationary and moving objects.Other sensors need to calculate velocities by using derivatives.</li></ul><ul id="41b5e834-2e5a-4f84-896d-971982f37360" class="bulleted-list"><li>Also, Radar is less biased (less influenced) by environmental conditions, it can work day and night unlike cameras. It can work in rain and snow. </li></ul><ul id="0ef3eda6-d2a0-4328-ae46-b43ef32cac5e" class="bulleted-list"><li>Self-driving cars use a mixture of long and short range radars. In the context of automotive, radars are required to use only a specific frequency bandwidth. Automotive radars are cost-driven, small, and with less power consumption. It also should not contain moving parts. </li></ul><ul id="799b128a-0188-4da3-9798-0699ed99cfb9" class="bulleted-list"><li>Long range radars can reliably see objects up to 250 meters but they have a small field of view. On the other side, short range radars are designed to have a wider field of view. </li></ul><p id="a53d50c3-6fbe-484e-a260-4caaf3da9db6" class="">Radars have been in use since 1930s when they were primarily used by the military to detect aircraft, but since then the radar technology has come a long way and today they are increasingly being used as automotive radar sensor for advanced driver assistance systems (ADAS). The image below shows how radar sensors are used along with a full suite of other sensors in an autonomous vehicle:</p><figure id="da5724a0-ee43-42db-b673-16f70392ed6e" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled.png"><img style="width:641px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled.png"/></a><figcaption>source : <a href="http://cdn.rohde-schwarz.com/">cdn.rohde-schwarz.com</a></figcaption></figure><p id="c3c42cb8-db12-495f-88d8-a34d6889a0b5" class="">The advancements in the RF technologies and Digital Signal processing have made it possible to design efficient radars at low cost and in smaller sizes. The radar’s capability to determine the targets at long range with accurate velocity and spatial information make it an important sensor for self driving applications. Additionally, its capability to sense objects in dark and poor weather (rain, fog) conditions also help it cover the domains where LIDAR or camera may fail.</p><h2 id="17064444-8844-4c83-a296-e1caf85b89b8" class="">Radar Operation</h2><p id="08978b25-c631-4275-aa70-2de255305022" class="">A radar is composed of the following parts:</p><ol id="65d2fd65-070c-41e1-8d39-4bbf5cc1a642" class="numbered-list" start="1"><li>A component that produces EM waves</li></ol><ol id="870d63ab-ffac-423e-a65c-0f4dd97febe8" class="numbered-list" start="2"><li>An antenna used to transmit and receive the radar signal</li></ol><ol id="babc635f-af9e-4531-a9a1-6a97d051fd98" class="numbered-list" start="3"><li>A processing model for detecting the object properties  </li></ol><p id="89d408e2-c763-4cd6-a37e-10e53448d64f" class="">Radar works using the transmission and detection of electromagnetic waves as seen in the following image:</p><figure id="fbf0d8fc-9e92-4cc0-929b-9e308d7f9959" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%201.png"><img style="width:1423px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%201.png"/></a><figcaption>Radar Operation [source: electricalelibrary]</figcaption></figure><p id="4797d24f-b354-4fb8-a4f4-e8e1225f1967" class="">The electromagnetic waves are reflected if they meet an obstacle. If these reflected waves are received again at the place of their origin, then that means an obstacle is in the propagation direction.</p><p id="42996158-d7a5-4a0d-a3fe-fd5014c48ae9" class="">The frequency of electromagnetic energy used for radar is unaffected by darkness and also penetrates fog and clouds. This permits radar systems to determine the position of road targets that are invisible to the naked eye because of distance, darkness, or weather.</p><p id="e8a198e7-f672-49a9-95ba-0ccea016bc01" class="">Modern radar can extract widely more information from a target&#x27;s echo signal than its range.</p><figure id="1fd27fc9-468e-4e06-9883-cd0dcbae13f0" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%202.png"><img style="width:384px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%202.png"/></a><figcaption>Bosch Automotive Radar</figcaption></figure><p id="e6904d54-93f0-4a86-abc0-3dbc6a20337d" class="">The automotive radars are small size sensors that can easily fit beneath the front grill or the bumper. As seen in the image above a radar module comprises of different parts.</p><ul id="aa3cb745-f5fb-4e70-98da-9d279bbeeea1" class="bulleted-list"><li><strong>Radar Dome or Radome</strong>: A <em>radome</em> is a structural, weatherproof enclosure that protects a radar antenna. The radome is constructed of material that minimally attenuates the electromagnetic signal transmitted or received by the antenna, effectively transparent to radio waves.</li></ul><ul id="ba1b158d-a9f6-4690-adff-c8a2f19a212a" class="bulleted-list"><li><strong>Radar Printed Circuit Board</strong>: This is analog hardware that includes the radar transceiver and antenna needed for radio wave generation.</li></ul><ul id="fde5a6e2-9b63-488d-86d1-0bc3226c02bd" class="bulleted-list"><li><strong>Printed Circuit Board and Processing</strong>: This includes the Digital Signal Processing (DSP) unit.</li></ul><figure id="b48334b0-ae48-48f2-9ad8-b7f24987d807" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%203.png"><img style="width:1999px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%203.png"/></a><figcaption>Comparison between RADAR and LIDAR [source: cleantechnica]</figcaption></figure><p id="9f2cf504-7da8-4e3e-96c9-5ea18498c0ae" class="">One can find many of articles comparing the LIDAR and RADAR, but in practice, these sensors are complementary to each other.</p><p id="a4ae8bc2-7d77-4e2b-be33-ac06335f0c44" class="">LIDAR can generate high resolution imaging based on reflection of the laser light off from the targets. But LIDARs fail in bad weather conditions as the very small wavelength doesn’t allow to work well in fog or rain. Additionally, LIDAR is an expensive sensor with costs varying from $35,000 to $100,000 as of 2019. Lidar is the preferred technology at Waymo.</p><p id="b48bf379-0c93-47c0-9379-b609ce52ecb3" class="">Radar lacks the capability to generate a high resolution image, but it has highly accurate velocity estimation based on the doppler phenomenon, which we will cover in more detail later in this course. Also, radar wavelength allows it to sense the targets in bad weather conditions as well. Most important is the low manufacturing cost for a Radar. A radar unit can cost as low as a few hundred dollars, allowing a car manufacturer to deploy multiple Radar sensors for 360 degree perception. Tesla relies on Radar as its primary sensor and doesn’t include LIDAR in its sensor fusion system.</p><h3 id="ba2c8c86-0801-4ba7-8ce1-e035758bbefa" class="">Reading: Delphi Develops Radar Sensor Alignment Algorithm for Automotive Active Safety System (used MATLAB and code generation to implement a radar safety system)</h3><figure id="25a819b7-f22f-480e-a8c4-edab711e15dd"><a href="https://www.mathworks.com/company/user_stories/delphi-develops-radar-sensor-alignment-algorithm-for-automotive-active-safety-system.html" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Delphi Develops Radar Sensor Alignment Algorithm for Automotive Active Safety System</div><div class="bookmark-description">Delphi adopted MATLAB and MATLAB Coder to develop and implement the radar sensor alignment algorithm. Liang used MATLAB to analyze recorded sensor data captured from road testing a real vehicle. With huge amounts of testing data and the help of powerful MATLAB built-in functions, Liang realized and verified a radar sensor alignment algorithm that calculates sensor misalignment angles from raw radar detection and host vehicle speed.</div></div><div class="bookmark-href"><img src="https://www.mathworks.com/etc/designs/mathworks/img/favicon.ico" class="icon bookmark-icon"/>https://www.mathworks.com/company/user_stories/delphi-develops-radar-sensor-alignment-algorithm-for-automotive-active-safety-system.html</div></div><img src="https://www.mathworks.com/company/user_stories/delphi-develops-radar-sensor-alignment-algorithm-for-automotive-active-safety-system/_jcr_content/imageEnhancedParsys/image.adapt.full.high.jpg/1469941215849.jpg" class="bookmark-image"/></a></figure><ul id="e0ae6c60-2a75-4f2e-a6e2-6ede6e7f720e" class="bulleted-list"><li>Some to the limitation of radar is that they can&#x27;t provide precisely the object shapes.</li></ul><ul id="72e3063c-8aaa-4ecc-ab7d-e2e6320acb61" class="bulleted-list"><li>Radars are also not suitable for classification tasks as in the case of cameras. </li></ul><ul id="49f63db1-a8e5-496e-969b-dc70cf77720e" class="bulleted-list"><li>Lidars can provide a more accurate position and shape information, while radars are used to get motion information, and by combining the information from both of these sensor we will have a more robust object representation.</li></ul><h3 id="198c812e-6f0a-4c31-aa30-e4599b527f98" class="">Signal Properties</h3><p id="be50cf73-fbef-46cb-ae86-82c97f4f6aa5" class="">In this concept, you will see a general overview of signal properties, including definitions of the wavelength of a signal and the general form for the equation of a signal.</p><h3 id="16e1582f-c116-471c-8b7b-deb8da8a3ef0" class="">Single Wave Parameters</h3><p id="ccf204b9-ec20-4afa-80dd-55867a26e320" class="">Wavelength <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi></mrow><annotation encoding="application/x-tex">λ</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">λ</span></span></span></span></span><span>﻿</span></span> is the physical length from one point of a wave to the same point on the next wave, and it is calculated as</p><figure id="ddc89865-ee68-4302-8fde-17f15686d01b" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><mfrac><mtext>speed of light</mtext><mtext>frequency</mtext></mfrac></mrow><annotation encoding="application/x-tex">\lambda = \frac{\textrm{speed of light}}{\textrm{frequency}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.69444em;vertical-align:0em;"></span><span class="mord mathdefault">λ</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.25188em;vertical-align:-0.8804400000000001em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714399999999998em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord textrm">frequency</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord textrm">speed of light</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8804400000000001em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></div></figure><p id="7acc0052-7664-4acf-bbd5-b2096684859a" class="">The higher the frequency the smaller the wavelength.</p><figure id="616970a9-db9b-4010-96be-88af0f5f8d8a" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%204.png"><img style="width:825px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%204.png"/></a></figure><p id="a11566ee-ea8f-4475-8677-dbc5fc184331" class="">
+</p><p id="b4d19c52-4422-48be-9906-8813ebe14eb3" class="">The <em>frequency</em> of a wave is the number of waves that pass by each second, and is measured in Hertz (Hz). The automotive radar generally operates at W band (76GHz - 81GHz). The signal at this frequency is referred to as millimeterWave since the wavelength is in mm.</p><p id="72f7b95c-b71a-4945-bfc7-b549479e0258" class="">The <em>Bandwidth</em> of a signal is the difference between the highest and the lowest frequency components in a continous band of frequencies.</p><p id="783a1a4a-c89a-4e24-a5cd-9a1463463c2f" class="">The <em>Amplitude</em> is the strength of the signal. Often it corresponds to the power of the RF signal/electromagnetic field defined in dB/dBm. It is relevant while configuring the output power of the radar and sensing the received signal. Higher the amplitude of the Radar signal, more is the visibility of radar. Automotive Radar can operate at max of 55 dBm output power (316 W)</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="20b772d6-1086-4df6-8f69-8c4ca930acf3"><div style="font-size:1.5em"><span class="icon">📖</span></div><div style="width:100%">dB, dBm, mW, and W conversions can be found: www.rapidtables.com/electric/dBm.html</div></figure><figure id="c3c3217c-2729-4221-93df-7a5f4754f1ca" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%205.png"><img style="width:452px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%205.png"/></a></figure><figure id="f2a320e1-567e-4171-8dad-e45955cdc1dd" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%206.png"><img style="width:1092px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%206.png"/></a></figure><h3 id="4f446210-8945-448f-8e9a-efbca74bd424" class="">Phase of a Signal</h3><p id="bad12e56-2ebe-43fc-b012-9ccf0c70994a" class=""><em>Phase</em> is a particular point in time on the cycle of a waveform, measured as an angle in degrees. A complete cycle is 360°. The phase for each argument value, relative to the start of the cycle, is shown in the image below, in degrees from 0° to 360° and in radians from 0 to 2π. <style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi></mrow><annotation encoding="application/x-tex">\varphi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">φ</span></span></span></span></span><span>﻿</span></span></p><p id="a27a9b47-a965-4c10-8d08-681aab6408ef" class="">The frequency can also be defined as the first derivative of the phase with respect to the time.</p><figure id="ab6bafdb-086d-4b42-8884-f62acc3a9045" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mi>r</mi><mi>e</mi><mi>q</mi><mi>u</mi><mi>e</mi><mi>n</mi><mi>c</mi><mi>y</mi><mo>=</mo><mfrac><mrow><mi>d</mi><mi>φ</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">frequency = \frac{d\varphi}{dt}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.03588em;">q</span><span class="mord mathdefault">u</span><span class="mord mathdefault">e</span><span class="mord mathdefault">n</span><span class="mord mathdefault">c</span><span class="mord mathdefault" style="margin-right:0.03588em;">y</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:2.0574399999999997em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3714399999999998em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">d</span><span class="mord mathdefault">t</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathdefault">d</span><span class="mord mathdefault">φ</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></div></figure><figure id="d858bb32-cc34-48fe-a561-1a4c5e962981" class="equation"><style>@import url('https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css')</style><div class="equation-container"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>φ</mi><mo>=</mo><mi>p</mi><mi>h</mi><mi>a</mi><mi>s</mi><mi>e</mi><mtext> </mtext><mtext> </mtext><mi>o</mi><mi>f</mi><mtext> </mtext><mtext> </mtext><mi>t</mi><mi>h</mi><mi>e</mi><mtext> </mtext><mtext> </mtext><mi>s</mi><mi>i</mi><mi>g</mi><mi>n</mi><mi>a</mi><mi>l</mi></mrow><annotation encoding="application/x-tex">\varphi = phase\,\,of\,\,the\,\,signal</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">φ</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">p</span><span class="mord mathdefault">h</span><span class="mord mathdefault">a</span><span class="mord mathdefault">s</span><span class="mord mathdefault">e</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">o</span><span class="mord mathdefault" style="margin-right:0.10764em;">f</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">t</span><span class="mord mathdefault">h</span><span class="mord mathdefault">e</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord mathdefault">s</span><span class="mord mathdefault">i</span><span class="mord mathdefault" style="margin-right:0.03588em;">g</span><span class="mord mathdefault">n</span><span class="mord mathdefault">a</span><span class="mord mathdefault" style="margin-right:0.01968em;">l</span></span></span></span></span></div></figure><p id="b8524bba-4452-4cb6-b5ca-b96ea7104477" class="">This property will be used in measuring the doppler frequency shift for a moving target.</p><figure id="e0ddc85a-ea1a-47c3-8e8a-51f6c8fbe0ee" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%207.png"><img style="width:480px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%207.png"/></a></figure><p id="b95cef34-f2da-4889-93a5-f341696bf29b" class="">The difference between the phases of two periodic signals is called the <em>phase</em> <em>difference</em>. At values of when the difference is zero, the two signals are said to be in phase, otherwise they are out of phase with each other.</p><p id="41009982-78cf-4b4f-b535-4905748e47e2" class="">The phase information processing is important as we go through doppler processing as well as Angle of Arrival techniques for radar.</p><figure id="7504a4db-e819-40d6-8d39-26ed5daec77f" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%208.png"><img style="width:1687px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%208.png"/></a></figure><h3 id="a7052145-7117-4891-9a83-604dc4397b20" class="">General Equation of a Wave</h3><figure id="7752105d-3d1e-4fea-8dd1-dd194639d930" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%209.png"><img style="width:860px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%209.png"/></a></figure><h2 id="c95a717f-70db-495f-9777-5d7818f3946d" class="">FMCW</h2><p id="dfe67262-ea2a-46b4-86c2-a83cdfb42959" class="">FMCW radar (Frequency-Modulated Continuous Wave radar) is a special type of radar sensor which radiates continuous transmission power. FMCW radar’s ability to measure very small ranges to the target as well as its ability to measure simultaneously the target range and its relative velocity makes it the first choice type of radar for automotive applications.</p><p id="cd959025-24c1-4b52-a88b-b0f99ba1c5e8" class=""><em><strong>A Chirp: </strong></em>
+Is a radar signal whose frequency in increasing (up chirp) or decreasing (down chirp) in time. Some radars use repeated chirp signals to compute both distance and velocity.  </p><figure id="49adf94a-e4a0-44fd-b7ac-772af8d81f63" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2010.png"><img style="width:865px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2010.png"/></a></figure><figure id="84eefd12-403c-4d3f-bad5-7e46164306aa" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2011.png"><img style="width:1007px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2011.png"/></a></figure><figure id="802813dd-8b7c-40b8-8274-4c422ce5d092" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2012.png"><img style="width:955px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2012.png"/></a></figure><h3 id="f5d72401-ae27-47da-80ef-f5fde72686ef" class="">Additional Resources:</h3><figure id="5dad6996-480c-46a6-a174-83c215bd19cf"><div class="source"><a href="https://www.radartutorial.eu/02.basics/Frequency%20Modulated%20Continuous%20Wave%20Radar.en.html">https://www.radartutorial.eu/02.basics/Frequency%20Modulated%20Continuous%20Wave%20Radar.en.html</a></div></figure><h2 id="57a4a4ac-00e1-4e93-8737-7d1ca86b9ad1" class="">FMCW Hardware</h2><figure id="f516aed6-d79c-472a-a0e3-f9bdfcb7fccc" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2013.png"><img style="width:816px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2013.png"/></a></figure><p id="2ec81fbb-5636-48a9-b4fb-b9178d6a9330" class=""><strong>Frequency Synthesizer</strong>: The <em>frequency synthesizer</em> is the component that generates the frequency to bring the chirp frequency all the way to 77GHz in case of automotive radar.</p><p id="06c37147-4e9d-4145-b3f0-ba5f2dbe637d" class=""><strong>Power Amp</strong>: The <em>power amp</em> amplifies the signal so the signal can reach long distance. Since the signal attenuates as it radiates, it needs higher power (amplitude) to reach targets at greater distances.</p><p id="3c61d51c-a4e5-41eb-ad6e-f40a733dd1c7" class=""><strong>Antenna</strong>: The <em>antenna</em> converts the electrical energy into electromagnetic waves which radiate through the air, hit the target, and get reflected back toward the radar receiver antenna. The Antenna also increases the strength of the signal by focusing the energy in the desired direction. Additionally, the antenna pattern determines the field of view for the radar.</p><p id="5551a3eb-2d20-4345-92c5-62113336ba87" class=""><strong>Mixer</strong>: In FMCW radar, the <em>mixer</em> multiplies the return signal with the sweeping signal generated by the frequency synthesizer. The operation works as frequency subtraction to give the frequency delta - also known as frequency shift or Intermediate frequency (IF). IF = Synthesizer Frequency - Return Signal Frequency.</p><p id="ee46c90b-ca07-4562-8dad-a37ff788ac16" class=""><strong>Processor</strong>: The <em>processor</em> is the processing unit where all the Digital Signal processing, Detection, Tracking, Clustering, and other algorithms take place. This unit could be a microcontroller or even an FPGA.</p><p id="62fa3bd8-246e-4bce-9e0b-c85782d4253a" class="">As defined in the FMCW Hardware definitions, the antenna is a transducer that converts the electrical energy into electromagnetic waves. In the case of radar, these waves travel through the air and hit the target. Depending on the surface type and shape of the target, the waves get partially reflected back in the direction of the radar. The receiver antenna at the radar amplifies the received signal further and sends it to the receiver chain for further processing.</p><p id="4b3d0dec-021c-4bb0-a4e1-8c8071df9f94" class="">
+</p><h3 id="8db0dde6-6ab8-4142-a9bc-47693ede9bee" class="">The Antenna Pattern</h3><figure id="21d29e08-8c8a-4e8a-a20d-768cba988f83" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2014.png"><img style="width:535px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2014.png"/></a></figure><p id="c834ed18-5bc1-4c4f-87ca-ddb003772601" class="">The <em>antenna pattern</em> is the geometric pattern of the strengths of the relative field emitted by the antenna.</p><p id="c6695f4d-affe-40f2-ae9f-c9313212efd6" class="">The <em>beamwidth</em> of the antenna determines the field of view for the radar sensor. If the requirement for the radar is to just sense the targets in its own lane then the beamwidth needs to be small enough to cover the complete lane up to desired range. If the beamwidth is wider than the lane width, it will sense the targets in the other lanes as well.</p><p id="a619a7e2-752b-44e9-9681-c2327edfb581" class="">
+</p><figure id="593ee529-7b8d-491f-9877-96bedc120442" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2015.png"><img style="width:1833px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2015.png"/></a></figure><p id="27c3ae8f-10f8-4357-9621-09927da04b66" class="">Antenna radiation not only comprises of the main beam but the sidelobes as well. Antenna sidelobes are critical because they can generate false alarms and pick interference from undesired direction. As seen in the pattern, the sidelobes of the antenna point in different directions and can sense targets that are not in the main beam. To avoid sidelobe detections it is critical to suppress the sidelobe levels to more than 30dB from the peak of the main beam.</p><h3 id="19f96ac7-19ea-46d2-9578-40f32cfd91fa" class="">Antenna Types</h3><figure id="ab22bddb-612b-48fc-bafc-b9090974750c" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2016.png"><img style="width:279px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2016.png"/></a><figcaption>Patch Array Antenna</figcaption></figure><p id="fa159833-f242-47cc-bc5a-5b53534c041a" class="">There are many types of antenna (dipole, patch, horn) that can be used at 77GHz, but the most commonly used antenna type in automotive radar is the patch antenna . The low cost, easy fabrication, and low profile of Patch Array Antennas makes them an ideal choice for automotive radar applications.</p><p id="cf1d2280-48b4-4e54-b73e-977825aa7f70" class="">The antenna is composed of several patches, and the difference in signal received between different patches is used to compute the reflected angle. </p><h1 id="0145937a-8c81-47c4-8e99-3a960cebc401" class="">Radar Cross Section</h1><figure id="6e5ff0bb-9c9d-4813-95b6-13ca718db38e" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2017.png"><img style="width:986px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2017.png"/></a></figure><figure id="27957831-28e1-4b40-9166-429183513060" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2018.png"><img style="width:1082px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2018.png"/></a></figure><p id="11868762-6d57-4837-a0fe-424eee5354b7" class="">If absolutely all of the incident radar energy on the target were reflected equally in all directions, then the radar cross section would be equal to the target&#x27;s cross-sectional area as seen by the transmitter. In practice, some energy is absorbed and the reflected energy is not distributed equally in all directions. Therefore, the radar cross-section is quite difficult to estimate and is normally determined by measurement.</p><figure id="4890e5b7-5f07-4788-af68-99d5be92c790" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2019.png"><img style="width:528px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2019.png"/></a><figcaption>Returns from Different Target Geometries</figcaption></figure><h3 id="93f835b9-3afe-44a7-b874-9a761c112761" class="">RCS Units</h3><figure id="123227fd-de04-40eb-9b40-b8e20c46e38d" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2020.png"><img style="width:985px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2020.png"/></a></figure><figure id="61988acb-e312-4093-9530-d6be7a327908" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2021.png"><img style="width:208px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2021.png"/></a></figure><h3 id="6199d43c-9724-46f3-9168-2b44cad85794" class="">Quiz</h3><figure id="c19526fc-7a44-4065-ab4c-2b238dd83666" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2022.png"><img style="width:705px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2022.png"/></a><figcaption>Stealth Aircraft</figcaption></figure><figure id="28e56641-edef-469f-9448-4e76412a80e5" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2023.png"><img style="width:958px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2023.png"/></a></figure><h1 id="7e286c88-27d3-473e-804e-434c237c8df7" class="">Range Equation Overview</h1><p id="77ae7d18-cb22-411b-8522-a38e5ea76e5d" class="">Using the Radar Range equation we can design the radar transmitter, receiver, and antenna to have the desired power, gain and noise performance to meet the range requirements.</p><p id="85f80afd-0e17-4822-bab8-a585a2815030" class="">A long range radar designed to cover 300m range and detect a target with smaller cross section would need higher transmit power and more antenna gain as compared to a short range radar designed to cover just 50m for similar target. A target with higher cross section can be detected at a longer range as compared to a target with smaller cross section.</p><figure id="b1b33f25-6327-43ca-9dc2-df8547c7e7b2" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2024.png"><img style="width:295px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2024.png"/></a></figure><figure id="a91a7b25-bc74-40e2-92b5-eb5f54670118" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2025.png"><img style="width:957px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2025.png"/></a></figure><figure id="9f145c6a-02d5-454e-96b9-b68eb06a67e0" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2026.png"><img style="width:1999px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2026.png"/></a><figcaption>The image above shows the variation in the signal strength level as it travels through transmitter, over the air and at the receiver</figcaption></figure><p id="84200ed1-193a-473d-9abe-a8c9896cf3cb" class="">The image above shows the variation in the signal strength level :</p><ul id="c58068e4-b08b-4fbc-b568-ef90fcf6ce60" class="bulleted-list"><li>The transmitter power</li></ul><ul id="3d656387-ab73-416a-8ac3-e1a74167d28a" class="bulleted-list"><li>Power Amplifiers further increase the signal strength - Transmit chain gain</li></ul><ul id="9beb5c87-018c-43f8-aa75-6cc424a38a67" class="bulleted-list"><li>Signal is further amplified using an antenna</li></ul><ul id="302a0260-6df3-421d-b766-39fb1530acf0" class="bulleted-list"><li>One Way Path Loss represents the loss in the signal strength as it travels towards the target</li></ul><ul id="899d5216-ddcc-4242-ae85-b58e8cfb9094" class="bulleted-list"><li>On getting reflected from the target the signal gets amplified based on the RCS of the target</li></ul><ul id="bcb82135-96e1-4299-aced-dcd219836fc3" class="bulleted-list"><li>After RCS gain the signal travel back towards the radar and has similar loss in strength as going forward</li></ul><ul id="6c118c2c-ba5b-4050-9575-fc38bba45372" class="bulleted-list"><li>The receiver antenna amplifies the return signal before sending it to the processing unit</li></ul><h2 id="0c73f65a-909c-4436-a51e-cef9155ab7c7" class="">Radar Detection</h2><p id="04e99ac2-df56-474a-956e-ec33ff875248" class="">Below is an illustration showing the output of a radar&#x27;s range detection. The peaks correspond to the strength of the return signal from targets and the frequency relates to the range. Relationship between frequency and range will be discussed in next lesson.</p><p id="d630c128-bc7e-40e2-b09d-22fa60a41346" class="">A radar cannot detect a signal that is below the noise level. The noise level is determined by the thermal noise generated by the receiver. To successfully detect a target, the return signal strength needs to be larger than the noise level. This is defined by a property called <em>signal to noise ratio</em>, or <em>SNR</em>.</p><p id="183be3b3-3a39-47ed-9e33-2af8a93fe23a" class="">SNR is a quantitative measure of a signal strength as compared to the level of noise. If the SNR is too low it becomes difficult for a radar to distinguish the signal from noise. Hence, higher SNR is desirable for successful detection of the target. Generally, a 7-13 dB SNR ensures successful detection in a road scenario.</p><figure id="86583e7a-7e71-47d9-828e-80f31f49e0dc" class="image"><a href="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2027.png"><img style="width:598px" src="Radar%20Principles%20704eefadb6654bf28869d6d0efe6ff44/Untitled%2027.png"/></a><figcaption>Signal to Noise Ratio</figcaption></figure><p id="557e15ad-aa43-45fc-a99d-40e33803cf74" class="">The image above shows the logarithmic value of SNR = power level (in dBm) - noise level (dBm). The plot shows the output of Range FFT (discussed in Lesson 2). In general, the higher the SNR value, the greater are the chances of successful Radar detection.</p><p id="9edcd985-dd51-4d5a-9e2d-322e72136639" class="">
+</p><p id="23771c51-fd8a-4a82-9008-60ffc1fb9b74" class="">
+</p></div></article></body></html>

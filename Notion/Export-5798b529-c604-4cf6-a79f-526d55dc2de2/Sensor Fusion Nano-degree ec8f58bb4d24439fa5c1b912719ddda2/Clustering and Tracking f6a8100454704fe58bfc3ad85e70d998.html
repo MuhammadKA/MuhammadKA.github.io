@@ -1,0 +1,701 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Clustering and Tracking</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="f6a81004-5470-4fe5-8bfc-3ad85e70d998" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">4️⃣</span></div><h1 class="page-title">Clustering and Tracking</h1></header><div class="page-body"><h2 id="5608e73a-3963-461d-9beb-26dd265e97cf" class="">Clustering</h2><figure id="4f45f0d6-51b3-42f5-8fb8-0a1c29a0d6a6" class="image"><a href="Clustering%20and%20Tracking%20f6a8100454704fe58bfc3ad85e70d998/Untitled.png"><img style="width:672px" src="Clustering%20and%20Tracking%20f6a8100454704fe58bfc3ad85e70d998/Untitled.png"/></a><figcaption>Clustering of a car and bicycle - source : <a href="https://ieeexplore.ieee.org/document/7226315">https://ieeexplore.ieee.org/document/7226315</a></figcaption></figure><p id="d4e8a158-485b-4ae9-919c-4a4ccb635de5" class="">For enhanced perception in autonomous driving, there is a need to track multiple targets separately. The object tracking is computationally expensive and tracking multiple targets simultaneously requires lots of processing power and memory.</p><p id="5039654e-564e-4f9e-b8de-2be2eb42c776" class="">Due to the advancements in radar technology and increasing sensing resolutions, a radar can generate detections from plenitude of scattering points on the target. If a tracker is assigned to every detection from the same target, then it can overburden the processing unit. Hence, it is important to cluster the detections from every target and assign a single track for each.</p><p id="476a0782-df00-4ef3-b094-cc8fdc2b1179" class="">This is where the clustering algorithm becomes important for successful object tracking.</p><p id="1474c883-37f3-4097-a681-c456c1b22a1a" class="">Here we will discuss the basic clustering algorithm based on the euclidean distance. The algorithm here groups the detection points based on their proximity measured by the euclidean distance between those points.</p><p id="52acef27-247d-42e6-b798-6a23ccbefe73" class="">All the detection points that are within the size of the target are considered as one cluster, merged into a centroid position. Each cluster is now assigned a new range and velocity, which is the mean of measured range and velocity of all the detection points that form the cluster. This allows valid tracking for each target.</p><figure id="a4cbe8a1-eb89-49c5-8aa3-0be06045c3eb" class="image"><a href="Clustering%20and%20Tracking%20f6a8100454704fe58bfc3ad85e70d998/Untitled%201.png"><img style="width:288px" src="Clustering%20and%20Tracking%20f6a8100454704fe58bfc3ad85e70d998/Untitled%201.png"/></a></figure><p id="1f507a1d-4e2d-4f71-8b52-1c1e15b8894d" class="">Above is an illustration of the clustering scenario. In the image the blue car is an ego vehicle (vehicle with sensor) and the detections are generated from the orange and yellow vehicles. Using clustering algorithm all the detections associated with the single target are merged into one point. This helps in the detection and assigning the tracks to a target.</p><h2 id="eaf8c5a9-c640-4415-8f45-fc4381edf1d3" class="">Matlab Implementation of Clustering</h2><figure id="4d5897fc-22b2-4010-b08b-8e7cf239c17d" class="image"><a href="Clustering%20and%20Tracking%20f6a8100454704fe58bfc3ad85e70d998/Untitled%202.png"><img style="width:775px" src="Clustering%20and%20Tracking%20f6a8100454704fe58bfc3ad85e70d998/Untitled%202.png"/></a></figure><figure id="29d612e9-d262-4200-a455-91d1a7bab682" class="image"><a href="Clustering%20and%20Tracking%20f6a8100454704fe58bfc3ad85e70d998/Untitled%203.png"><img style="width:757px" src="Clustering%20and%20Tracking%20f6a8100454704fe58bfc3ad85e70d998/Untitled%203.png"/></a></figure><p id="8740c586-a792-4382-88d4-35551e6ba446" class=""><strong>The clustering implementation above uses the following steps:</strong></p><ol id="6a21dc5a-ba33-4e14-aaec-625edfb2562e" class="numbered-list" start="1"><li>If the detections are from same sensor, then loop through every single detection point and measure the euclidean distance between all of them.</li></ol><ol id="67d50a1d-1233-4663-b921-613b650b968e" class="numbered-list" start="2"><li>Keep running the loop until the detection list is empty</li></ol><p id="494c64c1-0d80-4adb-bbfd-ba3172ecb63d" class=""><strong>Implement the following within the while loop:</strong></p><ol id="228d48b3-b67f-40ca-a80a-12a927530202" class="numbered-list" start="1"><li>Pick the first detection in the check list and check for its clustering neighbors.</li></ol><ol id="a7490902-7017-46d0-be61-ba9375055d5e" class="numbered-list" start="2"><li>If the distance between the first pick and remaining detections is less than the vehicle size, then group those detections and their respective radar sensor measurements, including range and velocity.</li></ol><ol id="85fec888-af43-4b5c-85d9-026a314dfdec" class="numbered-list" start="3"><li>For the group, take the mean of the range and velocity measurements.<p id="5306c9ed-99e5-4f81-8a7e-07e7a5fcd986" class=""><strong>Note:</strong> the radar measurement vector has 6 values - where range and velocity for x and y coordinates reside at indices 1,2, 4, and 5: <strong><code>[x, y, - , Vx, Vy, -]</code></strong></p></li></ol><ol id="6c8dae14-544d-4622-bb14-317494518ce3" class="numbered-list" start="4"><li>Create a new Cluster ID. Then, assign all the group detections to the same ID.</li></ol><ol id="526d43d4-df7a-4622-a301-001a8bb55b81" class="numbered-list" start="5"><li>Further, assign cluster, the mean range and velocity.</li></ol><ol id="8d03aa43-40ae-4d39-9973-c4b17e6e9682" class="numbered-list" start="6"><li>In the end, delete from the list the detections which have already been assigned to a cluster.</li></ol><ol id="9a44602a-c60c-4abd-94ac-580752212306" class="numbered-list" start="7"><li>Keep repeating the process until the detection list is empty.</li></ol><figure id="820e602d-e302-4818-b751-d1df6b1a4b08" class="image"><a href="Clustering%20and%20Tracking%20f6a8100454704fe58bfc3ad85e70d998/Untitled%204.png"><img style="width:942px" src="Clustering%20and%20Tracking%20f6a8100454704fe58bfc3ad85e70d998/Untitled%204.png"/></a></figure><h1 id="3e8b0836-d1c5-4745-9590-55481cb304a9" class="">Kalman Tracking</h1><figure id="670b4362-9616-40d7-b9ff-33aa0699531a" class="image"><a href="Clustering%20and%20Tracking%20f6a8100454704fe58bfc3ad85e70d998/Untitled%205.png"><img style="width:1280px" src="Clustering%20and%20Tracking%20f6a8100454704fe58bfc3ad85e70d998/Untitled%205.png"/></a></figure><figure id="f6992cba-1735-4fe8-8e53-9c4339041b1b" class="image"><a href="Clustering%20and%20Tracking%20f6a8100454704fe58bfc3ad85e70d998/Untitled%206.png"><img style="width:528px" src="Clustering%20and%20Tracking%20f6a8100454704fe58bfc3ad85e70d998/Untitled%206.png"/></a></figure><p id="54f7d721-8abb-4565-aeb9-86969469f92a" class="">The purpose of the Kalman filter is to estimate the <em>state</em> of a tracked vehicle. Here, &quot;state&quot; could include the position, velocity, acceleration or other properties of the vehicle being tracked. The Kalman filter uses measurements that are observed over time that contain noise or random variations and other inaccuracies, and produces values that tend to be closer to the true values of the measurements and their associated calculated values. It is the central algorithm to the majority of all modern radar tracking systems.</p><p id="2a6e6e7d-c005-401f-b9b6-625eb0b85f02" class="">Here, we will be keeping the Kalman Filter limited to a basic introduction. You will be covering Kalman filters in detail in the fourth course of this Nanodegree program.</p><p id="32580f8e-d3f5-4713-b162-920b5d489f8f" class="">The Kalman filter process has two steps: prediction and update.</p><ol id="3ee966cc-16a3-4f87-b0e9-494bada1ae83" class="numbered-list" start="1"><li><strong>Prediction Step
+</strong>Using the target vehicle&#x27;s motion model, the next state of the target vehicle is predicted by using the current state. Since we know the current position and velocity of the target from the previous timestamp, we can predict the position of the target for next timestamp.
+For example, using a constant velocity model, the new position of the target vehicle can be computed as:</li></ol><figure id="1625c00d-5d02-44cd-8436-64f3e513c6f4" class="image"><a href="Clustering%20and%20Tracking%20f6a8100454704fe58bfc3ad85e70d998/Untitled%207.png"><img style="width:676px" src="Clustering%20and%20Tracking%20f6a8100454704fe58bfc3ad85e70d998/Untitled%207.png"/></a></figure><p id="22d39194-2064-4ccd-a8c8-2640f7aa0c52" class="">2.    <strong>Update Step</strong> </p><p id="71fc0234-8ca8-4f0a-bb42-2ab61e2db4d3" class="">Here, the Kalman filter uses noisy measurement data from sensors, and combines the data with the prediction from the previous step to produce a best-possible estimate of the state.</p><h3 id="bbd10bbd-0925-451c-aec1-e40368b334eb" class="">Kalman Tracking and MATLAB</h3><p id="ca58706d-8530-419f-a136-438c8a5932b9" class="">The trackingKF class creates a discrete-time linear Kalman filter used for tracking positions and velocities of objects which can be encountered in an automated driving scenario, such as automobiles, pedestrians, bicycles, and stationary structures or obstacles.</p><p id="3ed53ef6-9b0b-45b7-a847-ad29dbf58aac" class="">You can learn more about different parameters for the filter here: </p><figure id="8131f84c-7d84-49b5-99f5-d929beb99f10"><a href="https://www.mathworks.com/help/driving/ref/trackingkf.html" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Linear Kalman filter for object tracking - MATLAB</div><div class="bookmark-description">Linear Kalman filter for object tracking A trackingKF object is a discrete-time linear Kalman filter used to track the positions and velocities of objects that can be encountered in an automated driving scenario. Such objects include automobiles, pedestrians, bicycles, and stationary structures or obstacles.</div></div><div class="bookmark-href"><img src="https://www.mathworks.com/favicon.ico" class="icon bookmark-icon"/>https://www.mathworks.com/help/driving/ref/trackingkf.html</div></div><img src="https://www.mathworks.com/content/dam/mathworks/mathworks-dot-com/images/responsive/supporting/campaigns/products/adaptive-cruise-control-design-offer.jpg" class="bookmark-image"/></a></figure><p id="df9ef7f2-7e01-4950-8715-49b5f21c30bf" class="">You can learn more about the theory behind Kalman filters here: </p><figure id="53fefe03-bf7a-4e86-9dfb-9bec43473bb8"><a href="https://www.mathworks.com/help/driving/ug/linear-kalman-filters.html" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Linear Kalman Filters - MATLAB &amp; Simulink</div><div class="bookmark-description">When you use a Kalman filter to track objects, you use a sequence of detections or measurements to construct a model of the object motion. Object motion is defined by the evolution of the state of the object. The Kalman filter is an optimal, recursive algorithm for estimating the track of an object.</div></div><div class="bookmark-href"><img src="https://www.mathworks.com/favicon.ico" class="icon bookmark-icon"/>https://www.mathworks.com/help/driving/ug/linear-kalman-filters.html</div></div><img src="https://www.mathworks.com/content/dam/mathworks/mathworks-dot-com/images/responsive/supporting/campaigns/products/adaptive-cruise-control-design-offer.jpg" class="bookmark-image"/></a></figure><h3 id="c098f75b-0036-4d37-98cf-6cd0052e4fe5" class="">Implementation in MATLAB</h3><p id="992157ad-1ebf-47fb-87df-ad8efcad269c" class="">The following guidelines can be used to implement a basic Kalman filter for the next project. </p><ul id="5fb15ed1-d83d-48ab-9747-800acca41fdb" class="bulleted-list"><li>You will define the Kalman filter using the trackingKF function. The function signature is as follows:</li></ul><pre id="be3b843d-f6cf-4be1-9b1d-2006c7cc3f6a" class="code"><code>filter = trackingKF(&#x27;MotionModel&#x27;, model, &#x27;State&#x27;, state, &#x27;MeasurementModel&#x27;, measurementModel, &#x27;StateCovariance&#x27;, stateCovrariance, &#x27;MeasurementNoise&#x27;, measurementNoise)</code></pre><ul id="a552b28c-74c6-497f-91f9-a7e662036c4c" class="bulleted-list"><li>In this function signature, each property (e.g. <code>&#x27;MotionModel</code>) is followed by the value for that property (e.g. <code>model</code>).</li></ul><ul id="32b903a6-9719-4b82-94b7-4edcaeba24f5" class="bulleted-list"><li>For the <code>model</code> variable, you can pass the string <code>&#x27;2D Constant Velocity&#x27;</code>, which will provides the 2D constant velocity motion model.</li></ul><ul id="41bec63c-720e-4d96-8c9b-3aaf70162154" class="bulleted-list"><li>For the 2D constant velocity model the state vector (x) can be defined as:</li></ul><pre id="a48bd76f-ca30-401d-b3da-f37546e26a61" class="code"><code>[x;vx;y;vy]
+% Here, x and y are 2D position coordinates. The variablesvx and vy provide the velocity in 2D.</code></pre><ul id="3fdcaa2f-79a0-443d-aa53-634fa7675e29" class="bulleted-list"><li>A RadarDetectionGenerator function is used to generate detection points based on the returns after reflection. Every Radar detection generates a detection measurement and measurement noise matrix: detection.Measurement and detection.MeasurementNoise. The detection measurement vector (z) has the format [x;y;vx;vy].</li></ul><p id="1e75bd76-5c1c-4e4f-a957-90b4f599c0ec" class=""><strong>Measurement Models</strong></p><p id="7ef463c6-08b4-4b05-ae9b-17ecf033a0be" class="">Measurements are what you observe about your system. Measurements depend on the state vector but are not always the same as the state vector. The measurement model assumes that the actual measurement at any time is related to the current state by</p><pre id="4682f74c-3b4b-4dc6-9993-173162647a27" class="code"><code>z = H*x;</code></pre><p id="3a127631-59d4-4035-aa1a-d8aa12e74768" class="">As a result, for the case above the measurement model is </p><pre id="db9af43d-2389-4068-92dd-3889b917abac" class="code"><code>H = [1 0 0 0; 0 0 1 0; 0 1 0 0; 0 0 0 1];</code></pre><p id="c8073ac8-5442-4240-bd0b-4644a0273e53" class="">Using this measurement model, the state can derived from the measurements.</p><pre id="98c2d551-e5d8-44fc-8f96-6add0b92447c" class="code"><code>x = H&#x27;*z;
+state = H&#x27;*detection.Measurement;</code></pre><p id="4c511de9-6ca2-48e9-b8e7-4df6ef6e668c" class="">Further, using the generated measurement noise and measurement model define the state covariance matrix:</p><pre id="ae88fbf9-ecc9-4854-af7c-816dec55cd91" class="code"><code>stateCovariance =H&#x27;*<em>detection.MeasurementNoise*</em>H;</code></pre><h2 id="992da89a-7ecf-433d-bfa9-d9be73c3500b" class=""><strong>Further Research</strong></h2><p id="8ed26147-a23a-4be0-bb21-b273b65c1e0d" class="">For further explanation of Kalman Filters with MATLAB, you can refer to <a href="https://www.youtube.com/watch?v=mwn8xhgNpFY&amp;list=PLn8PRpmsu08pzi6EMiYnR-076Mh-q3tWr">this video series</a>.</p><h1 id="33130b4c-4e20-45dc-8e4a-d863d7ebd4af" class="">MATLAB Sensor Fusion Guided Walkthrough</h1><p id="1ac4c6bd-fe7d-4789-8800-293b6859d1b3" class="">A guided walk-through of performing Kalman Filtering in a simulated environment using MATLAB. Starter code file Sensor_Fusion_with_Radar.m can be found on GitHub.</p><figure id="121c3a5e-7df7-4d84-919f-e7c680211a36" class="image"><a href="Clustering%20and%20Tracking%20f6a8100454704fe58bfc3ad85e70d998/Untitled%208.png"><img style="width:816px" src="Clustering%20and%20Tracking%20f6a8100454704fe58bfc3ad85e70d998/Untitled%208.png"/></a></figure><p id="b6f87f9f-274b-4988-a492-c574a3999062" class="">Sensor fusion and control algorithms for automated driving systems require rigorous testing. Vehicle-based testing is not only time consuming to set up, but also difficult to reproduce. Automated Driving System Toolbox provides functionality to define road networks, actors, vehicles, and traffic scenarios, as well as statistical models for simulating synthetic radar and camera sensor detection. This example shows how to generate a scenario, simulate sensor detections, and use sensor fusion to track simulated vehicles. The main benefit of using scenario generation and sensor simulation over sensor recording is the ability to create rare and potentially dangerous events and test the vehicle algorithms with them. This example covers the entire synthetic data workflow.</p><p id="4d4f047d-9e90-4a0a-9cad-6f74938421fc" class="">Scenario generation comprises generating a road network, defining vehicles that move on the roads, and moving the <a href="http://vehicles.in/">vehicles.In</a> this example, you test the ability of the sensor fusion to track a vehicle that is passing on the left of the ego vehicle. The scenario simulates a highway setting, and additional vehicles are in front of and behind the ego vehicle. Find more on how to generate these scenarios here, Automated Driving Toolbox: </p><figure id="9c41249e-7495-4bc6-8860-8f30a904bcdd"><a href="https://www.mathworks.com/videos/driving-scenario-designer-1529302116471.html" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Driving Scenario Designer Video</div><div class="bookmark-description">Discover the Driving Scenario Designer app, which lets you create virtual driving environments and generate synthetic sensor data for testing your perception algorithms.</div></div><div class="bookmark-href"><img src="https://www.mathworks.com/etc/designs/mathworks/img/favicon.ico" class="icon bookmark-icon"/>https://www.mathworks.com/videos/driving-scenario-designer-1529302116471.html</div></div><img src="https://www.mathworks.com/content/dam/mathworks/videos/u/3608945680001.mp4/_jcr_content/renditions/Thumbnail.11.640.360.jpg" class="bookmark-image"/></a></figure><pre id="97dda332-84ac-4efe-804b-0039f6c1ffb4" class="code"><code>% Define an empty scenario
+
+scenario = drivingScenario;
+scenario.SampleTime = 0.01;
+
+% Add a stretch of 500 meters of typical highway road with two lanes. % The road is defined using a set of points, where each point defines the center of the % road in 3-D space, and a road width.
+
+roadCenters = [0 0; 50 0; 100 0; 250 20; 500 40];
+roadWidth = 7.2; % Two lanes, each 3.6 meters
+road(scenario, roadCenters, roadWidth);
+
+% Create the ego vehicle and three cars around it: one that overtakes the ego vehicle % and passes it on the left, one that drives right in front of the ego vehicle and % one that drives right behind the ego vehicle. % All the cars follow the path defined by the road waypoints by using the path driving % policy. The passing car will start on the right lane, move to the left lane to pass, % and return to the right lane.% Create the ego vehicle that travels at 25 m/s along the road.
+egoCar = vehicle(scenario, &#x27;ClassID&#x27;, 1);
+path(egoCar, roadCenters(2:end,:) - [0 1.8], 25); % On right lane% Add a car in front of the ego vehicle.
+leadCar = vehicle(scenario, &#x27;ClassID&#x27;, 1);
+path(leadCar, [70 0; roadCenters(3:end,:)] - [0 1.8], 25); % On right lane% Add a car that travels at 35 m/s along the road and passes the ego vehicle.
+passingCar = vehicle(scenario, &#x27;ClassID&#x27;, 1);
+waypoints = [0 -1.8; 50 1.8; 100 1.8; 250 21.8; 400 32.2; 500 38.2];
+path(passingCar, waypoints, 35);
+
+% Add a car behind the ego vehicle
+chaseCar = vehicle(scenario, &#x27;ClassID&#x27;, 1);
+path(chaseCar, [25 0; roadCenters(2:end,:)] - [0 1.8], 25); % On right lane</code></pre><h3 id="5bd316c1-41fe-478a-a084-8d09699bd8fb" class=""><strong>Define Radar</strong></h3><p id="e71a3477-724a-4d05-9451-50fae963b8ba" class="">In this example, you simulate an ego vehicle that has 6 radar sensors covering the 360 degrees field of view. The sensors have some overlap and some coverage gap. The ego vehicle is equipped with a long-range radar sensor on both the front and the back of the vehicle. Each side of the vehicle has two short-range radar sensors, each covering 90 degrees. One sensor on each side covers from the middle of the vehicle to the back. The other sensor on each side covers from the middle of the vehicle forward. The figure in the next section shows the coverage.</p><pre id="a5764d28-6372-485f-b012-c4aa82e70867" class="code"><code>sensors = cell(6,1);
+
+% Front-facing long-range radar sensor at the center of the front bumper of the car.
+sensors{1} = radarDetectionGenerator(&#x27;SensorIndex&#x27;, 1, &#x27;Height&#x27;, 0.2, &#x27;MaxRange&#x27;, 174, ...
+ &#x27;SensorLocation&#x27;, [egoCar.Wheelbase + egoCar.FrontOverhang, 0], &#x27;FieldOfView&#x27;, [20, 5]);</code></pre><p id="60609ba3-a65d-4bcc-add9-466bf49fd3d4" class="">The rest of the radar sensors are defined in the project code.</p><h3 id="a0d6124b-1575-4a2d-a927-24ba86de001a" class="">Create a multiObjectTracker</h3><p id="de3b5daa-a75f-48bf-9db5-7fe4367e2c38" class="">Create a <strong><code>multiObjectTracker </code></strong>to track the vehicles that are close to the ego vehicle. The tracker uses the <strong><code>initSimDemoFilter </code></strong>supporting function to initialize a constant velocity linear Kalman filter that works with position and velocity. Tracking is done in 2-D. Although the sensors return measurements in 3-D, the motion itself is confined to the horizontal plane, so there is no need to track the height.</p><pre id="08715e32-c8eb-46a7-9b78-59acfc0ddd5b" class="code"><code>tracker = multiObjectTracker(&#x27;FilterInitializationFcn&#x27;, @initSimDemoFilter, ...
+ &#x27;AssignmentThreshold&#x27;, 30, &#x27;ConfirmationParameters&#x27;, [4 5]);
+
+positionSelector = [1 0 0 0; 0 0 1 0]; % Position selector
+velocitySelector = [0 1 0 0; 0 0 0 1]; % Velocity selector</code></pre><p id="37d14e82-cf8d-49e6-a1e6-50895c3e8341" class="">MultiObjectTracker Function has several parameters that can be tuned for different driving scenarios. It controls the track creation and deletion One can learn more about these </p><figure id="d979f3c2-a224-4163-b484-d36e6d3edb80"><a href="https://www.mathworks.com/help/driving/ref/multiobjecttracker-system-object.html" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Track objects using GNN assignment - MATLAB</div><div class="bookmark-description">Track objects using GNN assignment The multiObjectTracker System object™ initializes, confirms, predicts, corrects, and deletes the tracks of moving objects. Inputs to the multi-object tracker are detection reports generated by anobjectDetection object, radarDetectionGenerator object, or visionDetectionGenerator object. The multi-object tracker accepts detections from multiple sensors and assigns them to tracks using a global nearest neighbor (GNN) criterion.</div></div><div class="bookmark-href"><img src="https://www.mathworks.com/favicon.ico" class="icon bookmark-icon"/>https://www.mathworks.com/help/driving/ref/multiobjecttracker-system-object.html</div></div><img src="https://www.mathworks.com/content/dam/mathworks/mathworks-dot-com/images/responsive/supporting/campaigns/products/adaptive-cruise-control-design-offer.jpg" class="bookmark-image"/></a></figure><figure id="b116f8f1-46f4-4b47-8c99-29b3bce05b90" class="image"><a href="Clustering%20and%20Tracking%20f6a8100454704fe58bfc3ad85e70d998/Untitled%209.png"><img style="width:628px" src="Clustering%20and%20Tracking%20f6a8100454704fe58bfc3ad85e70d998/Untitled%209.png"/></a></figure><figure id="486dfd0f-fee6-4ad6-b070-c4aef36c59e2" class="image"><a href="Clustering%20and%20Tracking%20f6a8100454704fe58bfc3ad85e70d998/Untitled%2010.png"><img style="width:817px" src="Clustering%20and%20Tracking%20f6a8100454704fe58bfc3ad85e70d998/Untitled%2010.png"/></a></figure><h3 id="2bcffc31-08b3-439e-b780-bd813d3446d6" class="">Simulate the Scenario</h3><p id="aedd8173-ae3e-45a6-b26f-4c7d990e0670" class="">The following loop moves the vehicles, calls the sensor simulation, and performs the tracking. Note that the scenario generation and sensor simulation can have different time steps. Specifying different time steps for the scenario and the sensors enables you to decouple the scenario simulation from the sensor simulation. This is useful for modeling actor motion with high accuracy independently from the sensor’s measurement rate.</p><p id="b22aa653-1f64-483f-87cd-0a5b937abe2e" class="">Another example is when the sensors have different update rates. Suppose one sensor provides updates every 20 milliseconds and another sensor provides updates every 50 milliseconds. You can specify the scenario with an update rate of 10 milliseconds and the sensors will provide their updates at the correct time. In this example, the scenario generation has a time step of 0.01 second, while the sensors detect every 0.1 second.</p><p id="54b4b751-620b-4634-8f72-2e22e00ba2cb" class="">The sensors return a logical flag, <strong><code>isValidTime</code></strong>, that is true if the sensors generated detections. This flag is used to call the tracker only when there are detections. Another important note is that the sensors can simulate multiple detections per target, in particular when the targets are very close to the radar sensors. Because the tracker assumes a single detection per target from each sensor, you must cluster the detections before the tracker processes them. This is done by implementing clustering algorithm, the way we discussed above.</p><pre id="ec6db1af-52dd-4cca-974c-281c8d1b9cfc" class="code"><code>toSnap = true;
+while advance(scenario) &amp;&amp; ishghandle(BEP.Parent)    
+    % Get the scenario time
+    time = scenario.SimulationTime;
+
+    % Get the position of the other vehicle in ego vehicle coordinates
+    ta = targetPoses(egoCar);
+
+    % Simulate the sensors
+    detections = {};
+    isValidTime = false(1,6);
+    for i = 1:6
+        [sensorDets,numValidDets,isValidTime(i)] = sensors{i}(ta, time);
+        if numValidDets
+            detections = [detections; sensorDets]; %#ok&lt;AGROW&gt;endend% Update the tracker if there are new detectionsif any(isValidTime)
+        vehicleLength = sensors{1}.ActorProfiles.Length;
+        detectionClusters = clusterDetections(detections, vehicleLength);
+        confirmedTracks = updateTracks(tracker, detectionClusters, time);
+
+        % Update bird&#x27;s-eye plot
+        updateBEP(BEP, egoCar, detections, confirmedTracks, positionSelector, velocitySelector);
+    end
+% Snap a figure for the document when the car passes the ego vehicle
+if ta(1).Position(1) &gt; 0 &amp;&amp; toSnap
+        toSnap = false;
+        snapnow
+    end
+end</code></pre><h3 id="07a2333d-82ab-4a65-89dc-4847b37f3792" class="">Define the Kalman Filter</h3><p id="53b2cd54-2850-44ea-aa89-d3f974911069" class="">Define the Kalman Filter here to be used with <code>multiObjectTracker</code>.</p><p id="0b2fb411-35b2-4d31-a581-321cbbb2cbe5" class="">In MATLAB a <code>trackingKF</code> function can be used to initiate Kalman Filter for any type of Motion Models. This includes the 1D, 2D or 3D constant velocity or even constant acceleration. You can read more about this <a href="https://www.mathworks.com/help/driving/ref/trackingkf-class.html">here</a>.</p><p id="f34a3eef-3a8c-4b15-a023-e87f6cbfb598" class=""><code>initSimDemoFilter </code>This function initializes a constant velocity filter based on a detection.</p><pre id="eb19c44a-9c5c-4891-89a3-a9d3f66a6d1b" class="code"><code>function filter = initSimDemoFilter(detection)
+% Use a 2-D constant velocity model to initialize a trackingKF filter.
+% The state vector is [x;vx;y;vy]
+% The detection measurement vector is [x;y;vx;vy]
+% As a result, the measurement model is H = [1 0 0 0; 0 0 1 0; 0 1 0 0; 0 0 0 1]
+
+H = [1 0 0 0; 0 0 1 0; 0 1 0 0; 0 0 0 1];
+filter = trackingKF(&#x27;MotionModel&#x27;, &#x27;2D Constant Velocity&#x27;, ...
+ &#x27;State&#x27;, H&#x27; * detection.Measurement, ...
+ &#x27;MeasurementModel&#x27;, H, ...
+ &#x27;StateCovariance&#x27;, H’ * detection.MeasurementNoise * H, ...
+ &#x27;MeasurementNoise&#x27;, detection.MeasurementNoise);
+end</code></pre><h2 id="141ed7bb-1b3e-4fda-956d-b4d1e20cfabe" class=""><strong>Cluster Detections</strong></h2><p id="6a8d0fa6-78fc-400f-b0ae-eb34bf2a595a" class="">This function merges multiple detections suspected to be of the same vehicle to a single detection. The function looks for detections that are closer than the size of a vehicle. Detections that fit this criterion are considered a cluster and are merged to a single detection at the centroid of the cluster. The measurement noises are modified to represent the possibility that each detection can be anywhere on the vehicle. Therefore, the noise should have the same size as the vehicle size. In addition, this function removes the third dimension of the measurement (the height) and reduces the measurement vector to <code>[x;y;vx;vy]</code>.</p><p id="f961c8a5-ad52-4855-8f26-f8c4a7bccddf" class="">We already went through its implementation in the clustering concept of this lesson.</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="18889072-3d05-4a51-81a7-412acd6b9205"><div style="font-size:1.5em"><span class="icon">📢</span></div><div style="width:100%"><em><strong>It is highly recommended to spend some time on this sensor fusion code. It’s a good place to start learning and implementing sensor fusion techniques.</strong></em></div></figure><p id="7c09e71e-ed66-4bbc-8963-3537780ad5b8" class="">
+</p></div></article></body></html>

@@ -1,0 +1,628 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Project</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="b4dde7d0-d0f6-4657-a7e5-110bfa4e0dbe" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">⭐</span></div><h1 class="page-title">Project</h1></header><div class="page-body"><figure id="91d70399-8c63-4121-8b41-baa7811f458b" class="image"><a href="Project%20b4dde7d0d0f64657a7e5110bfa4e0dbe/Untitled.png"><img style="width:1359px" src="Project%20b4dde7d0d0f64657a7e5110bfa4e0dbe/Untitled.png"/></a></figure><ul id="74579757-267e-49f1-83b0-1c7f63cbff71" class="bulleted-list"><li>Configure the FMCW waveform based on the system requirements.</li></ul><ul id="622a3c4f-1e59-45f9-a397-6d7ce8f1f86b" class="bulleted-list"><li>Define the range and velocity of target and simulate its displacement.</li></ul><ul id="8da17fbb-b9ad-4072-9b99-f8e9f47cf095" class="bulleted-list"><li>For the same simulation loop process the transmit and receive signal to determine the beat signal</li></ul><ul id="3cd97629-4d68-4631-8a63-ba6cd4fa157f" class="bulleted-list"><li>Perform Range FFT on the received signal to determine the Range</li></ul><ul id="7f229ea7-298a-4096-b641-21e3f9d5b10e" class="bulleted-list"><li>Towards the end, perform the CFAR processing on the output of 2nd FFT to display the target.</li></ul><h3 id="1b9db855-1b8b-41a4-aece-34224cdb73a4" class="">Radar System Requirements</h3><figure id="22386eb4-d2f7-43bf-8223-33d05721972c" class="image"><a href="Project%20b4dde7d0d0f64657a7e5110bfa4e0dbe/Untitled%201.png"><img style="width:829px" src="Project%20b4dde7d0d0f64657a7e5110bfa4e0dbe/Untitled%201.png"/></a></figure><p id="89c34ca0-247d-4350-9597-6aa240b1f89d" class="">System Requirements defines the design of a Radar. The sensor fusion design for different driving scenarios requires different system configurations from a Radar. In this project, you will designing a Radar based on the given system requirements (above).</p><p id="0c5918fb-1220-4da2-92b1-ac3e31fddb4f" class="">Max Range and Range Resolution will be considered here for waveform design.</p><figure id="269316da-8aaf-4c55-9d77-4563d6708ef8" class="image"><a href="Project%20b4dde7d0d0f64657a7e5110bfa4e0dbe/Untitled%202.png"><img style="width:966px" src="Project%20b4dde7d0d0f64657a7e5110bfa4e0dbe/Untitled%202.png"/></a></figure><h3 id="bb87dbd6-328f-4c3b-9d1d-f22d1cd3d619" class="">Initial Range and velocity of the Target</h3><p id="8ae6f429-89dd-4571-8160-7f498dd994a1" class="">You will provide the initial range and velocity of the target. Range cannot exceed the max value of 200m and velocity can be any value in the range of -70 to + 70 m/s.</p><h3 id="10c5a8e7-2dc6-4976-b734-0bbee3541b62" class="">Target Generation and Detection</h3><figure id="e3d56e5e-d425-4be5-8740-7a566144364b" class="image"><a href="Project%20b4dde7d0d0f64657a7e5110bfa4e0dbe/Untitled%203.png"><img style="width:1366px" src="Project%20b4dde7d0d0f64657a7e5110bfa4e0dbe/Untitled%203.png"/></a></figure><figure id="c9a3a185-910d-4cb0-9ec2-107415e69fcd" class="image"><a href="Project%20b4dde7d0d0f64657a7e5110bfa4e0dbe/Untitled%204.png"><img style="width:970px" src="Project%20b4dde7d0d0f64657a7e5110bfa4e0dbe/Untitled%204.png"/></a></figure><figure id="2c984e4a-d187-4a91-aaa5-dd94d4c0fcab" class="image"><a href="Project%20b4dde7d0d0f64657a7e5110bfa4e0dbe/Untitled%205.png"><img style="width:962px" src="Project%20b4dde7d0d0f64657a7e5110bfa4e0dbe/Untitled%205.png"/></a></figure><h3 id="52c27b37-f088-472e-a62f-3aaaa31f1039" class="">FFT Operation</h3><ul id="5b80233e-46a5-4b64-a12b-508bd71b48d6" class="bulleted-list"><li>Implement the 1D FFT on the Mixed Signal</li></ul><ul id="c0984919-e968-4420-beea-9b8b7be98860" class="bulleted-list"><li>Reshape the vector into Nr*Nd array.</li></ul><ul id="cb03c06d-9bf4-47ab-81e1-46f83996cc9e" class="bulleted-list"><li>Run the FFT on the beat signal along the range bins dimension (Nr)</li></ul><ul id="bead9af1-1b59-4885-94dd-8488eb82a678" class="bulleted-list"><li>Normalize the FFT output.</li></ul><ul id="b1f15b31-eb53-4a99-b187-85ff52bc3dbc" class="bulleted-list"><li>Take the absolute value of that output.</li></ul><ul id="bb07ef21-bf51-4a17-a42e-c4db9a057787" class="bulleted-list"><li>Keep one half of the signal</li></ul><ul id="30e30ef7-d47b-4a53-89b5-5d83a19602f4" class="bulleted-list"><li>Plot the output</li></ul><ul id="5fa05a7d-39b1-4525-beae-e808cb038257" class="bulleted-list"><li>There should be a peak at the initial position of the target</li></ul><figure id="58a6fed0-8c8e-44d6-ba9d-46825709dbd3" class="image"><a href="Project%20b4dde7d0d0f64657a7e5110bfa4e0dbe/Untitled%206.png"><img style="width:560px" src="Project%20b4dde7d0d0f64657a7e5110bfa4e0dbe/Untitled%206.png"/></a><figcaption>The 1st FFT output for the target located at 110 meters</figcaption></figure><p id="d39f83bb-e31e-41cd-a5fc-db6c635b738d" class="">The 2nd FFT is already implemented in the code. It will generate a Range Doppler Map as seen in the image below and it will be given by variable ‘RDM’. Next task is to implement the CFAR on this Range Doppler Map.</p><figure id="f3427b88-22b5-41c1-95b4-82480b0874a6" class="image"><a href="Project%20b4dde7d0d0f64657a7e5110bfa4e0dbe/Untitled%207.png"><img style="width:1652px" src="Project%20b4dde7d0d0f64657a7e5110bfa4e0dbe/Untitled%207.png"/></a><figcaption>2D FFT output - Range Doppler Map</figcaption></figure><h3 id="bed16ec7-baf4-47e6-a79d-d638dae56dc6" class="">2D CFAR</h3><ul id="e425506a-52e4-4414-a601-0509307584b3" class="bulleted-list"><li>Determine the number of Training cells for each dimension. Similarly, pick the number of guard cells.</li></ul><ul id="82e6abbf-c561-4837-8b63-31a2fa25d7b5" class="bulleted-list"><li>Slide the cell under test across the complete matrix. Make sure the CUT has margin for Training and Guard cells from the edges.</li></ul><ul id="50b33ef0-8662-4b84-b0ef-eeeba725ed81" class="bulleted-list"><li>For every iteration sum the signal level within all the training cells. To sum convert the value from logarithmic to linear using db2pow function.</li></ul><ul id="f460f70e-30ff-45ce-954a-fcafc297ffe2" class="bulleted-list"><li>Average the summed values for all of the training cells used. After averaging convert it back to logarithmic using pow2db.</li></ul><ul id="7d13d5a5-017c-41e0-a1a7-177bcba6f72d" class="bulleted-list"><li>Further add the offset to it to determine the threshold.</li></ul><ul id="624154a4-03c5-4ed2-a07e-cc24f0cda23e" class="bulleted-list"><li>Next, compare the signal under CUT against this threshold.</li></ul><ul id="7e6ca4ec-bc53-40b2-8814-355e54761f95" class="bulleted-list"><li>If the CUT level &gt; threshold assign it a value of 1, else equate it to 0.</li></ul><p id="7fbe928a-8636-4481-9a9f-f02e967c3914" class="">The process above will generate a thresholded block, which is smaller than the Range Doppler Map as the CUTs cannot be located at the edges of the matrix due to the presence of Target and Guard cells. Hence, those cells will not be thresholded.</p><ul id="32b32fea-935d-4613-ab2f-c151f04c4000" class="bulleted-list"><li>To keep the map size same as it was before CFAR, equate all the non-thresholded cells to 0.</li></ul><figure id="dbba86bd-4b8e-43fb-9c1a-f6235a6a3d18" class="image"><a href="Project%20b4dde7d0d0f64657a7e5110bfa4e0dbe/Untitled%208.png"><img style="width:1607px" src="Project%20b4dde7d0d0f64657a7e5110bfa4e0dbe/Untitled%208.png"/></a><figcaption>The output of the 2D CFAR process</figcaption></figure><p id="d84fb838-243e-44c1-978f-863908bfc76d" class="">Once you have completed this, you are done. Congratulations on doing a great job on this final project!</p><p id="ff885710-4075-4901-9d3b-a83bb51c8e65" class="">
+</p></div></article></body></html>

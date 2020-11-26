@@ -1,0 +1,627 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Project</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="6430e23c-2b32-4330-943c-0ff45c7aa120" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">🛠</span></div><h1 class="page-title">Project</h1></header><div class="page-body"><figure id="569d8b4f-61c9-4c15-9fb7-5bb7a9e0e0fe" class="image"><a href="Project%206430e23c2b324330943c0ff45c7aa120/Untitled.png"><img style="width:991px" src="Project%206430e23c2b324330943c0ff45c7aa120/Untitled.png"/></a></figure><figure id="afca40ed-868e-4c82-ab15-09e35a0f22dc" class="image"><a href="Project%206430e23c2b324330943c0ff45c7aa120/Untitled%201.png"><img style="width:1057px" src="Project%206430e23c2b324330943c0ff45c7aa120/Untitled%201.png"/></a></figure><figure id="6e8e73eb-a5cc-4fb3-94bd-949e1cf1c559" class="image"><a href="Project%206430e23c2b324330943c0ff45c7aa120/Untitled%202.png"><img style="width:1057px" src="Project%206430e23c2b324330943c0ff45c7aa120/Untitled%202.png"/></a></figure><h1 id="09753f6c-eeb7-4abb-9d84-55cdddb0ed95" class="">Additional Resources</h1><h2 id="b92ca359-de2c-451f-949d-724018b62a58" class=""><strong>Additional Resources on Sensor Fusion and Object Detection &amp; Tracking</strong></h2><p id="a9681f8f-6569-4ee3-af27-211bab31aa40" class="">Nice work reaching the end of the sensor fusion content! While you still have the project left to do here, we&#x27;re also providing some additional resources and recent research on the topic that you can come back to if you have time later on.</p><p id="8e816c6b-853c-404b-b227-e0bf86bbef9a" class="">Reading research papers is a great way to get exposure to the latest and greatest in the field, as well as expand your learning. However, just like the project ahead, it&#x27;s often best to <em>learn by doing</em> - if you find a paper that really excites you, try to implement it (or even something better) yourself!</p><h3 id="28804c6c-3f52-42a3-ab1a-20e8264314d0" class=""><strong>Optional Reading</strong></h3><p id="92bdfa5e-8906-4335-92af-ffba54c415de" class="">All of these are completely optional reading - you could spend days reading through the entirety of these! We suggest moving onto the project first so you have Kalman Filters fresh on your mind, before coming back to check these out.</p><p id="4f2e618e-25be-4a3f-aa18-d18e12e4c530" class="">We&#x27;ve categorized these papers to hopefully help you narrow down which ones might be of interest, as well as highlighted a couple key reads by category by including their <em>Abstract</em> section, which summarizes the paper. We&#x27;ve also included some additional papers you might consider as well if you want to delve even deeper.</p><h3 id="909d068a-dacb-4581-b1fa-658ceb834c9d" class=""><strong>Tracking Multiple Objects and Sensor Fusion</strong></h3><p id="dc6d3ac4-ca19-466a-8aaa-92c2dd8429dc" class="">The below papers and resources concern tracking multiple objects, using Kalman Filters as well as other techniques! </p><ul id="4ba9fb75-53e1-45b0-b354-f5a3d082df55" class="bulleted-list"><li><em>No Blind Spots: Full-Surround Multi-Object Tracking for Autonomous Vehicles using Cameras &amp; LiDARs by A. Rangesh and M. Trivedi</em></li></ul><figure id="9b646d8b-58bb-4d9b-973e-1ce9d432d9c1"><a href="https://arxiv.org/pdf/1802.08755.pdf" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title"></div></div><div class="bookmark-href"><img src="https://arxiv.org/favicon.ico" class="icon bookmark-icon"/>https://arxiv.org/pdf/1802.08755.pdf</div></div></a></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="664d3b0f-8ffb-4e7c-b68b-cf604275cfcd"><div style="font-size:1.5em"><span class="icon">🥊</span></div><div style="width:100%"><strong><em>Abstract</em></strong><em>: Online multi-object tracking (MOT) is extremely important for high-level spatial reasoning and path planning for autonomous and highly-automated vehicles. In this paper, we present a modular framework for tracking multiple objects (vehicles), capable of accepting object proposals from different sensor modalities (vision and range) and a variable number of sensors, to produce continuous object tracks. [...] We demonstrate that our framework is well-suited to track objects through entire maneuvers around the ego-vehicle, some of which take more than a few minutes to complete. We also leverage the modularity of our approach by comparing the effects of including/excluding different sensors, changing the total number of sensors, and the quality of object proposals on the final tracking result.</em></div></figure><ul id="f4a88b8c-6306-424a-8914-e2f5b5c76be2" class="bulleted-list"><li><em>Multiple Sensor Fusion and Classification for Moving Object Detection and Tracking by R.O. Chavez-Garcia and O. Aycard</em></li></ul><figure id="7433cfb6-100a-47ce-9290-5576f4aafca9"><a href="https://hal.archives-ouvertes.fr/hal-01241846/document" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title"></div></div><div class="bookmark-href">https://hal.archives-ouvertes.fr/hal-01241846/document</div></div></a></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="eb88fc1c-281f-4c11-851d-aac7ad4f5d25"><div style="font-size:1.5em"><span class="icon">🥊</span></div><div style="width:100%"><em><strong>Abstract</strong></em><em>: [...] We believe that by including the objects classification from multiple sensors detections as a key component of the object’s representation and the perception process, we can improve the perceived model of the environment. First, we define a composite object representation to include class information in the core object’s description. Second, we propose a complete perception fusion architecture based on the Evidential framework to solve the Detection and Tracking of Moving Objects (DATMO) problem by integrating the composite representation and uncertainty management. Finally, we integrate our fusion approach in a real-time application inside a vehicle demonstrator from the interactIVe IP European project which includes three main sensors: radar, lidar and camera. [...]</em></div></figure><h3 id="d441ff17-7808-4ee7-8f42-9cd4e69f00e5" class=""><strong>Stereo cameras</strong></h3><p id="a6463d14-17b0-4ca3-b053-be6b6caad381" class="">The below papers cover various methods of using stereo camera set-ups for object detection and tracking.</p><ul id="fc6cfdd2-a5ab-46f2-9130-13e5bc664375" class="bulleted-list"><li>Robust 3-D Motion Tracking from Stereo Images: A Model-less Method by Y.K. Yu, et. al.</li></ul><figure id="f42f7ead-cfda-430a-bfab-587d9737a047"><a href="http://www.cse.cuhk.edu.hk/~khwong/J2008_IEEE_TIM_Stereo%20Kalman%20.pdf" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title"></div></div><div class="bookmark-href"><img src="http://www.cse.cuhk.edu.hk/favicon.ico" class="icon bookmark-icon"/>http://www.cse.cuhk.edu.hk/~khwong/J2008_IEEE_TIM_Stereo%20Kalman%20.pdf</div></div></a></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="3ee0c964-44a6-4f7a-b477-fcba132a8822"><div style="font-size:1.5em"><span class="icon">🥊</span></div><div style="width:100%"><strong><em>Abstract</em></strong><em>: Traditional vision-based 3-D motion estimation algorithms require given or calculated 3-D models while the motion is being tracked. We propose a high-speed extended Kalman filter-based approach that recovers camera position and orientation from stereo image sequences without prior knowledge as well as the procedure for the reconstruction of 3-D structures. [...] The proposed method has been applied to recover the motion from stereo image sequences taken by a robot and a hand-held stereo rig. The results are accurate compared to the ground truths. It is shown in the experiment that our algorithm is not susceptible to outlying point features with the application of a validation gate.</em></div></figure><ul id="7c33b4d7-6279-498b-8013-12dc50b3402f" class="bulleted-list"><li>Vehicle Tracking and Motion Estimation Based on Stereo Vision Sequences by A. Barth (long read)</li></ul><figure id="d928157c-b14f-4f46-ab2c-2552aaf7d97a"><a href="http://hss.ulb.uni-bonn.de/2010/2356/2356.pdf" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title"></div></div><div class="bookmark-href">http://hss.ulb.uni-bonn.de/2010/2356/2356.pdf</div></div></a></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="f56dd7fa-20bb-428f-9ed8-c2342a909a2d"><div style="font-size:1.5em"><span class="icon">🥊</span></div><div style="width:100%"><em><strong>Abstract</strong></em><em>: In this dissertation, a novel approach for estimating trajectories of road vehicles such as cars, vans, or motorbikes, based on stereo image sequences is presented. Moving objects are detected and reliably tracked in real-time from within a moving car. [...] The focus of this contribution is on oncoming traffic, while most existing work in the literature addresses tracking the lead vehicle. The overall approach is generic and scalable to a variety of traffic scenes including inner city, country road, and highway scenarios. [...] The key idea is to derive these parameters from a set of tracked 3D points on the object’s surface, which are registered to a time-consistent object coordinate system, by means of an extended Kalman filter. Combining the rigid 3D point cloud model with the dynamic model of a vehicle is one main contribution of this thesis. [...] The experimental results show the proposed system is able to accurately estimate the object pose and motion parameters in a variety of challenging situations, including night scenes, quick turn maneuvers, and partial occlusions.</em></div></figure><h3 id="6126ae08-f784-4c05-912b-ca74e73dba58" class=""><strong>Deep Learning-based approaches</strong></h3><p id="5d47d943-e662-4994-b177-992fbe8598db" class="">The below papers include various deep learning-based approaches to 3D object detection and tracking.</p><ul id="9446b842-e763-476f-80c1-909e18be0e87" class="bulleted-list"><li><a href="http://openaccess.thecvf.com/content_cvpr_2018/papers/Luo_Fast_and_Furious_CVPR_2018_paper.pdf">Fast and Furious: Real Time End-to-End 3D Detection, Tracking and Motion Forecasting with a Single Convolutional Net</a> by W. Luo, <em>et. al.</em></li></ul><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="282dd85a-67ca-441d-aea6-a55a35ebd161"><div style="font-size:1.5em"><span class="icon">🥊</span></div><div style="width:100%"><strong><em>Abstract</em></strong><em>: In this paper we propose a novel deep neural network that is able to jointly reason about 3D detection, tracking and motion forecasting given data captured by a 3D sensor. By jointly reasoning about these tasks, our holistic approach is more robust to occlusion as well as sparse data at range. Our approach performs 3D convolutions across space and time over a bird’s eye view representation of the 3D world, which is very efficient in terms of both memory and computation. Our experiments on a new very large scale dataset captured in several north american cities, show that we can outperform the state-of-the-art by a large margin. Importantly, by sharing computation we can perform all tasks in as little as 30 ms.</em></div></figure><ul id="d2603f01-6c43-401b-b0d8-6e385ca09fb4" class="bulleted-list"><li>VoxelNet: End-to-End Learning for Point Cloud Based 3D Object Detection by Y. Zhou and O. Tuzel</li></ul><figure id="b147fcab-80f4-4e83-97f1-1d0d3796bb19"><a href="https://arxiv.org/abs/1711.06396" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">VoxelNet: End-to-End Learning for Point Cloud Based 3D Object Detection</div><div class="bookmark-description">Accurate detection of objects in 3D point clouds is a central problem in many applications, such as autonomous navigation, housekeeping robots, and augmented/virtual reality. To interface a highly sparse LiDAR point cloud with a region proposal network (RPN), most existing efforts have focused on hand-crafted feature representations, for example, a bird&#x27;s eye view projection.</div></div><div class="bookmark-href"><img src="https://static.arxiv.org/static/browse/0.3.4/images/icons/favicon.ico" class="icon bookmark-icon"/>https://arxiv.org/abs/1711.06396</div></div></a></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="e1824183-734f-41ba-8c6e-73b520b2b8be"><div style="font-size:1.5em"><span class="icon">🥊</span></div><div style="width:100%"><em><strong>Abstract</strong></em><em>: Accurate detection of objects in 3D point clouds is a central problem in many applications, such as autonomous navigation, housekeeping robots, and augmented/virtual reality. To interface a highly sparse LiDAR point cloud with a region proposal network (RPN), most existing efforts have focused on hand-crafted feature representations, for example, a bird&#x27;s eye view projection. In this work, we remove the need of manual feature engineering for 3D point clouds and propose VoxelNet, a generic 3D detection network that unifies feature extraction and bounding box prediction into a single stage, end-to-end trainable deep network. [...] Experiments on the KITTI car detection benchmark show that VoxelNet outperforms the state-of-the-art LiDAR based 3D detection methods by a large margin. Furthermore, our network learns an effective discriminative representation of objects with various geometries, leading to encouraging results in 3D detection of pedestrians and cyclists, based on only LiDAR.</em></div></figure><h3 id="407cb74b-0157-439f-9213-b478a3e37936" class=""><strong>Other papers on Tracking Multiple Objects and Sensor Fusion</strong></h3><p id="ca615f40-b2df-4c53-86d3-6681010a1428" class="">The below papers and resources concern tracking multiple objects, using Kalman Filters as well as other techniques! We have not included the abstracts here for brevity, but you should check those out first to see which of these you want to take a look at.</p><blockquote id="bdf8f8e4-27a0-4202-9217-0865ad679d60" class="">Multiple Object Tracking using Kalman Filter and Optical Flow by S. Shantaiya, et. al.</blockquote><figure id="096308b2-4e8f-448c-b8f5-aa67937f9f50"><a href="http://www.ejaet.com/PDF/2-2/EJAET-2-2-34-39.pdf" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title"></div></div><div class="bookmark-href"><img src="http://www.ejaet.com/favicon.ico" class="icon bookmark-icon"/>http://www.ejaet.com/PDF/2-2/EJAET-2-2-34-39.pdf</div></div></a></figure><blockquote id="93e07087-cb6e-43ae-81b5-da0977319c69" class="">Kalman Filter Based Multiple Objects Detection-Tracking Algorithm Robust to Occlusion by J-M Jeong, et. al.</blockquote><figure id="03b0acf0-9fac-4a07-a02d-d8807d479fa5"><a href="https://pdfs.semanticscholar.org/f5a2/bf3df3126d2923a617b977ec2b4e1c829a08.pdf" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title"></div></div><div class="bookmark-href">https://pdfs.semanticscholar.org/f5a2/bf3df3126d2923a617b977ec2b4e1c829a08.pdf</div></div></a></figure><blockquote id="6bac3154-49f7-4aeb-b056-9b1f24d03d83" class="">Tracking Multiple Moving Objects Using Unscented Kalman Filtering Techniques by X. Chen, et. al.</blockquote><figure id="0770c70c-13e6-4169-b14d-b2a885ac504e"><a href="https://arxiv.org/ftp/arxiv/papers/1802/1802.01235.pdf" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title"></div></div><div class="bookmark-href"><img src="https://arxiv.org/favicon.ico" class="icon bookmark-icon"/>https://arxiv.org/ftp/arxiv/papers/1802/1802.01235.pdf</div></div></a></figure><blockquote id="015b0afe-cebd-4e70-a4f0-409de340a5de" class="">LIDAR-based 3D Object Perception by M. Himmelsbach, et. al</blockquote><blockquote id="07de21e5-514a-4ebd-a728-191507549f47" class="">Fast multiple objects detection and tracking fusing color camera and 3D LIDAR for intelligent vehicles by S. Hwang, et. al.</blockquote><figure id="6819d77d-d827-4d12-95f0-31108eb50b6a"><a href="https://www.researchgate.net/publication/309503024_Fast_multiple_objects_detection_and_tracking_fusing_color_camera_and_3D_LIDAR_for_intelligent_vehicles" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title"></div></div><div class="bookmark-href">https://www.researchgate.net/publication/309503024_Fast_multiple_objects_detection_and_tracking_fusing_color_camera_and_3D_LIDAR_for_intelligent_vehicles</div></div></a></figure><blockquote id="6213f48e-2ab9-4662-a8b3-ac3b4ce83ab2" class="">3D-LIDAR Multi Object Tracking for Autonomous Driving by A.S. Rachman (long read)</blockquote><figure id="f21ed14b-7dbf-439b-984d-26af07c3801a"><a href="https://repository.tudelft.nl/islandora/object/uuid%3Af536b829-42ae-41d5-968d-13bbaa4ec736" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">3D-LIDAR Multi Object Tracking for Autonomous Driving</div><div class="bookmark-description">The recent advancement of the autonomous vehicle has raised the need for reliable environmental perception. This is evident, as an autonomous vehicle has to perceive and interpret its local environment in order to execute reactive and predictive control action.</div></div><div class="bookmark-href"><img src="https://repository.tudelft.nl/favicon.ico" class="icon bookmark-icon"/>https://repository.tudelft.nl/islandora/object/uuid%3Af536b829-42ae-41d5-968d-13bbaa4ec736</div></div></a></figure></div></article></body></html>

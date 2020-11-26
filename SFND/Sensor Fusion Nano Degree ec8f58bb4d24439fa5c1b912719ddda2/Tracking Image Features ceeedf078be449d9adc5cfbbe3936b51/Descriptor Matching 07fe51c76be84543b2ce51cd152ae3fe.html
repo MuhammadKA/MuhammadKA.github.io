@@ -1,0 +1,635 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Descriptor Matching</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="07fe51c7-6be8-4543-b2ce-51cd152ae3fe" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">5️⃣</span></div><h1 class="page-title">Descriptor Matching</h1></header><div class="page-body"><p id="af9039ee-f74c-420b-b34c-e8bbfe6a6af5" class="">Once you have located and described a set of keypoints for each image in a sequence of frames, the next step in the tracking process is to find the best fit for each keypoint in successive frames. In order to do so, you need to implement a suitable similarity measure so that your tracking algorithm can uniquely assign keypoint pairs.</p><p id="ebf85856-52f0-48c6-9cda-229d6c524c84" class="">You will learn how to properly deal with ambiguities that can occur when features look very similar. The section will conclude with an overview of performance measures (e.g. true positive rate) to describe the quality of a matching method so you will be able to compare algorithms and make an informed choice when it comes down to selecting a suitable method for your project.</p><p id="062bc9c9-e5d9-4355-ad1a-934b03c3e7eb" class=""><mark class="highlight-red"><strong>We focus on three main aspects: </strong></mark></p><ol id="ff61c3b2-1cde-4603-9fed-49e0f6652141" class="numbered-list" start="1"><li><strong>Similarity measures - </strong>How to gauge the similarity between two descriptors?</li></ol><ol id="88167707-4d2e-4e51-b30e-1a98ef5bcf20" class="numbered-list" start="2"><li><strong>Where to position the selection threshold? and what about unwanted correspondences? 
+</strong>How to decide whether two descriptors are similar based on similarity measure?
+Main question is: </li></ol><ol id="f29bd8bf-6a6f-4070-a011-08aca1e4171a" class="numbered-list" start="3"><li><strong>Overview of methods and concepts for accessing the performance of detectors and descriptors to find out which one is suited for our particular problem.  </strong></li></ol><h2 id="8a6808e2-264c-4b5f-a75e-287407186bb7" class="">Distance between descriptors</h2><p id="b4831822-f864-4eda-b602-70552ad6073a" class="">In the last section, you have learned that keypoints can be described by transforming their local neighborhood into a high-dimensional vector that captures the unique characteristics of the gradient or intensity distribution. In this section, we want to look at several ways to compute the distance between two descriptors such that the differences between them are transformed into a single number which we can use as a simple measure of similarity.</p><p id="4299d624-14de-47c7-8467-d34406db6db6" class="">The first distance function is the &quot;Sum of Absolute Differences (SAD)&quot;. As you can see in the equation below, the SAD takes as input two descriptor vectors d_a<em>d</em><em>a</em> and d_b<em>d</em><em>b</em>. The SAD is computed by subtracting from every component in d_a<em>d</em><em>a</em> the corresponding component at the same position in d_b<em>d</em><em>b</em>. Then, the absolute value of the respective result is summed up. The SAD norm is also referred to as L1-norm in the literature.</p><p id="19fb696c-577b-42a3-b8e0-483e2a1cf0f4" class="">The second distance function is the &quot;Sum of Squared Differences (SSD)&quot;, which is similar to the SAD in the sense that differences between individual components of two descriptor vectors are computed. However, the key difference between SAD and SSD is that the latter sums the squared differences instead of the absolute differences. In the literature, the SSD norm is also referred to as L2-norm. Both norms are given in the following figure.</p><figure id="3a8007ce-5cc0-4d3a-a9ea-cc7fa2968690" class="image"><a href="Descriptor%20Matching%2007fe51c76be84543b2ce51cd152ae3fe/Untitled.png"><img style="width:737px" src="Descriptor%20Matching%2007fe51c76be84543b2ce51cd152ae3fe/Untitled.png"/></a></figure><p id="e1dec736-bddb-482e-b356-2cf4c2839cfb" class="">There are several ways of explaining the differences between SAD and SSD. One helpful approach, as we want to keep this aspect short, is to look at both norms from a geometrical perspective. In the following figure, a two-dimensional feature space is considered. In it, there are two feature vectors d1 and d2, each of which consists of an (a,b) coordinate pair.</p><figure id="947cfd17-666b-4599-89ab-b9268c20b594" class="image"><a href="Descriptor%20Matching%2007fe51c76be84543b2ce51cd152ae3fe/Untitled%201.png"><img style="width:665px" src="Descriptor%20Matching%2007fe51c76be84543b2ce51cd152ae3fe/Untitled%201.png"/></a></figure><p id="aa16d857-e37b-4c3b-9803-a2923e6d33d7" class="">The shortest distance between both is a straight line. Given the two components of each vector, the SAD computes the sum of the length differences, which is a one-dimensional process. The SSD on the other hand, computes the sum of squares, which obeys the law of Pythagoras. This law says that in a rectangular triangle, the sum of the catheti squares is equal to the square of the hypotenuse. So in terms of the geometric distance between both vectors, the L2-norm is a more accurate measure. Note that the same rationale applies to higher-dimensional descriptors in the same manner.</p><p id="9ba70bfd-1418-425f-8c29-abc245b67a4c" class="">In the case of a binary descriptor who consists only of ones and zeros, the best (and fastest) measure to use is the Hamming distance, which computes the difference between both vectors by using an XOR function, which returns zero if two bits are identical and one if two bits are different. So the sum of all XOR operations is simply the number of differing bits between both descriptors.</p><p id="7756b0ca-4077-46dc-95c5-68e2ef29c163" class="">The key takeaway here is that you have to adapt the distance measure to the type of descriptor you are using. In case of gradient-based methods such as SIFT, the L2-norm would be most appropriate. In the case of all binary descriptors, the Hamming distance should be used.</p><h2 id="729bae41-0f84-45e5-b1cd-cba7262aad4b" class="">Finding matches</h2><p id="766a9bd7-d6e0-47e4-996d-8707e9a50018" class="">Let us assume we have N keypoints and their associated descriptors in one image and M keypoints in another image. The most obvious method to look for corresponding pairs would be to compare all features with each other, i.e. perform N x M comparisons. For a given keypoint from the first image, it takes every keypoint in the second image and calculates the distance. The keypoint with the smallest distance will be considered its pair. This approach is referred to as Brute Force Matching or Nearest Neighbor Matching and is available in the OpenCV under the name BFMatcher. The output of brute force matching in OpenCV is a list of keypoint pairs sorted by the distance of their descriptors under the chosen distance function. Brute force matching works well for small keypoint numbers but can be computationally expensive as the number of keypoints increases.</p><p id="78d9d6ac-7b07-44e4-afce-08e5346a0905" class="">In 2014, David Lowe (the father of SIFT) and Marius Muja released an open-source library called &quot;fast library for approximate nearest neighbors&quot; (FLANN). FLANN trains an indexing structure for walking through potential matching candidates that is created using concepts from machine learning. The library builds a very efficient data structure (a KD-tree) to search for matching pairs and avoids the exhaustive search of the brute force approach. It is therefore faster while the results are still very good, depending on the matching parameters. As FLANN-based matching entails a whole new body of knowledge with several concepts that have limited relevance for this course, there is no detailed description of the method given here. The FLANN-based matching is available in the OpenCV and you will see it again in the code example below. At the time of writing (May 2019), there is a potential bug in the current implementation of the OpenCV, which requires a conversion of the binary descriptors into floating point vectors, which is inefficient. Yet still there is an improvement in speed, albeit not as large as it potentially could be.</p><p id="799d4676-c6bd-40f2-83ef-ef8391eb5c8e" class="">Both BFMatching and FLANN accept a descriptor distance threshold T which is used to limit the number of matches to the ‘good’ ones and discard matches where the respective pairs are no correspondences. Corresponding ‘good’ pairs are termed ‘True Positives (TP)’ whereas mismatches are called ‘False Positives (FP)’. The task of selecting a suitable value for T is to allow for as many TP matches as possible while FP matches should be avoided as far as possible. Depending on the image content and on the respective detector / descriptor combination, a trade-off between TP and FP has to be found that reasonably balances the ratio between TP and FP. The following figure shows two distributions of TP and of FP over the SSD to illustrate threshold selection.</p><figure id="7bad1bd0-4fa7-45d1-bd26-cec2943e8978" class="image"><a href="Descriptor%20Matching%2007fe51c76be84543b2ce51cd152ae3fe/Untitled%202.png"><img style="width:981px" src="Descriptor%20Matching%2007fe51c76be84543b2ce51cd152ae3fe/Untitled%202.png"/></a></figure><p id="e4653697-3cef-4e39-aeaf-e2606541b577" class="">The first threshold T1 is set to a maximally permissible SSD between two features in a way that some true positive matches are selected, while false positive matches are almost entirely avoided . However, most TP matches are also discarded with this setting. By increasing the matching threshold to T2, more TP matches are selected but the number of FP matches also increases significantly. In practice, a clear and concise separation of TP and FP is almost never found and therefore, setting a matching threshold is always a compromise between balancing &#x27;good&#x27; vs. &#x27;bad&#x27; matches. While FP matches can not be avoided in most cases, the goal always is to lower their number as much as possible. In the following, two strategies to achieve this are presented.</p><h2 id="d555c896-c8bc-4a9f-a8b0-910ecc28d77c" class="">Selecting Matches</h2><p id="06497426-44f0-4314-862d-e30aa200e103" class="">As long as the selected threshold T is not exceeded, brute force matching will always return a match for a keypoint in the first image, even if the keypoint is not present in the second image. This inevitably leads to a number of false matches. A strategy to counteract this is called cross check matching, which works by applying the matching procedure in both directions and keeping only those matches whose best match in one direction equals the best match in the other direction. The steps of the cross check approach are:</p><ol id="97ae2ef5-0a9b-49b3-b047-e54fb333ca06" class="numbered-list" start="1"><li>For each descriptor in the source image, find one or more best matches in the reference image.</li></ol><ol id="898f3f89-b972-4083-b3ee-96008d46363c" class="numbered-list" start="2"><li>Switch the order of source and reference image.</li></ol><ol id="902f90f7-f7c6-4fa8-9514-ff5fa8b8a5bc" class="numbered-list" start="3"><li>Repeat the matching procedure between source and reference image from step 1.</li></ol><ol id="de515c47-4d9c-418e-8e69-d77c516f479b" class="numbered-list" start="4"><li>Select those keypoint pairs whose descriptors are best matches in both directions.</li></ol><p id="f5e27474-6768-4d70-9726-3a77fd17b726" class=""><em><strong>Although cross check matching increases the processing time, it usually removes a significant number of false matches and should thus always be performed when accuracy is preferred over speed.</strong></em></p><p id="cfe3607b-5239-4211-8549-0349c0cb18eb" class="">A very efficient way of lowering the number of false positives is to compute the <em>nearest neighbor distance ratio</em> for each keypoint. This method has been originally proposed by D. Lowe in the 1999 paper on SIFT. The main idea is to not apply the threshold on the SSD directly. Instead, for each keypoint in the source image, the two best matches are located in the reference image and the ratio between the descriptor distances is computed. Then, a threshold is applied to the ratio to sort out ambiguous matches. The figure below illustrates the principle.</p><figure id="b87cc0ae-8b88-497c-8c19-452f397bf935" class="image"><a href="Descriptor%20Matching%2007fe51c76be84543b2ce51cd152ae3fe/Untitled%203.png"><img style="width:915px" src="Descriptor%20Matching%2007fe51c76be84543b2ce51cd152ae3fe/Untitled%203.png"/></a></figure><p id="bba6fc6b-0f56-4ecd-a21f-2b93ae231444" class="">In the example, an image patch with an associated descriptor da is compared to two other image patches with descriptors <em>db</em>1 and <em>db</em>2. As can be seen, the patches look very similar and would result in ambiguous and thus unreliable matches. By computing the SSD ratio between best and second-best match, such weak candidates can be filtered out.</p><p id="288ef8e4-9624-4272-bf49-636ed9b39f0c" class="">In practice, a threshold value of 0.8 has proven to provide a good balance between TP and FP. In the image sequences examined in the original SIFT paper, 90% of the false matches were eliminated with this setting while less than 5% of correct matches were lost.</p><h2 id="fc023830-b487-49ad-9b55-7b5bdb3ebd6f" class="">Tracking an Object Across Images</h2><h3 id="760d276d-8233-432c-b9b1-757e2a255d2a" class="">How to track an object across multiple camera images and verify it is the same object?</h3><p id="f0822839-35f8-4f24-ab58-629d15044779" class="">You definitely have to have a central track management system. If you don&#x27;t have overlap between sensors, then you have some blind spot. You can also predict your object throughout occlusions for a little bit. That is OK, but if the gap is too large or the object is occluded for a longer period of time, then there will be an ID switch and the planner has to properly react to that. </p><h3 id="6cb58e99-d44c-49d1-81a0-e9c3af8585ef" class="">Should camera images be treated as related to each other or as individual images?</h3><p id="5a3eb4c0-cede-4292-a286-f57493459f26" class="">Consecutive camera images are extremely correlated and that is a good thing. 
+If you want to correspondences between consecutive images, you make use of the fact that they are so correlated. You can find many correspondences and compute optical flow which allow you to do many great things.</p><h3 id="3e2838ec-6753-4a7d-8492-8ca64e5cb0d1" class="">Optical flow</h3><p id="ee04a527-7350-4341-b356-066f7e4d29dd" class="">Optical flow is 2D vector field, the displacement of every pixel in the previous frame to a pixel in the current frame. If you have those correspondences, you can do things like structure from motion, visual odometry and object tracking.</p><h3 id="168573b8-af58-4a65-90ca-990b49420467" class="">Structure from motion</h3><p id="03d87b44-f52e-4bf8-8885-2f7f2a5bcc23" class="">It is the process of inferring depth by moving through a scene. You can reconstruct the 3D environment by either stereo, or by structure from motion. 
+In stereo, you have two images taken at the same time, and there is a difference between the 2 images&#x27; positions. 
+In structure from motion, you take two consecutive images by the same camera, so the displacement is basically the distance you traveled. The great thing about that you can extract that from mono camera, but only as long as you are moving. That&#x27;s one of the downsides of structure from motion. </p><p id="f7c3e5f6-badf-41f7-968c-7000fde4d766" class="">
+</p><p id="df972107-912f-42f9-b052-d324a331dc46" class="">
+</p><p id="00d9ab6b-378f-4b5c-8a7c-66d78036ff9d" class="">
+</p></div></article></body></html>

@@ -1,0 +1,628 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Range-Doppler Estimation</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="0375be1a-13d3-49f2-9d2e-e491c9bb3f6f" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">2️⃣</span></div><h1 class="page-title">Range-Doppler Estimation</h1></header><div class="page-body"><p id="2f46c6ac-d8cf-4cfb-9062-481f816e7fef" class="">In this lesson, you will learn about the basics of range and velocity estimation using doppler and Fourier transform techniques. Before you get started, let&#x27;s have a look at three primary dimensions of measurement for radar resolution.</p><figure id="0a42ac17-a081-4f76-9f69-0bd874fc5b03" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled.png"><img style="width:1191px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled.png"/></a><figcaption>Capability of a radar to resolve two targets based on differences in their distance, angle and velocity.</figcaption></figure><p id="d52fc0c4-b588-42f5-af62-7e2bde180ea9" class=""><strong>Range Resolution</strong>: It is the capability of the radar to distinguish between two targets that are very close to each other in range. If a radar has range resolution of 4 meters then it cannot separate on range basis a pedestrian standing 1 m away from the car. <em>Higher bandwidth would allow smaller range resolution. This will help radar distinguish between close range targets.</em></p><figure id="4a82138f-d21e-420f-9f97-848fe7244079" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%201.png"><img style="width:936px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%201.png"/></a></figure><p id="c5f503c5-7304-4da2-a135-52cc6deba8e3" class=""><strong>Velocity Resolution</strong>: If two targets have the same range they can still be resolved if they are traveling at different velocities. The velocity resolution is dependent on the number of chirps. As discussed for our case we selected to send 128 chirps. A higher number of chirps increases the velocity resolution, but it also takes longer to process the signal.</p><p id="b4624c4a-4567-4db6-b0ed-845f69c2e30d" class=""><strong>Angle Resolution</strong>: Radar is capable of separating two targets spatially. If two targets are at similar range travelling at same velocities, then they can still be resolved based on their angle in radar coordinate system. Angle resolution depends on different parameters depending on the angle estimation technique used.</p><h1 id="fe5cbb5e-a93b-4346-bedd-3511afa5cfaa" class="">Range Estimation</h1><figure id="31a841ba-14e9-4b39-b277-9f6332bb63d6" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%202.png"><img style="width:1999px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%202.png"/></a><figcaption>Signal trip time for a radar signal.</figcaption></figure><p id="4ffa9d7d-a522-46cf-a6a4-51aedcac2e53" class="">Radar determines the range of the target by measuring the trip time of the electromagnetic signal it radiates. It is known that EM wave travels at a known speed (300,000,000 m/s), so to determine the range the radar needs to calculate the trip time. How?</p><p id="c18416dd-58bb-4a88-8374-e8dfb98a57f5" class=""><strong>Answer </strong>: By measuring the shift in the frequency.</p><figure id="3d495ecc-d7b7-4153-afeb-9a7978b47a74" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%203.png"><img style="width:1038px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%203.png"/></a><figcaption>Range Estimation using FMCW</figcaption></figure><p id="3d628d96-184b-410a-8003-f40122ed8d25" class="">The FMCW waveform has the characteristic that the frequency varies linearly with time. If radar can determine the delta between the received frequency and hardware’s continuously ramping frequency then it can calculate the trip time and hence the range. We further divide Range estimate by 2, since the frequency delta corresponds to two way trip.</p><p id="905a91ab-7141-4ef9-9a51-0266dd475d9c" class=""><em>It is important to understand that if a target is stationary then a transmitted frequency and received frequency are the same. But, the ramping frequency within the hardware is continuously changing with time. So, when we take the delta (beat frequency) between the received and ramping frequency we get the trip time.</em></p><figure id="d4f4b33e-9a34-4c83-bb7c-9a0a3b0c4510" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%204.png"><img style="width:976px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%204.png"/></a></figure><figure id="020bab1a-686a-4047-b187-6d017bc6004c" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%205.png"><img style="width:963px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%205.png"/></a></figure><h3 id="7c6bb794-5ead-45ce-be66-bc8dc4781714" class="">System Level Range Calculation</h3><figure id="12b3e62a-4da8-4fb6-ab61-f13a655baa16" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%206.png"><img style="width:1999px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%206.png"/></a></figure><figure id="dd705b15-8080-48ca-b0db-5717106ff406" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%207.png"><img style="width:976px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%207.png"/></a></figure><p id="c3493f8c-0f1e-4a61-a9ee-c4116f842996" class=""><strong>Note </strong>: The sweep time can be computed based on the time needed for the signal to travel the maximum range. In general, for an FMCW radar system, the sweep time should be at least 5 to 6 times the round trip time</p><figure id="16213268-6cb2-4193-90a3-f35c4b253c68" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%208.png"><img style="width:976px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%208.png"/></a></figure><figure id="406d56e6-3ac4-40dc-973e-890699420863" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%209.png"><img style="width:1920px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%209.png"/></a></figure><h3 id="2684dce5-de5a-45a0-baa7-a77f810e9152" class="">Summary of Rules </h3><figure id="61d11661-2b5d-4d1e-b2c0-b9e8e1bed3f4" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Picture1.jpg"><img style="width:624px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Picture1.jpg"/></a></figure><h1 id="459daf0a-a7cf-49f4-be62-6f796c069389" class="">Doppler Estimation</h1><figure id="0da5fa05-71e5-4ba2-84b9-0315da8af8e0" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2010.png"><img style="width:1037px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2010.png"/></a></figure><p id="42d8f9cf-f564-47af-9fc8-385407f3d76f" class="">The velocity estimation for radar is based on an age old phenomenon called the doppler effect. As per doppler theory an approaching target will shift an emitted and reflected frequency higher, whereas a receding target will shift the both frequencies to be lower than the transmitted frequency.</p><p id="3c221962-fab4-44f7-951f-a714d70ad432" class=""><em><strong>Doppler effect is the change in frequency of a wave reflected off a moving target. If we have one moving object in the scene, when the target is moving, the received signal that is reflected back to the radar might arrive earlier than expected if the target is moving towards the radar. That is because the current wave is reflected from a position which is closer to the sensor, and similarly the signal might arrive with a delay if the target is moving away. This is also translated as a higher or lower frequency. </strong></em></p><p id="983e8652-5f99-454d-aefc-ab38f44a7f68" class="">The same principle is used in the radar guns to catch the speed violators, or even in sports to measure the speed of a ball.</p><figure id="e85d650e-e893-4170-a12d-a5f115e29418" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2011.png"><img style="width:336px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2011.png"/></a></figure><figure id="f15bf90f-7d2f-4cdd-b219-612ddd6ef70c" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2012.png"><img style="width:1829px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2012.png"/></a><figcaption>source : Delft University of Technology</figcaption></figure><p id="d8349418-92af-477b-8b1e-fe843818abcc" class="">There will be a shift in the received signal frequency due to the doppler effect of the target’s velocity. The doppler shift is directly proportional to the velocity of the target as shown below.</p><figure id="0c3a1944-ec7e-4280-9243-434142088352" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2013.png"><img style="width:935px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2013.png"/></a></figure><p id="1e55d92b-f317-4e9c-b935-eb66f3a242c8" class="">By measuring the shift in the frequency due to doppler, radar can determine the velocity. The receding target will have a negative velocity due to the frequency dropping lower, whereas the approaching target will have positive velocity as the frequency shifts higher.</p><figure id="5d93d6e5-ed4d-4943-99e6-70782eebebc7" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2014.png"><img style="width:965px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2014.png"/></a></figure><h2 id="105b56cf-cb70-424f-a619-a449a509aa6d" class="">DOPPLER PHASE SHIFT</h2><p id="aab6402f-e2bb-429f-bda1-9699db2f225b" class="">Keeping that in consideration, we calculate the doppler frequency by measuring the rate of change of phase. The phase change occurs due to small displacement of a moving target for every chirp duration. Since, each chirp duration is generally in microseconds, it results in small displacement in mm (millimetres). These small displacements for every chirp leads to change in phase. Using this rate of change of phase we can determine the doppler frequency.</p><figure id="27c84eb4-31a6-491f-b073-568388273814" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2015.png"><img style="width:1063px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2015.png"/></a></figure><figure id="5e4e4919-8260-4317-abd1-d047a5c16a32" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2016.png"><img style="width:576px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2016.png"/></a></figure><figure id="612b5163-38d0-4ca7-a497-6a2a1dec3938"><a href="https://www.phys.uconn.edu/~gibson/Notes/Section6_3/Sec6_3.htm" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">The Doppler Effect</div><div class="bookmark-description">6.3 The Doppler Effect So far, we have only considered stationary sources of sound and stationary listeners (or observers). However, if either the source or the observer is moving, things change. This is called the Doppler effect. Like the idea of feedback, covered in the last two sections, the Doppler effect has many important applications.</div></div><div class="bookmark-href">https://www.phys.uconn.edu/~gibson/Notes/Section6_3/Sec6_3.htm</div></div><img src="https://www.phys.uconn.edu/~gibson/Notes/Section6_3/Image242.jpg" class="bookmark-image"/></a></figure><h1 id="79229d6a-8e73-4b17-a375-6678e9af8cf3" class="">Fast Fourier Transform (FFT)</h1><p id="5dc6c818-cf9f-4f80-afc9-7cb6f88c52fb" class="">So far we discussed the theory of range and doppler estimation along with the equations to calculate them. But, for a radar to efficiently process these measurements digitally, the signal needs to be converted from analog to digital domain and further from time domain to frequency domain.</p><p id="be059f7e-c581-4a21-8340-aa25df067b59" class="">ADC (Analog Digital Converter) converts the analog signal into digital. But, post ADC the Fast Fourier Transform is used to convert the signal from time domain to frequency domain. Conversion to frequency domain is important to do the spectral analysis of the signal and determine the shifts in frequency due to range and doppler.</p><figure id="a4f83676-f55e-4f88-94c0-d95842199f36" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2017.png"><img style="width:384px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2017.png"/></a></figure><p id="85e00b9b-b035-4cd9-af85-3df1ffc45195" class="">The traveling signal is in time domain. Time domain signal comprises of multiple frequency components as shown in the image above. In order to separate out all frequency components the FFT technique is used.</p><p id="3dc59b14-a9c8-4d28-bec4-fb5c4f876ec4" class="">For the purpose of this course we don’t have to get into mathematical details of FFT. But, it is important to understand the use of FFT in radar’s digital signal processing. It gives the frequency response of the return signal with each peak in frequency spectrum representing the detected target’s characteristics.</p><figure id="5e9673f8-79bc-4195-b3c7-6ab0a7493c44"><a href="https://www.youtube.com/watch?v=t_NMmqTRPIY&amp;feature=youtu.be" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">Discrete Fourier Transform DEMO</div><div class="bookmark-description">Enjoy the videos and music you love, upload original content, and share it all with friends, family, and the world on YouTube.</div></div><div class="bookmark-href"><img src="https://www.youtube.com/s/desktop/6192f479/img/favicon.ico" class="icon bookmark-icon"/>https://www.youtube.com/watch?v=t_NMmqTRPIY&amp;feature=youtu.be</div></div><img src="https://i.ytimg.com/vi/t_NMmqTRPIY/hqdefault.jpg" class="bookmark-image"/></a></figure><figure id="b2371ce0-eefb-46d4-9adf-18b311df7661" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2018.png"><img style="width:874px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2018.png"/></a></figure><p id="2e456d40-e90f-4e44-9998-2e18dfb4dadb" class="">As seen in the image below, the Range FFTs are run for every sample on each chirp. Since each chirp is sampled N times, it will generate a range FFT block of N * (Number of chirps). These FFT blocks are also called FFT bins.</p><figure id="621bae5d-6775-4958-ba42-70c3bb6b978a" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2019.png"><img style="width:493px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2019.png"/></a></figure><p id="36a3ecd1-f312-4df3-b274-cdab530cac51" class="">Each chirp is sampled N times, and for each sample it produces a range bin. The process is repeated for every single chirp. Hence creating a FFT block of N*(Number of chirps).</p><p id="0e5e8067-3c18-4bb5-adc4-fa676c94fecb" class="">Each bin in every column of block represents increasing range value, so that the end of last bin represents the maximum range of a radar.</p><figure id="d580cd08-1c5d-4c5d-ac34-5a47103cc0d3" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2020.png"><img style="width:736px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2020.png"/></a></figure><p id="aa03f188-1761-4679-8345-6e83a08421d0" class="">Above is the output of the 1st stage FFT (i.e Range FFT). The three peaks in the frequency domain corresponds to the beat frequencies of three different cars located at 150, 240 and 300 m range from the ego vehicle.</p><h1 id="20d10ec8-2ae5-496f-924d-2c478ca5d6a4" class="">The 2D FFT</h1><p id="a6300f85-faff-49b6-9d7a-7ef5c9b1bba6" class="">Once the range bins are determined by running range FFT across all the chirps, a second FFT is implemented along the second dimension to determine the doppler frequency shift. As discussed, the doppler is estimated by processing the rate of change of phase across multiple chirps. Hence, the doppler FFT is implemented after all the chirps in the segment are sent and range FFTs are run on them.</p><p id="97d82dd9-7bed-4d69-bbd2-0a9ab01094e4" class="">The output of the first FFT gives the beat frequency, amplitude, and phase for each target. This phase varies as we move from one chirp to another (one bin to another on each row) due to the target’s small displacements. Once the second FFT is implemented it determines the rate of change of phase, which is nothing but the doppler frequency shift.</p><figure id="5c227549-ae70-4758-92b5-b3a5c72bdcf6" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2021.png"><img style="width:1892px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2021.png"/></a></figure><p id="5aa5a05a-7e62-4c0a-aa88-5e23c379951e" class="">After running 2nd FFT across the rows of FFT block we get the doppler FFT. The complete implementation is called 2D FFT. After 2D FFT each bin in every column of block represents increasing range value and each bin in the row corresponds to a velocity value.</p><p id="0a84ca1a-d81b-4839-93a1-f1fb264c3d68" class="">The output of Range Doppler response represents an image with Range on one axis and Doppler on the other. This image is called as <strong>Range Doppler Map</strong> (RDM). These maps are often used as user interface to understand the perception of the targets.</p><figure id="c9375966-9f56-4bb7-82be-fb0bfedd7f1f" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2022.png"><img style="width:1999px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2022.png"/></a></figure><figure id="4a4ca14e-4cd8-4b58-b3d9-715c41c2d6dc" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2023.png"><img style="width:740px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2023.png"/></a><figcaption>2D FFT output for single target. The x-axis here is the velocity and the y-axis is the range.</figcaption></figure><figure id="6838aaf8-d69f-461c-8609-2b78a60e5df3" class="image"><a href="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2024.png"><img style="width:1013px" src="Range-Doppler%20Estimation%200375be1a13d349f29d2ee491c9bb3f6f/Untitled%2024.png"/></a><figcaption>Range Doppler Map</figcaption></figure><p id="d704f512-2c20-45e1-8a4f-496d21911d7e" class=""><strong>For more information about the 2D FFT</strong></p><figure id="db7c2414-a6b8-423c-9991-8cbe65553310"><a href="http://people.ciirc.cvut.cz/~hlavac/TeachPresEn/11ImageProc/12FourierTxEn.pdf" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title"></div></div><div class="bookmark-href">http://people.ciirc.cvut.cz/~hlavac/TeachPresEn/11ImageProc/12FourierTxEn.pdf</div></div></a></figure><p id="c30fb777-f423-4ea1-9b72-d0e7f08dd643" class="">
+</p></div></article></body></html>

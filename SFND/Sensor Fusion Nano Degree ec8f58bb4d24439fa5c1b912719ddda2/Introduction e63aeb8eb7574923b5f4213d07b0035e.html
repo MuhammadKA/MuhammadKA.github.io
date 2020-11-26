@@ -1,0 +1,641 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Introduction</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="e63aeb8e-b757-4923-b5f4-213d07b0035e" class="page sans"><header><img class="page-cover-image" src="https://images.unsplash.com/photo-1502920917128-1aa500764cbd?ixlib=rb-1.2.1&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb&amp;ixid=eyJhcHBfaWQiOjYzOTIxfQ" style="object-position:center 53.59%"/><div class="page-header-icon page-header-icon-with-cover"><span class="icon">1️⃣</span></div><h1 class="page-title">Introduction</h1></header><div class="page-body"><h3 id="1b6ce2a6-5d27-4d48-900a-62af01653224" class="">Overview</h3><p id="34e8ad04-c15b-47ac-a71d-1d4929f110d5" class="">Over the next few weeks, you will gain knowledge and learn new skills in the areas of camera technology, computer vision, and sensor fusion between Camera and Lidar.
+In the final project, you will develop an algorithm to estimate the time-to-collision until a vehicle collides with an obstacle in front of it. To make this project as realistic as possible, you will use data from a vehicle equipped with a forward-facing camera and a high-resolution Lidar sensor.</p><p id="b5493f18-a2e9-4857-87be-499217bf6d31" class="">Cameras are one of the main sensors in AV and they are the only sensors able to interpret 2D information as road signs or lane markings. 
+Every thing is optimized for human visual perception and the camera benefits from this. </p><p id="4973bc47-2bdb-4ada-9b60-3f34d2e84416" class="">There are so many situation in traffic where camera alone will fail, such as darkness, bad weather, direct sunlight, and many more which make computer vision really challenging and on those cases a 2nd sensor is needed to handle the situation. </p><p id="2c88166c-805e-4857-a5d1-2789a7a3f6eb" class="">Using a single sensor is an AV is way too risky. That&#x27;s way both camera and lidar are now being used by companies all over the world to build AV.</p><p id="bada3a4e-c2cf-408d-bc91-5c43b4af07fc" class="">Cameras are very mature technology now, but the main problem is that they are subject to the same drawbacks as the human eyes such as having reduced performance in darkness and bad performance on adverse weather conditions as snow and heavy rain...
+In 1990s, automotive companies started working on 1st ADAS. </p><p id="791efcf6-d699-48a6-a58b-0da91b67defd" class="">There are 2 broad types of computer vision:
+<strong>1. Classic Science: </strong><em>Well understood and the art of engineering to know which method to use for which problem and how to choose the right parameters is well established. </em><strong>
+</strong>→ Feature Tracking
+→ Segmentation
+→ 3D Reconstruction
+→Object Recognition 
+<strong>2. Deep Learning: </strong><em>The art in DL is how to select the right network for your problem and how to train it properly with right data. However, the downside is that it is hard to understand how it works and this makes it really hard to pin point certain problems and solve them. </em></p><p id="446776a1-17fd-473f-bfcd-5d6c9036602a" class="">A good engineer knows both of worlds, so he has a large toolbox to choose from depending on the problem at hand.</p><h3 id="353505c8-06ea-49b3-868b-f7744c9368c5" class="">Course Outline</h3><ol id="541cc187-5422-424b-b49b-f38775852a98" class="numbered-list" start="1"><li>Camera Technology and Optics</li></ol><ol id="1f5cc467-4efa-4633-b877-126a6f018c86" class="numbered-list" start="2"><li>Image Processing and Computer Vision</li></ol><ol id="fa1f9635-7a2e-4a08-a6b6-03dec7a614a3" class="numbered-list" start="3"><li>Sensor Fusion with Lidar</li></ol><ol id="b48924bd-549b-4eff-a683-7e8112f936f5" class="numbered-list" start="4"><li>Project: Collision Avoidance for Vehicles</li></ol><p id="6bf89fd5-67b6-4686-9c96-a9362c3f2443" class=""><strong>The course is divided into the following sections:</strong></p><ul id="7b76a05a-fae8-406b-b38f-2f7ed4713219" class="bulleted-list"><li><strong>Lesson 2: Autonomous Vehicles and Computer Vision</strong><ul id="414a4645-06c6-428d-93b7-2a238b12b5c5" class="bulleted-list"><li>Levels of autonomous driving</li></ul><ul id="73aa5258-2608-4111-8440-58dfa9a3ae2f" class="bulleted-list"><li>Autonomous vehicle sensor sets</li></ul><ul id="3cbbfcce-3f3b-4130-aceb-be0dff5bbe42" class="bulleted-list"><li>Camera technology</li></ul><ul id="6611c604-beac-4c9e-a7e6-ecb86e19ce53" class="bulleted-list"><li>Computer vision and the OpenCV</li></ul></li></ul><ul id="3b63c04e-2d4e-4d68-a7ba-e94c0511c47e" class="bulleted-list"><li><strong>Lesson 3: Engineering a Collision Detection System</strong><ul id="5ccb8279-e437-4996-95f8-2f0c4348957a" class="bulleted-list"><li>Collision detection basics</li></ul><ul id="1cbaf762-887d-4add-8ca1-5cf1e38390fe" class="bulleted-list"><li>Estimating time-to-collision with Lidar</li></ul><ul id="8ebfe22f-d16e-4081-b780-d7f83e9be3f6" class="bulleted-list"><li>Estimating time-to-collision with a camera</li></ul></li></ul><ul id="40a6796a-8a66-4224-9d2e-8a062e3f2d0b" class="bulleted-list"><li><strong>Lesson 4: Tracking Image Features</strong><ul id="304579f1-ae3d-44e1-8e67-ded2c5cacfd8" class="bulleted-list"><li>Intensity gradient and filtering</li></ul><ul id="801c9bbe-bddf-4f09-924f-5cbc328695a6" class="bulleted-list"><li>Harris corner detection</li></ul><ul id="07439675-65c6-48aa-9749-7a5ae6f38854" class="bulleted-list"><li>Overview of popular keypoint detectors</li></ul><ul id="a0aca888-c3e8-4b51-9c19-ef3b10d95d03" class="bulleted-list"><li>Gradient-based vs. binary descriptors</li></ul><ul id="479210e1-3af0-4b4c-b8a1-b36f240bb3c1" class="bulleted-list"><li>Descriptor matching</li></ul><ul id="0e5d11a1-0c68-45bf-a408-9ef00b05bafc" class="bulleted-list"><li>Tracking an object across images</li></ul></li></ul><ul id="ce40d650-a4f6-4a6e-a43a-9b674e646ec0" class="bulleted-list"><li><strong>Project: Camera-Based 2D Feature Tracking</strong></li></ul><ul id="a6fa79fd-7c83-4bda-8377-d3c5495845d4" class="bulleted-list"><li><strong>Lesson 6: Combining Camera and Radar</strong><ul id="d4bdd03a-95ea-4058-b3cc-f2185fbb4964" class="bulleted-list"><li>Lidar-to-camera point projection</li></ul><ul id="73ac2f77-b595-491e-942b-94d969ed0bfd" class="bulleted-list"><li>Object detection with YOLO</li></ul><ul id="dc429e05-0527-4a1e-ae1e-81122668d8f8" class="bulleted-list"><li>Standard computer vision vs deep learning</li></ul><ul id="863521c2-9eea-4740-a727-c7d986cceffe" class="bulleted-list"><li>Creating 3D-objects</li></ul></li></ul><ul id="10ebb5ab-485c-4308-b046-367188867157" class="bulleted-list"><li><strong>Project: Track an Object in 3D Space</strong></li></ul><h3 id="f24926e7-3be4-472e-906b-c47d71bbd8a4" class="">Course Github Repo</h3><figure id="728e4f77-0eaf-44a8-a555-b049a80d70ab"><a href="https://github.com/udacity/SFND_Camera" class="bookmark source"><div class="bookmark-info"><div class="bookmark-text"><div class="bookmark-title">udacity/SFND_Camera</div><div class="bookmark-description">Camera is the second course in the Sensor Fusion ND. The purpose of this repo is to provide the exercise code to the students, so that they can practice in local system. This repo contains lesson-wise exercises and corresponding solutions for Udacity&#x27;s Sensor Fusion ND.</div></div><div class="bookmark-href"><img src="https://github.com/favicon.ico" class="icon bookmark-icon"/>https://github.com/udacity/SFND_Camera</div></div><img src="https://avatars1.githubusercontent.com/u/1916665?s=400&amp;v=4" class="bookmark-image"/></a></figure><h3 id="4f420dc6-b138-4757-874f-e93c5c8496b8" class="">Notes: </h3><p id="a48159c9-e31c-437c-bd4a-76ee4cc36539" class="">According to <a href="https://www.cbinsights.com/research/autonomous-driverless-vehicles-corporations-list/">CB Insights</a>, there are 40+ corporations currently working on autonomous vehicles (as of March 2020). This includes automakers such as Audi, Tesla, BMW, Volvo or GM but also new additions to the automotive space such as Alphabet / Waymo, Uber or Baidu - who hail from totally different industries.</p><p id="34252d6d-25af-4216-982b-fc12c8c6d460" class="">It is expected that the autonomous vehicle market will grow from $54 billion in 2019 to $556 billion in 2026, according to <a href="https://www.techworld.com/picture-gallery/data/-companies-working-on-driverless-cars-3641537/">Allied Market Research estimates</a>. Such growth rates, combined with technological break-throughs of recent years, explain why things are moving so fast and why everyone is trying to get a share of this emerging market.</p><p id="0a685be1-f04d-47fd-8381-0ad82da02008" class="">In addition to autonomous vehicles, there are systems which assist the driver in various driving tasks such as changing lanes, remembering speed signs or braking in time in case the preceding vehicle suddenly decelerates. Such systems are referred to as Advanced Driver Assistance Systems (ADAS) and they are the predecessor of a fully autonomous vehicle. There are some vehicles in the market, however, that imply full autonomy (such as the Tesla Autopilot), but are <em>only</em> an ADAS systems.</p><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="bca5c7c8-cf40-4b9e-aac3-ada9b714b9a7"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">The important thing for you to know is that requirements with regard to performance and redundancy increase exponentially once you leave level 2 behind.
+Level 2 is what a Tesla autopilot currently is. </div></figure><p id="5fdb119c-a2b3-4d0c-afec-3141cddeaec2" class="">Before we analyze a selection of autonomous vehicle prototypes and their respective sensors, let us look at a way to define autonomy - because not all autonomous cars and driver assistance systems are created equal. The following graphic shows the „levels of autonomous driving“, which the Society of Autonomous Engineers (SAE) has defined.</p><p id="817d76c7-779d-4279-844b-428aa7192685" class="">
+</p><p id="15748a47-c44a-4f2f-b2fc-8de697287611" class="">
+</p><p id="bc58cc7f-defd-4cc9-9a0c-8ccee285a985" class="">
+</p><p id="6f01b6e5-3990-49a6-acd0-44b1771c0609" class=""><em>
+</em></p></div></article></body></html>

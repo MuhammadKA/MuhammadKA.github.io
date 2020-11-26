@@ -1,0 +1,644 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Point Cloud Segmentation</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="22bb0217-481e-44c6-8c62-205fa13c8dca" class="page sans"><header><img class="page-cover-image" src="https://images.unsplash.com/photo-1496065187959-7f07b8353c55?ixlib=rb-1.2.1&amp;q=85&amp;fm=jpg&amp;crop=entropy&amp;cs=srgb&amp;ixid=eyJhcHBfaWQiOjYzOTIxfQ" style="object-position:center 50%"/><div class="page-header-icon page-header-icon-with-cover"><span class="icon">2️⃣</span></div><h1 class="page-title">Point Cloud Segmentation</h1></header><div class="page-body"><p id="30b02a1f-a298-4f74-ae74-51a0cb45f845" class="">What would be objects that appear in the pcd but are not obstacles? 
+For the most part, any free space on the road is not an obstacle, and if the road is flat it’s fairly straightforward to pick out road points from non-road points. To do this we will use a method called <strong>Planar Segmentation</strong> which uses the <strong>RANSAC </strong>(random sample consensus) algorithm.</p><ul id="927018d7-3263-4a5f-99ff-ddab7f928844" class="bulleted-list"><li><strong>Segmentation: </strong>is the association of certain points to objects. </li></ul><h2 id="0a88f56e-953a-4072-b89f-69f75d95198b" class="">Point Cloud Processor</h2><p id="814c7fa6-ddc9-4b50-87bc-a7f244270c13" class="">It has function for filtering, segmentation, clustering, load/save PCD, ...</p><h3 id="58985188-46f9-4319-b41f-0a2a455e090e" class="">Segmenting the Plane with PCL</h3><p id="0f267ead-033b-4004-982d-653463800d2a" class="">We use max iteration and distance tolerance.
+We create a list of inliers (which is a list of ints) which is all the indecies from that point cloud that belong to the plane. We separate the points that belong to the road from the points that belong to the scene.</p><ul id="b1c33273-973b-4341-b6a6-76b196b8858a" class="bulleted-list"><li>Segmentation uses an iterative process. More iterations have a chance of returning better results but take longer.</li></ul><ul id="7d45e75a-0043-4399-850e-2c0c7ddc546d" class="bulleted-list"><li>The segmentation algorithm fits a plane to the points and uses the distance tolerance to decide which points belong to that plane. A larger tolerance includes more points in the plane.</li></ul><h3 id="ccfd73c7-bf3a-44fd-b0a4-014612696995" class="">Timer</h3><p id="c0da17d0-ffce-409c-85f2-0d9d34445293" class="">This can be useful for measuring how long it takes to run the function. If it’s taking a really long time to process the segmentation, then the function is not going to be useful running in real-time on a self-driving car.</p><pre id="57ef2334-07c2-4870-a7e6-b63e5379c02e" class="code"><code>// Time segmentation process
+auto startTime = std::chrono::steady_clock::now();
+
+// TODO:: Fill in the function to segment cloud into two parts, the drivable plane and obstaclesauto endTime = std::chrono::steady_clock::now();
+auto elapsedTime = std::chrono::duration_cast&lt;std::chrono::milliseconds&gt;(endTime - startTime);
+std::cout &lt;&lt; &quot;plane segmentation took &quot; &lt;&lt; elapsedTime.count() &lt;&lt; &quot; milliseconds&quot; &lt;&lt; std::endl;</code></pre><h3 id="db5820fc-089e-470f-9518-6c8f7cb5b182" class="">Inliers</h3><ul id="2586e648-ff4a-46d4-96bf-41af9a3abbac" class="bulleted-list"><li>Inliers (a vector of ints) are indices for the fitted plane. 
+Using these inliers we can create the plane point cloud and obstacle point cloud.</li></ul><ul id="c2a4ddf9-d0d7-4310-88b3-21a6c7ad199f" class="bulleted-list"><li>We create 2 point clouds; the road and the obstacle point clouds. 
+The road points are the same as the inliers; because the inliers represent all the indices of points that belong to the plane, and that plane is the road. The plane cloud has member variable points, which is a vector of <code>&lt;PointT&gt;</code></li></ul><ul id="492c3800-9e90-421a-aca1-00397a3ecc98" class="bulleted-list"><li>All the indices from our point cloud that belong to the plane (road) are pushed to the plane cloud. 
+We can use <code>pcl::extract</code> to create the obstacle point cloud from the inliers. </li></ul><figure id="83776b2b-8c88-4a27-beda-9f224bffda83" class="image"><a href="Point%20Cloud%20Segmentation%2022bb0217481e44c68c62205fa13c8dca/Untitled.png"><img style="width:971px" src="Point%20Cloud%20Segmentation%2022bb0217481e44c68c62205fa13c8dca/Untitled.png"/></a></figure><pre id="514d2890-5e75-4276-b0de-11340e5db853" class="code"><code>std::pair&lt;typename pcl::PointCloud&lt;PointT&gt;::Ptr, typename pcl::PointCloud&lt;PointT&gt;::Ptr&gt; segResult(obstCloud,planeCloud);</code></pre><h3 id="14850721-5f13-459a-86ff-617e77c6b983" class="">Obstacle Cloud</h3><ul id="caa41a19-86ea-4467-a39e-43d94507bf6d" class="bulleted-list"><li>In order to generate the obstacle cloud, all the points that are not inliers are kept.</li></ul><ul id="483de155-abf5-4d6a-ae77-ad1acf86fbd1" class="bulleted-list"><li>Inliers are removed from the reference cloud by using the negative method. </li></ul><figure id="2c8e2a9e-fb13-4a00-9c9c-3a72654789d4" class="image"><a href="Point%20Cloud%20Segmentation%2022bb0217481e44c68c62205fa13c8dca/Untitled%201.png"><img style="width:1230px" src="Point%20Cloud%20Segmentation%2022bb0217481e44c68c62205fa13c8dca/Untitled%201.png"/></a></figure><ul id="234c3daf-2c22-4168-9818-bf9c429ded14" class="bulleted-list"><li><em><strong>Note:
+</strong></em>The above example is using 100 iterations, and a distance tolerance of 0.2 meters. You are highly encouraged to play around and experiment with these values! This point cloud is very simple and 100 iterations are way more than needed. 
+You can also monitor how changing the iterations affects the time it takes for the segmentation function to process using the functions predefined timer log. 
+Before rendering the two clouds you will want to remember to turn off rendering from the input cloud done in the previous lesson, otherwise the clouds will all overlap, and it will be hard to distinguish the segmented ones. 
+The renderPointCloud function includes color options (Red,Green,Blue). By default the cloud is white if no color is specified. Here the obstacle cloud as is rendered as red, and the plane cloud as green.</li></ul><h2 id="5037de07-335f-47fe-8a95-8259b3d4c114" class="">RANSAC Algorithm</h2><p id="946f6fb4-e435-4ab8-819f-ea409fd9f304" class="">RANSAC stands for Random Sample Consensus, and is a method for detecting outliers in data. RANSAC runs for a max number of iterations, and returns the model with the best fit. Each iteration randomly picks a sub-sample of the data and fits a model through it, such as a line or a plane. Then the iteration with the highest number of inliers or the lowest noise is used as the best model.</p><ul id="7ffde4c9-c1e7-4ae4-9564-676dfb3f4cbc" class="bulleted-list"><li>Iterative Method</li></ul><ul id="ccc040ad-1021-4e0f-b817-5e667ecc0cab" class="bulleted-list"><li>Each iteration randomly picks subset of the points</li></ul><ul id="932f25a4-f257-4fd9-99f5-b92c36ddc609" class="bulleted-list"><li>Fit a model to the points</li></ul><ul id="dfd74573-faa6-477f-8547-11c81d901ec8" class="bulleted-list"><li>Iteration with the most inliers to the model is best</li></ul><ul id="39504b91-0f63-409e-a33a-99952cbf6392" class="bulleted-list"><li>Hyper parameters are: No. of iterations, and distance tolerance. </li></ul><figure id="c4ce1f54-ae44-491c-bcce-80ef5ad43371" class="image"><a href="Point%20Cloud%20Segmentation%2022bb0217481e44c68c62205fa13c8dca/Untitled%202.png"><img style="width:639px" src="Point%20Cloud%20Segmentation%2022bb0217481e44c68c62205fa13c8dca/Untitled%202.png"/></a></figure><p id="92fe0749-bfe4-40af-9c3b-f73c5c3b858a" class=""><em><mark class="highlight-pink"><strong>The situation is:
+</strong></mark></em><strong>→We have a data and we know that there is a line in it. But the data also has a ton of outliers.
+</strong><em>Applying linear regression here and taking the average of all points does not make sense, since it will also take the average of the outliers and will result in a very bad line that does not represent the actual line that you have. </em></p><ul id="3f97b30d-bd64-41f2-8969-6967be94cbc3" class="bulleted-list"><li>One type of RANSAC version selects the smallest possible subset of points to fit. For a line, that would be two points, and for a plane three points. Then the number of inliers are counted, by iterating through every remaining point and calculating its distance to the model. The points that are within a certain distance to the model are counted as inliers. The iteration that has the highest number of inliers is then the best model.</li></ul><ul id="991fdae7-924b-4f8b-9dcc-2132869e9c52" class="bulleted-list"><li>Other methods of RANSAC could sample some percentage of the model points, for example 20% of the total points, and then fit a line to that. Then the error of that line is calculated, and the iteration with the lowest error is the best model. This method might have some advantages since not every point at each iteration needs to be considered. It’s good to experiment with different approaches and time results to see what works best.</li></ul><ul id="33c066a6-fa5a-4396-8c9e-7aa277642465" class="bulleted-list"><li>The max iteration size to run depends on the ratio of inliers to the total number of points. The more inliers our data contains the higher the probability of selecting inliers to fit the line to, and the fewer iterations you need to get a high probability of selecting a good model.</li></ul><figure id="940d03e6-feb8-468f-8ddd-04d188a9c839" class="image"><a href="Point%20Cloud%20Segmentation%2022bb0217481e44c68c62205fa13c8dca/Untitled%203.png"><img style="width:990px" src="Point%20Cloud%20Segmentation%2022bb0217481e44c68c62205fa13c8dca/Untitled%203.png"/></a></figure><h2 id="a648b70f-54ba-4151-953b-d78a70a5208c" class="">Segmentation of Ground Plane from a Point Cloud</h2><p id="d3859db1-ea4f-490e-a19d-e5c36f94ae72" class="">We do that because we want to know the height above ground for the different objects. </p><p id="f7922393-1599-4f3f-91b5-bb2535ff0ae4" class="">From sensor fusion perceptive, the ground plane is the road, and you get reflections from lane markings. So you can have all these lane markings in the ground plane as separate objects. </p><h2 id="9253b93a-5f29-4c72-b545-4ca77fbfb8e8" class="">Do hills affect Lidar?</h2><p id="0c354274-85e7-46ee-880c-9b480382d0fc" class="">They do affect int in terms of FOV, you don&#x27;t see over the crown of a hill, until you are relatively far up. There are ways to detect the slope of a hill using lidar. </p><p id="0619f1b4-f5d9-43c8-b50a-89c38be3cef3" class="">So in general if doesn&#x27;t affect the lidar, it is just sth in the environment that you would detect. </p><p id="a58d7dd2-341d-434c-b406-19ebe3dae140" class="">
+</p></div></article></body></html>

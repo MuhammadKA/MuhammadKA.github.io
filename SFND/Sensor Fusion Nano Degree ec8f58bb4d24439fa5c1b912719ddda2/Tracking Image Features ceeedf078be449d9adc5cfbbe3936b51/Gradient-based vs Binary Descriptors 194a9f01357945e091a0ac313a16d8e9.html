@@ -1,0 +1,627 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Gradient-based vs. Binary Descriptors</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="194a9f01-3579-45e0-91a0-ac313a16d8e9" class="page sans"><header><div class="page-header-icon undefined"><span class="icon">4️⃣</span></div><h1 class="page-title">Gradient-based vs. Binary Descriptors</h1></header><div class="page-body"><h2 id="09a9f63e-42c4-4962-ad35-75cab5672f57" class="">Detectors and Descriptors</h2><p id="302e5ed3-f368-4218-bec7-e4c7065f4a62" class=""><em>In this section you will be introduced to the concept of descriptors. As stated in the introduction to this lesson, descriptors provide you with distinctive information on the surrounding area of a keypoint. The literature differentiates between gradient-based descriptors and binary descriptors, with the latter being a relatively new addition with the clear advantage of computational speed. The idea of this section is to introduce you to one representative of gradient-based descriptors, which is called Scale Invariant Feature Transform (SIFT) and one representative of binary descriptors called Binary Robust Invariant Scalable Keypoints (BRISK). After working through this section you will be able to properly understand the difference between both classes and the concluding exercise will enable you to compare them in practice.</em></p><p id="d17ecaf3-3152-4841-8e65-93978e11c9d6" class="">Before we go into details on how some of the keypoint detectors discussed in the previous section work, let us take a look at the problem ahead of us. Our task is to find corresponding keypoints in a sequence of images that we can use to compute the TTC to a preceding object, e.g. a vehicle. We therefore need a way to robustly assign keypoints to each other based on some measure of similarity. In the literature, a large variety of similarity measures (called descriptors) have been proposed and in many cases, authors have published both a new method for keypoint detection as well as similarity measure which has been optimized for their type of keypoints.</p><p id="a4a298fc-6ffa-4344-a8c6-c7b3ea3c8e7a" class="">Let us refine our terminology at this point :</p><ul id="3551165e-4bcf-4bd3-938a-a1e7b0a3e4b9" class="bulleted-list"><li>A <em>keypoint</em> (sometimes also interest point or salient point) detector is an algorithm that chooses points from an image based on a local maximum of a function, such as the &quot;cornerness&quot; metric we saw with the Harris detector.</li></ul><ul id="677feefb-9757-43c4-b49f-baf1c3ccdeec" class="bulleted-list"><li>A <em>descriptor</em> is a vector of values, which describes the image patch around a keypoint. There are various techniques ranging from comparing raw pixel values to much more sophisticated approaches such as histograms of gradient orientations.</li></ul><p id="dec0dd2f-8b50-4003-b79b-12af8128d44c" class="">Descriptors help us to assign similar keypoints in different images to each other. As shown in the figure below, a set of keypoints in one frame is assigned keypoints in another frame such that the similarity of their respective descriptors is maximized and (ideally) the keypoints represent the same object in the image. In addition to maximizing similarity, a good descriptor should also be able to minimize the number of mismatches, i.e. avoid assigning keypoints to each other that do not correspond to the same object.</p><figure id="764cbff4-c325-4333-8f77-6687775f2e50" class="image"><a href="Gradient-based%20vs%20Binary%20Descriptors%20194a9f01357945e091a0ac313a16d8e9/Untitled.png"><img style="width:450px" src="Gradient-based%20vs%20Binary%20Descriptors%20194a9f01357945e091a0ac313a16d8e9/Untitled.png"/></a></figure><p id="c6446d25-f805-41b4-8f6a-74299b0c4815" class="">Before we go into details on a powerful class of detector / descriptor combinations (i.e. binary descriptors such as BRISK), let us briefly revisit one of the most famous descriptors of all time - the <em>Scale Invariant Feature Transform</em>. The reason we are doing this is two-fold : First, this method is still relevant and being used in a large number of applications. And second, we need to lay some foundations so that you will be able to better understand and appreciate the contributions of binary descriptors.</p><h2 id="10d10e3a-4779-411e-a489-d354e7402ae4" class="">Scale-Invariant Feature Transform (SIFT)</h2><p id="aaf5dc06-50b7-4d38-9dce-1b528f0324ea" class="">It is a way to detect texture patterns that are repetitive that you can basically match against either in the same image or in another image to build up correspondences. It works by looking at the orientation of edges, and then looking at those edges in a specific-special window. </p><h3 id="7ddcd650-85c4-482b-973f-98282efcb3d0" class="">How points of interest pertain to SIFT algorithms?</h3><p id="e6fb00ce-b8a8-4dcf-ba46-37dd672f4900" class="">Keypoint tracking is important if you want to do a large reconstruction based on many images. For instance, if you take your cell phone and swipe it through the scene, you can basically take snapshots and stitch them all together, and create one panoramic image. For that you basically need to find the same image part in all the pictures and link them together. That is basically what keypoint tracking does, keeping the same texture structure throughout a sequence of images.</p><hr id="1d0ef33d-e6e5-4fc7-8cf4-50264f5b9472"/><p id="e9f76c58-f074-4dc7-9454-759a0c4e51ab" class="">In the following, we will take a brief look at the family of descriptors based on Histograms of Oriented Gradients (HOG). The basic idea behind HOG is to describe the structure of an object by the distribution its intensity gradients in a local neighborhood. To achieve this, an image is divided into cells in which gradients are computed and collected in a histogram. The set of histogram from all cells is then used as a similarity measure to uniquely identify an image patch or object.</p><p id="d791526c-f9ea-46ce-92de-422904d5c444" class="">One of the best-known examples of the HOG family is the Scale-Invariant Feature Transform (SIFT), introduced in 1999 by David Lowe. The SIFT method includes both a keypoint detector as well as a descriptor and it follows a five-step process, which is briefly outlined in the following.</p><ol id="c887f116-07e3-43cf-af33-043c04727965" class="numbered-list" start="1"><li>First, keypoints are detected in the image using an approach called „Laplacian-Of-Gaussian (LoG)“, which is based on second-degree intensity derivatives. The LoG is applied to various scale levels of the image and tends to detect blobs instead of corners. In addition to a unique scale level, keypoints are also assigned an orientation based on the intensity gradients in a local neighborhood around the keypoint.</li></ol><ol id="ef22523f-ac00-40e2-9464-e68cd729c90b" class="numbered-list" start="2"><li>Second, for every keypoint, its surrounding area is transformed by removing the orientation and thus ensuring a <em>canonical orientation</em>. Also, the size of the area is resized to 16 x 16 pixels, providing a normalized patch.</li></ol><figure id="c7c77ea7-663c-41d2-80e8-7b024c258122" class="image"><a href="Gradient-based%20vs%20Binary%20Descriptors%20194a9f01357945e091a0ac313a16d8e9/Untitled%201.png"><img style="width:769px" src="Gradient-based%20vs%20Binary%20Descriptors%20194a9f01357945e091a0ac313a16d8e9/Untitled%201.png"/></a><figcaption>The mountain scenery image material has been taken from the original publication by D. Lowe.</figcaption></figure><p id="577f6db9-671b-4646-a994-3810a30f90b2" class="">3. Third, the orientation and magnitude of each pixel within the normalized patch are computed based on the intensity gradients Ix and Iy.</p><p id="99a7431c-d9f2-4503-8461-1ccb3c7f4da2" class="">4. Fourth, the normalized patch is divided into a grid of 4 x 4 cells. Within each cell, the orientations of pixels which exceed a threshold on magnitude are collected in a histogram consisting of 8 bins.</p><figure id="c49eb36d-1aad-422f-bbca-12fc82ba97c3" class="image"><a href="Gradient-based%20vs%20Binary%20Descriptors%20194a9f01357945e091a0ac313a16d8e9/Untitled%202.png"><img style="width:769px" src="Gradient-based%20vs%20Binary%20Descriptors%20194a9f01357945e091a0ac313a16d8e9/Untitled%202.png"/></a></figure><figure id="41d8e95b-5aa9-4de4-976c-74cadef9a4b1" class="image"><a href="Gradient-based%20vs%20Binary%20Descriptors%20194a9f01357945e091a0ac313a16d8e9/Untitled%203.png"><img style="width:300px" src="Gradient-based%20vs%20Binary%20Descriptors%20194a9f01357945e091a0ac313a16d8e9/Untitled%203.png"/></a></figure><p id="ea1c843e-6b48-4ffb-b4fa-439b2377df4a" class="">5. Last, the 8-bin histograms of all 16 cells are concatenated into a 128-dimensional vector (the descriptor) which is used to uniquely represent the keypoint.</p><ul id="4b43a33a-7165-4ff6-aaea-4c0b401e1182" class="bulleted-list"><li>The SIFT detector / descriptor is able to robustly identify objects even among clutter and under partial occlusion. It is invariant to uniform changes in scale, to rotation, to changes in both brightness and contrast and it is even partially invariant to affine distortions.</li></ul><ul id="f4c5cfac-eafd-4049-b233-8d90f9b2118f" class="bulleted-list"><li>The downside of SIFT is its low speed, which prevents it from being used in real-time applications on e.g. smartphones. Other members of the HOG family (such as SURF and GLOH), have been optimized for speed. However, they are still too computationally expensive and should not be used in real-time applications. Also, SIFT and SURF are heavily patented, so they can’t be freely used in a commercial context. In order to use SIFT in the OpenCV, you have to <strong><code>#include &lt;opencv2/xfeatures2d/nonfree.hpp&gt;</code></strong>, which further emphasizes this issue.</li></ul><ul id="3f1fa459-e4bf-4607-b8f2-b1bcc818436a" class="bulleted-list"><li>A much faster (and free) alternative to HOG-based methods is the family of binary descriptors, which provide a fast alternative at only slightly worse accuracy and performance.</li></ul><h2 id="bb7be144-9a61-43df-a4a1-a7c759cb994d" class="">Binary Descriptors and BRISK</h2><p id="0ce110ed-8b27-443a-be89-2ddfd77709fc" class="">The problem with HOG-based descriptors is that they are based on computing the intensity gradients, which is a very costly operation. Even though there have been some improvements such as SURF, which uses the integral image instead, these methods do not lend themselves to real-time applications on devices with limited processing capabilities (such as smartphones).</p><p id="3d697260-8532-4418-8d31-2e1d27752051" class="">The central idea of binary descriptors is to rely solely on the intensity information (i.e. the image itself) and to encode the information around a keypoint in a string of binary numbers, which can be compared very efficiently in the matching step, when corresponding keypoints are searched. Currently, the most popular binary descriptors are BRIEF, BRISK, ORB, FREAK and KAZE (all available in the OpenCV library).</p><p id="ef5a71a4-f8d9-4ae1-b9c3-2c96cb726174" class="">From a high-level perspective, binary descriptors consist of three major parts:</p><ol id="f8a70fe8-3f6d-4235-9198-8df177dca09b" class="numbered-list" start="1"><li>A <strong>sampling pattern</strong> which describes where sample points are located around the location of a keypoint.</li></ol><ol id="0bd15344-f307-46ce-86af-6816701c28a7" class="numbered-list" start="2"><li>A method for <strong>orientation compensation</strong>, which removes the influence of rotation of the image patch around a keypoint location.</li></ol><ol id="137ca3c7-30fa-4500-a498-c3da6fece26b" class="numbered-list" start="3"><li>A method for <strong>sample-pair selection</strong>, which generates pairs of sample points which are compared against each other with regard to their intensity values. If the first value is larger than the second, we write a &#x27;1&#x27; into the binary string, otherwise we write a &#x27;0&#x27;. After performing this for all point pairs in the sampling pattern, a long binary chain (or ‚string‘) is created (hence the family name of this descriptor class).</li></ol><p id="e054e50d-b097-46ff-9f90-8096b94c4ce7" class="">In the following, the &quot;Binary Robust Invariant Scalable Keypoints (BRISK)&quot; keypoint detector / descriptor is used as a representative for the binary descriptor family. Proposed in 2011 by Stefan Leutenegger et al., BRISK is a FAST-based detector in combination with a binary descriptor created from intensity comparisons retrieved by dedicated sampling of each keypoint neighborhood.</p><p id="9e3adc59-f81b-4d0f-989b-3a3007b699d6" class="">The sampling pattern of BRISK is composed out of a number of sample points (blue), where a concentric ring (red) around each sample point denotes an area where Gaussian smoothing is applied. As opposed to some other binary descriptors such as ORB or BRIEF, the BRISK sampling pattern is fixed. The smoothing is important to avoid aliasing (an effect that causes different signals to become indistinguishable - or aliases of one another - when sampled).</p><figure id="8657848d-7ef1-4d71-924b-825e1e7ba5fd" class="image"><a href="Gradient-based%20vs%20Binary%20Descriptors%20194a9f01357945e091a0ac313a16d8e9/Untitled%204.png"><img style="width:384px" src="Gradient-based%20vs%20Binary%20Descriptors%20194a9f01357945e091a0ac313a16d8e9/Untitled%204.png"/></a></figure><p id="696c5939-c7ec-4b4a-ae7d-843610d56bda" class="">During sample pair selection, the BRISK algorithm differentiates between long- and short-distance pairs. The long-distance pairs (i.e. sample points with a minimal distance between each other on the sample pattern) are used for estimating the orientation of the image patch from intensity gradients, whereas the short-distance pairs are used for the intensity comparisons from which the descriptor string is assembled. Mathematically, the pairs are expressed as follows:</p><figure id="aaafcb2a-1052-42c5-a305-cb9031a90639" class="image"><a href="Gradient-based%20vs%20Binary%20Descriptors%20194a9f01357945e091a0ac313a16d8e9/Untitled%205.png"><img style="width:2118px" src="Gradient-based%20vs%20Binary%20Descriptors%20194a9f01357945e091a0ac313a16d8e9/Untitled%205.png"/></a></figure><p id="7ecf1b42-01ac-4f92-9d13-a7ea5bf5657c" class="">First, we define the set A of all possible pairings of sample points. Then, we extract the subset L from A for which the euclidean distance is above a pre-defined upper threshold. This set are the long-distance pairs used for orientation estimation. Lastly, we extract those pairs from A whose euclidean distance is below a lower threshold. This set S contains the short-distance pairs for assembling the binary descriptor string.</p><p id="82dda3ed-13fe-4881-942a-a2c490494602" class="">The following figure shows the two types of distance pairs on the sampling pattern for short pairs (left) and long pairs (right).</p><figure id="f21798ce-ebb5-4a66-b445-62abb1870f9e" class="image"><a href="Gradient-based%20vs%20Binary%20Descriptors%20194a9f01357945e091a0ac313a16d8e9/Untitled%206.png"><img style="width:1017px" src="Gradient-based%20vs%20Binary%20Descriptors%20194a9f01357945e091a0ac313a16d8e9/Untitled%206.png"/></a></figure><figure id="05471574-4a94-4e94-aad3-eb5dea2dbda1" class="image"><a href="Gradient-based%20vs%20Binary%20Descriptors%20194a9f01357945e091a0ac313a16d8e9/Untitled%207.png"><img style="width:722px" src="Gradient-based%20vs%20Binary%20Descriptors%20194a9f01357945e091a0ac313a16d8e9/Untitled%207.png"/></a></figure><figure id="b2ca38d0-d9bf-4f1f-a166-4274bf0e9144" class="image"><a href="Gradient-based%20vs%20Binary%20Descriptors%20194a9f01357945e091a0ac313a16d8e9/Untitled%208.png"><img style="width:1913px" src="Gradient-based%20vs%20Binary%20Descriptors%20194a9f01357945e091a0ac313a16d8e9/Untitled%208.png"/></a></figure><p id="9d686db6-b4a2-45a5-a4a5-b9363295730a" class="">First, the gradient strength between two sample points is computed based on the normalized unit vector that gives the direction between both points multiplied with the intensity difference of both points at their respective scales. In (2), the keypoint direction vector \vec{g}<em>g</em>⃗ is then computed from the sum of all gradient strengths.</p><p id="d09c8ca4-b29b-4140-8891-a0a2b6eec9a5" class="">Based on <em>g</em>⃗, we can use the direction of the sample pattern to rearrange the short-distance pairings and thus ensure rotation invariance. Based on the rotation-invariant short-distance pairings, the final binary descriptor can be constructed as follows:</p><figure id="8e2995e0-add1-4a78-8b94-0a39f5f073b4" class="image"><a href="Gradient-based%20vs%20Binary%20Descriptors%20194a9f01357945e091a0ac313a16d8e9/Untitled%209.png"><img style="width:1947px" src="Gradient-based%20vs%20Binary%20Descriptors%20194a9f01357945e091a0ac313a16d8e9/Untitled%209.png"/></a></figure><p id="76d52164-5913-456c-89cb-00bbe0338bef" class="">After computing the orientation angle of the keypoint from g, we use it to make the short-distance pairings invariant to rotation. Then, the intensity between all pairs in <em><strong>S</strong></em> is compared and used to assemble the binary descriptor we can use for matching.</p><p id="4dbc30d8-4b59-471a-bdb2-836bbb56c98d" class="">For the BRISK detector, the keypoints can be seen in the following figure with the center of a circle denoting its location and the size of the circle reflecting the characteristic scale.</p><figure id="fb7c26f6-e077-45cc-8029-0afece834087" class="image"><a href="Gradient-based%20vs%20Binary%20Descriptors%20194a9f01357945e091a0ac313a16d8e9/Untitled%2010.png"><img style="width:2468px" src="Gradient-based%20vs%20Binary%20Descriptors%20194a9f01357945e091a0ac313a16d8e9/Untitled%2010.png"/></a></figure></div></article></body></html>

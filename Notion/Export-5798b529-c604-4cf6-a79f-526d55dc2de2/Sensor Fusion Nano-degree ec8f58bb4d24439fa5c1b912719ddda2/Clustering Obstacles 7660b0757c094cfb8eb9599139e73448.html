@@ -1,0 +1,672 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Clustering Obstacles</title><style>
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, YuMincho, "Yu Mincho", "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC", "SimSun", "Nanum Myeongjo", NanumMyeongjo, Batang, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC', 'Noto Sans CJK KR'; }
+
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC', 'Noto Sans Mono CJK KR'; }
+
+.highlight-default {
+}
+.highlight-gray {
+	color: rgb(155,154,151);
+}
+.highlight-brown {
+	color: rgb(100,71,58);
+}
+.highlight-orange {
+	color: rgb(217,115,13);
+}
+.highlight-yellow {
+	color: rgb(223,171,1);
+}
+.highlight-teal {
+	color: rgb(15,123,108);
+}
+.highlight-blue {
+	color: rgb(11,110,153);
+}
+.highlight-purple {
+	color: rgb(105,64,165);
+}
+.highlight-pink {
+	color: rgb(173,26,114);
+}
+.highlight-red {
+	color: rgb(224,62,62);
+}
+.highlight-gray_background {
+	background: rgb(235,236,237);
+}
+.highlight-brown_background {
+	background: rgb(233,229,227);
+}
+.highlight-orange_background {
+	background: rgb(250,235,221);
+}
+.highlight-yellow_background {
+	background: rgb(251,243,219);
+}
+.highlight-teal_background {
+	background: rgb(221,237,234);
+}
+.highlight-blue_background {
+	background: rgb(221,235,241);
+}
+.highlight-purple_background {
+	background: rgb(234,228,242);
+}
+.highlight-pink_background {
+	background: rgb(244,223,235);
+}
+.highlight-red_background {
+	background: rgb(251,228,228);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(55, 53, 47, 0.6);
+	fill: rgba(55, 53, 47, 0.6);
+}
+.block-color-brown {
+	color: rgb(100,71,58);
+	fill: rgb(100,71,58);
+}
+.block-color-orange {
+	color: rgb(217,115,13);
+	fill: rgb(217,115,13);
+}
+.block-color-yellow {
+	color: rgb(223,171,1);
+	fill: rgb(223,171,1);
+}
+.block-color-teal {
+	color: rgb(15,123,108);
+	fill: rgb(15,123,108);
+}
+.block-color-blue {
+	color: rgb(11,110,153);
+	fill: rgb(11,110,153);
+}
+.block-color-purple {
+	color: rgb(105,64,165);
+	fill: rgb(105,64,165);
+}
+.block-color-pink {
+	color: rgb(173,26,114);
+	fill: rgb(173,26,114);
+}
+.block-color-red {
+	color: rgb(224,62,62);
+	fill: rgb(224,62,62);
+}
+.block-color-gray_background {
+	background: rgb(235,236,237);
+}
+.block-color-brown_background {
+	background: rgb(233,229,227);
+}
+.block-color-orange_background {
+	background: rgb(250,235,221);
+}
+.block-color-yellow_background {
+	background: rgb(251,243,219);
+}
+.block-color-teal_background {
+	background: rgb(221,237,234);
+}
+.block-color-blue_background {
+	background: rgb(221,235,241);
+}
+.block-color-purple_background {
+	background: rgb(234,228,242);
+}
+.block-color-pink_background {
+	background: rgb(244,223,235);
+}
+.block-color-red_background {
+	background: rgb(251,228,228);
+}
+.select-value-color-default { background-color: rgba(206,205,202,0.5); }
+.select-value-color-gray { background-color: rgba(155,154,151, 0.4); }
+.select-value-color-brown { background-color: rgba(140,46,0,0.2); }
+.select-value-color-orange { background-color: rgba(245,93,0,0.2); }
+.select-value-color-yellow { background-color: rgba(233,168,0,0.2); }
+.select-value-color-green { background-color: rgba(0,135,107,0.2); }
+.select-value-color-blue { background-color: rgba(0,120,223,0.2); }
+.select-value-color-purple { background-color: rgba(103,36,222,0.2); }
+.select-value-color-pink { background-color: rgba(221,0,129,0.2); }
+.select-value-color-red { background-color: rgba(255,0,26,0.2); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="7660b075-7c09-4cfb-8eb9-599139e73448" class="page sans"><header><img class="page-cover-image" src="https://www.notion.so/images/page-cover/nasa_new_york_city_grid.jpg" style="object-position:center 50%"/><div class="page-header-icon page-header-icon-with-cover"><span class="icon">3️⃣</span></div><h1 class="page-title">Clustering Obstacles</h1></header><div class="page-body"><p id="2ef3ffdf-9ce0-4d64-86df-1ffbf38e0819" class="">You have a way to segment points and recognize which ones represent obstacles for your car. It would be great to break up and group those obstacle points, especially if you want to do multiple object tracking with cars, pedestrians, and bicyclists, for instance. One way to do that grouping and cluster point cloud data is called euclidean clustering.</p><h2 id="0039a415-ddbe-4f79-939f-405de2ded3bd" class="">Euclidean Clustering</h2><p id="3425ca10-ed5b-4199-83ee-2504ff7b910c" class="">The idea is you associate groups of points by how close together they are. To do a nearest neighbor search efficiently, you use a KD-Tree data structure which, on average, speeds up your look up time from O(n) to O(log(n)). This is because the tree allows you to better break up your search space. By grouping points into regions in a KD-Tree, you can avoid calculating distance for possibly thousands of points just because you know they are not even considered in a close enough region.</p><h2 id="b7c1d0c3-511b-428f-a4a6-ea300a3cefc1" class="">Euclidean Clustering Arguments</h2><ul id="ffc1879d-0958-4752-9a55-cb20770d3fee" class="bulleted-list"><li>The euclidean clustering object <code>ec </code>takes in a distance tolerance. Any points within that distance will be grouped together. It also has min and max arguments for the number of points to represent as clusters. The idea is: if a cluster is really small, it’s probably just noise and we are not concerned with it. Also a max number of points allows us to better break up very large clusters. If a cluster is very large it might just be that many other clusters are overlapping, and a max tolerance can help us better resolve the object detections. The last argument to the euclidean cluster object is the Kd-Tree. The tree is created and built using the input cloud points, which in this case are going to be the obstacle cloud points.</li></ul><ul id="6c43b623-e1d9-4fe5-8acb-f6411724d286" class="bulleted-list"><li>The number of points for each cluster can be logged. This can be a helpful debugging tool later when trying to pick good min and max point values.</li></ul><ul id="52dceff9-8fbb-408d-9b22-d85aac83bbf2" class="bulleted-list"><li>Some time and effort will be needed to pick good hyperparameters, but many cases actually there won&#x27;t be a perfect combination to always get perfect results.</li></ul><h2 id="116dd1cc-71bf-4a9c-b96e-697ae607abd2" class="">Implementing KD-Tree</h2><ul id="0fa5d518-e6b2-415d-b37f-ec6daaefb1c2" class="bulleted-list"><li>A KD-Tree is a binary tree that splits points between alternating axes. By separating space by splitting regions, nearest neighbor search can be made much faster when using an algorithm like euclidean clustering.</li></ul><ul id="c504d575-1b23-4dcb-9781-2712be1e69f9" class="bulleted-list"><li>A 2D point represented by a vector containing two floats, and a point ID. The ID is a way to uniquely identify points and a way to tell which index the point is referenced from on the overall point cloud.</li></ul><ul id="acd8854f-a015-4c29-98e9-17246be32e00" class="bulleted-list"><li>The image below shows line separations, with blue lines splitting x regions and red lines splitting y regions. The image shows what the tree looks like after all 11 points have been inserted. </li></ul><figure id="65052a41-0eed-421f-8093-a75b8a7ba0ca" class="image"><a href="Clustering%20Obstacles%207660b0757c094cfb8eb9599139e73448/Untitled.png"><img style="width:946px" src="Clustering%20Obstacles%207660b0757c094cfb8eb9599139e73448/Untitled.png"/></a><figcaption>Tree separating x and y regions.</figcaption></figure><h3 id="ec555385-2bf4-4a60-8234-74e7be81356d" class="">Now let’s talk about how exactly the tree is created. </h3><p id="d58c8e17-a82a-4734-ba20-a64a840986f4" class="">At the very beginning when the tree is empty, root is NULL. The point inserted becomes the root, and splits the x region. Here is what this visually looks like, after inserting the first point (-6.2, 7).</p><figure id="0c41f918-235d-4dc2-b130-f5b26c3f7311" class="image"><a href="Clustering%20Obstacles%207660b0757c094cfb8eb9599139e73448/Untitled%201.png"><img style="width:938px" src="Clustering%20Obstacles%207660b0757c094cfb8eb9599139e73448/Untitled%201.png"/></a></figure><p id="822dba85-ce1e-4f72-aaca-49c738bf96be" class="">The next point is (-6.3, 8.4). Since we previously split in the x-dimension, and -6.3 is less than -6.2. This Node will be created and be a part of root&#x27;s left node. The point (-6.3, 8.4) will split the region in the y dimension.</p><p id="5413750b-433c-4542-92e5-afd2939e52b3" class="">To recap, the root was at depth 0, and split the x region. The next point became the left child of root and had a depth of 1, and split the y region.</p><p id="dcf87ace-7ee7-4ab9-b80f-183a74494517" class="">A point at depth 2 will split the x region again, so the split dimension number can actually be calculated as depth % 2, where 2 is the number of dimensions we are working with. The image below shows how the tree looks after inserting the second point.</p><figure id="708caa9a-0959-433f-b6a0-2a953c5a8e72" class="image"><a href="Clustering%20Obstacles%207660b0757c094cfb8eb9599139e73448/Untitled%202.png"><img style="width:936px" src="Clustering%20Obstacles%207660b0757c094cfb8eb9599139e73448/Untitled%202.png"/></a></figure><p id="dc3b0c6b-7c42-44c1-bd30-f0b9feaa9af3" class="">Then here is what the tree looks like after inserting two more points (-5.2, 7.1) and (-5.7, 6.3), and having another x split division from point (-5.7, 6.3). The tree is now at depth 2.</p><figure id="f6e44b6f-fcf4-4812-be0f-3b3af9208adf" class="image"><a href="Clustering%20Obstacles%207660b0757c094cfb8eb9599139e73448/Untitled%203.png"><img style="width:936px" src="Clustering%20Obstacles%207660b0757c094cfb8eb9599139e73448/Untitled%203.png"/></a></figure><p id="0db33321-4ede-4806-aa56-1fc2436246f9" class="">The image below shows so far what the tree looks like after inserting those 4 points. The labeled nodes A, B, C, D, and E are all NULL.</p><figure id="da920ebd-9816-4233-95d2-e81ea4300cce" class="image"><a href="Clustering%20Obstacles%207660b0757c094cfb8eb9599139e73448/Untitled%204.png"><img style="width:617px" src="Clustering%20Obstacles%207660b0757c094cfb8eb9599139e73448/Untitled%204.png"/></a></figure><figure class="block-color-gray_background callout" style="white-space:pre-wrap;display:flex" id="e7bf94be-f79d-4480-9ea2-4cdf4f5e8c4c"><div style="font-size:1.5em"><span class="icon">💡</span></div><div style="width:100%">If the next point (7.2, 6.1) is inserted, which of those 5 nodes will the new point node be assigned to? Remember to traverse the tree starting at the root. The depth tells you which dimension (x or y) you should use for comparison. </div></figure><ul id="b2ebf8cc-fcdd-46de-9c0d-1399e206c211" class="toggle"><li><details open=""><summary><strong>Answer</strong></summary><p id="75eb8788-c837-41db-9e3c-f6d68abe2e6c" class="">D</p></details></li></ul><h3 id="544068d8-e63b-485e-85f0-b2f1b5dc26cb" class="">Improving the Tree</h3><p id="f4c2bda9-5a7a-42ca-8eae-75bbd1da2018" class="">Having a balanced tree that evenly splits regions improves the search time for finding points later. To improve the tree, insert points that alternate between splitting the x region and the y region evenly. To do this pick the median of sorted x and y points. For instance if you are inserting the first four points that we used above (-6.3, 8.4), (-6.2, 7), (-5.2, 7.1), (-5.7, 6.3) we would first insert (-5.2,7.1) since it is the median along the x axis. If there is an even number of elements the lower median is chosen. The next point to be inserted would be (-6.2, 7), the median of the three points for y. This would be followed by (-5.7,6.3) the lower median between the two for x, and then finally (-6.3,8.4). This ordering will allow the tree to more evenly split the region space and improve search time later.</p><h2 id="551ba6b4-dd41-4dd6-a90b-10e6ce3dbaa5" class="">Example of Insertion for Binary Tree</h2><p id="222ad7e7-1d09-4184-82b7-8f3c0a77a806" class="">Implementing a recursive helper function to insert points can be a very nice way to update Nodes. The basic idea is that the tree is traversed until the Node it arrives at is NULL, in which case a new Node is created and replaces the NULL Node. For assigning a Node, one way is to use a double pointer. You could pass in a pointer to the node, starting at root, and then when you want to replace a node you can dereference the double pointer and assign it to the newly created Node. Another way of achieving this is by using a pointer reference as well.</p><h3 id="db49b67c-9652-4983-8080-b0810e7f3595" class="">Double Pointer</h3><pre id="8e89ecec-cfee-4a1f-8542-e33d7013c73e" class="code"><code>void insert(BinaryTreeNode **node, int data)
+   {
+      if(*node == NULL)
+      {
+        *node = getNewNode(data);
+      }
+      else if(data &lt; (*node)-&gt;data)
+      {
+        insert(&amp;(*node)-&gt;left, data);
+      }
+      else
+      {
+        insert(&amp;(*node)-&gt;right, data);
+      }
+   }</code></pre><h3 id="ad06e1b0-eeb9-40dc-92d6-1303e9368acb" class="">Pointer Reference</h3><pre id="96cdc7cf-a321-4d13-a680-bed0cf528e1d" class="code"><code>void insert(BinaryTreeNode *&amp;node, int data)
+   {
+      if(node == NULL)
+      {
+        node = getNewNode(data);
+      }
+      else if(data &lt; node-&gt;data)
+      {
+        insert(node-&gt;left, data);
+      }
+      else
+      {
+        insert(node-&gt;right, data);
+      }
+   }</code></pre><h2 id="32197bb7-df05-4fe3-a201-f4bdf4944ee7" class="">Searching Points in a KD-Tree</h2><ul id="8764d75a-6504-4b91-9061-70833129463d" class="bulleted-list"><li>Once points are able to be inserted into the tree, the next step is being able to search for nearby points inside the tree compared to a given target point. Points within a distance of <code>distanceTol </code>are considered to be nearby. The KD-Tree is able to split regions and allows certain regions to be completely ruled out, speeding up the process of finding nearby neighbors.</li></ul><ul id="06d17be2-c557-47a7-a734-61446ccb4988" class="bulleted-list"><li>The naive approach of finding nearby neighbors is to go through every single point in the tree and compare their distances with the target, selecting point indices that fall within the distance tolerance of the target. Instead with the KD-Tree you can compare distance within a boxed square that is <code>2 x distanceTol</code> for length, centered around the target point. If the current node point is within this box then you can directly calculate the distance and see if the point id should be added to the list of nearby ids. Then you see if your box crosses over the node division region and if it does compare that next node. You do this recursively, with the advantage being that if the box region is not inside some division region you completely skip that branch.</li></ul><h2 id="4a376f22-8881-46de-9797-3ff77d683269" class="">Euclidean Clustering</h2><ul id="512074f9-1b9a-4f75-81bb-71f3fa133dd9" class="bulleted-list"><li><strong>Now, it is time to find clusters in our point data. </strong>
+Once the KD-Tree method for searching for nearby points is implemented, its not difficult to implement a euclidean clustering method that groups individual cluster indices based on their proximity. Inside <code><strong>cluster.cpp</strong></code> there is a function called <strong><code>euclideanCluster </code></strong>which returns a vector of vector ints, this is the list of cluster indices.</li></ul><ul id="4b9be85e-b6e7-432d-8c43-84d0d73ef21d" class="bulleted-list"><li>To perform the clustering, iterate through each point in the cloud and keep track of which points have been processed already. For each point add it to a list of points defined as a cluster, then get a list of all the points in close proximity to that point by using the search function from the previous exercise. For each point in close proximity that hasn&#x27;t already been processed, add it to the cluster and repeat the process of calling proximity points. Once the recursion stops for the first cluster, create a new cluster and move through the point list, repeating the above process for the new cluster. Once all the points have been processed, there will be a certain number of clusters found, return as a list of clusters.</li></ul><h3 id="95811475-a0a0-474a-b2ad-14dec4113057" class="">Pseudocode</h3><pre id="db6990a7-26d2-4f57-bd0d-4f9b5b48c709" class="code"><code>Proximity(point,cluster):
+    mark point as processed
+    add point to cluster
+    nearby points = tree(point)
+    Iterate through each nearby point
+        If point has not been processed
+            Proximity(cluster)
+
+EuclideanCluster():
+    list of clusters 
+    Iterate through each point
+        If point has not been processed
+            Create cluster
+            Proximity(point, cluster)
+            cluster add clusters
+    return clusters</code></pre><figure id="0a0a93e6-14d1-4d01-9506-c0e866f07423" class="image"><a href="Clustering%20Obstacles%207660b0757c094cfb8eb9599139e73448/Untitled%205.png"><img style="width:937px" src="Clustering%20Obstacles%207660b0757c094cfb8eb9599139e73448/Untitled%205.png"/></a><figcaption>The image  shows the expected output results. Each of the three nearby clusters is colored differently, red, blue, and green.</figcaption></figure><p id="8d880817-200f-42ab-aaca-de41c053709c" class="">
+</p></div></article></body></html>
